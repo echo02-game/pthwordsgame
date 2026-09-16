@@ -1,0 +1,1179 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>普通話詞語大闖關</title>
+<style>
+:root{
+  --ink:#2C2C2B; --ink2:#7D7A75; --line:#E6E5E3; --soft:#F9F8F7; --soft2:#F1F0EE;
+  --blue:#2783DE; --blue-d:#1B66B0; --green:#3E9E6B; --green-d:#2F7E54;
+  --orange:#FF8A3D; --orange-d:#E2621B;   --red:#E5584C; --pink:#FF6F91;
+  --sky1:#BFE3FA; --sky2:#E7F4FD; --hill1:#BCE0C9; --hill2:#CDE8D6;
+  --grass:#7FC493; --grass-d:#5FAE79; --dirt:#E7DAC0; --dirt-d:#D6C5A2;
+  --gh:clamp(76px,11.5vh,112px); --hh:clamp(90px,16.5vh,156px); --oh:clamp(80px,14.5vh,136px); --fh:clamp(104px,19vh,172px); --r:16px;
+  --font:"Yuanti SC","Yuanti TC","Yuanti","YouYuan","幼圆","幼圓","STYuanti","PingFang SC","PingFang TC","Hiragino Sans GB","Microsoft YaHei","微軟雅黑",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none !important}
+html,body{margin:0;padding:0;height:100%}
+body{
+  font-family:var(--font); color:var(--ink); background:var(--soft);
+  height:100vh; height:100dvh; overflow:hidden;
+  -webkit-text-size-adjust:100%; -webkit-font-smoothing:antialiased;
+}
+.app{height:100%;max-width:1120px;margin:0 auto;padding:0 14px;display:flex;flex-direction:column}
+
+/* ---------- header ---------- */
+.top{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 2px 10px}
+.brand{display:flex;align-items:center;gap:8px;font-size:19px;font-weight:700;letter-spacing:.5px}
+.brand .logo{width:28px;height:28px;flex:0 0 auto}
+.hud{display:flex;gap:8px;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:14px;font-weight:700;color:var(--ink)}
+.chip small{color:var(--ink2);font-weight:400;font-size:12px}
+.chip b{color:var(--blue);font-size:16px}
+
+/* ---------- stage ---------- */
+.stage{flex:1 1 auto;min-height:0;position:relative}
+.scene{position:absolute;inset:0;border-radius:var(--r);overflow:hidden;background:linear-gradient(180deg,var(--sky1) 0%,var(--sky2) 62%,#F6FBFE 100%);border:1px solid var(--line)}
+.scene.shake{animation:shakek .42s ease-out}
+@keyframes shakek{0%,100%{transform:translateX(0)}15%{transform:translateX(-7px)}30%{transform:translateX(6px)}45%{transform:translateX(-4px)}65%{transform:translateX(3px)}85%{transform:translateX(-2px)}}
+.sun{position:absolute;right:12%;top:9%;width:clamp(74px,10vh,110px);height:clamp(74px,10vh,110px);border-radius:50%;background:radial-gradient(circle,#FFF6DC 0%,#FFE9AE 60%,rgba(255,233,174,0) 72%);animation:sunp 4.5s ease-in-out infinite}
+@keyframes sunp{0%,100%{transform:scale(1);opacity:.95}50%{transform:scale(1.06);opacity:1}}
+.cloud{position:absolute;opacity:.95}
+.cloud i{display:block;position:absolute;background:#fff;border-radius:999px}
+.c1{width:92px;height:30px;top:14%;left:-15%;animation:drift 46s linear infinite}
+.c2{width:66px;height:22px;top:26%;left:-30%;animation:drift 62s linear infinite;animation-delay:-14s;opacity:.8}
+.c3{width:110px;height:34px;top:7%;left:-50%;animation:drift 78s linear infinite;animation-delay:-40s;opacity:.72}
+@keyframes drift{0%{transform:translateX(0)}100%{transform:translateX(160vw)}}
+.hills{position:absolute;left:0;bottom:calc(var(--gh) - 6px);width:600%;height:66%;display:flex;will-change:transform}
+.hills svg{flex:0 0 33.3333%;height:100%;display:block}
+.world{position:absolute;left:0;top:0;bottom:0;will-change:transform}
+.ground{position:absolute;left:0;bottom:0;width:100%;height:var(--gh);
+  background:
+    repeating-linear-gradient(90deg,rgba(255,255,255,.16) 0 3px,rgba(255,255,255,0) 3px 44px) 0 0/100% 11px no-repeat,
+    linear-gradient(180deg,var(--grass) 0 11px,var(--grass-d) 11px 15px,var(--dirt) 15px 100%);
+  border-top:3px solid #6BB681}
+.ground:after{content:"";position:absolute;left:0;right:0;top:22px;bottom:0;
+  background-image:radial-gradient(circle,rgba(180,158,116,.55) 1.6px,transparent 1.7px);background-size:22px 18px}
+.ob{position:absolute;bottom:var(--gh);width:calc(var(--oh)*0.96);height:var(--oh);transform:translateX(-50%)}
+.ob .art{position:absolute;left:0;bottom:0;width:100%;height:100%;display:flex;align-items:flex-end;justify-content:center}
+.ob .art svg{width:100%;height:100%;overflow:visible}
+.ob.cur .art{animation:obw 1.6s ease-in-out infinite;transform-origin:50% 100%}
+@keyframes obw{0%,100%{transform:rotate(-2.5deg) translateY(0)}50%{transform:rotate(2.5deg) translateY(-3px)}}
+.ob.gone .art{animation:obbreak .5s ease-out forwards}
+@keyframes obbreak{0%{transform:scale(1) rotate(0);opacity:1}35%{transform:scale(1.22) rotate(-8deg)}100%{transform:scale(.2) rotate(26deg) translateY(14px);opacity:0}}
+.ob .bubble{position:absolute;left:50%;bottom:calc(100% + 16px);opacity:0;pointer-events:none;
+  transform:translate(-50%,10px) scale(.6);
+  background:#fff;border:2.5px solid #fff;border-radius:20px;padding:10px 22px 12px;text-align:center;
+  box-shadow:0 10px 26px rgba(28,52,84,.16),0 2px 0 rgba(0,0,0,.03);white-space:nowrap}
+.ob .bubble:after{content:"";position:absolute;left:50%;top:100%;margin-left:-10px;border:10px solid transparent;border-top-color:#fff;filter:drop-shadow(0 3px 2px rgba(28,52,84,.08))}
+.ob.cur .bubble{opacity:1;transform:translate(-50%,0) scale(1);animation:popin .46s cubic-bezier(.18,1.5,.4,1) forwards}
+@keyframes popin{0%{opacity:0;transform:translate(-50%,14px) scale(.55)}60%{opacity:1;transform:translate(-50%,-4px) scale(1.06)}100%{opacity:1;transform:translate(-50%,0) scale(1)}}
+.ob .bw{font-size:clamp(34px,8vw,64px);font-weight:700;line-height:1.16;letter-spacing:6px;text-indent:6px}
+/* 拼音永遠存在於版面（高度 0、完全透明），因此氣泡寬度不會跳動；
+   提示時只用 max-height / opacity / transform 順暢展開 */
+.ob .bp{display:block;overflow:hidden;max-height:0;opacity:0;margin-top:0;
+  transform:translateY(-7px);transform-origin:50% 0;
+  font-family:inherit;font-style:normal;font-weight:700;
+  font-size:clamp(26px,5.8vw,40px);line-height:1.25;color:#D2521A;letter-spacing:2px;
+  background:rgba(255,241,228,0);border:2.5px solid rgba(255,201,143,0);border-radius:999px;padding:0 20px;
+  box-shadow:none;will-change:max-height,opacity,transform;
+  transition:max-height .38s cubic-bezier(.22,.9,.3,1),opacity .26s ease .05s,
+    transform .44s cubic-bezier(.2,1.2,.35,1),margin-top .38s cubic-bezier(.22,.9,.3,1),
+    padding .32s ease,background-color .3s ease,border-color .3s ease}
+.ob.hint .bp{max-height:92px;opacity:1;margin-top:10px;transform:none;padding:6px 20px;
+  background:#FFF1E4;border-color:#FFC98F;box-shadow:0 4px 12px rgba(226,98,27,.16);
+  animation:bpGlow 2.6s ease-in-out .6s infinite}
+@keyframes bpGlow{0%,100%{box-shadow:0 4px 12px rgba(226,98,27,.16)}50%{box-shadow:0 7px 20px rgba(226,98,27,.30)}}
+.ob.cur.bad .bubble{animation:bshake .5s cubic-bezier(.25,.9,.3,1)}
+@keyframes bshake{0%,100%{transform:translate(-50%,0) rotate(0)}22%{transform:translate(-50%,-2px) rotate(-1.4deg)}52%{transform:translate(-50%,0) rotate(1.4deg)}78%{transform:translate(-50%,0) rotate(-.6deg)}}
+.tuft{position:absolute;bottom:calc(var(--gh) - 4px);width:22px;height:16px;transform-origin:50% 100%;animation:sway 2.8s ease-in-out infinite}
+@keyframes sway{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
+.tuft svg{width:100%;height:100%}
+.flag{position:absolute;bottom:var(--gh);width:calc(var(--fh)*0.625);height:var(--fh);transform:translateX(-50%)}
+.flag svg{width:100%;height:100%}
+
+/* ---------- hero ---------- */
+.hero{position:absolute;bottom:var(--gh);left:0;width:calc(var(--hh)*0.78);height:var(--hh);display:flex;align-items:flex-end;justify-content:center;will-change:transform;z-index:3}
+.hero .mal{display:block;width:100%;height:100%;overflow:visible;transform-origin:50% 95%;
+  filter:drop-shadow(0 4px 3px rgba(0,0,0,.18))}
+.hero .mal .eyes{transform-box:fill-box;transform-origin:50% 50%;animation:blink 4.6s infinite}
+@keyframes blink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.12)}}
+.hero .shadow{position:absolute;left:50%;bottom:1px;width:58%;height:10px;border-radius:50%;background:rgba(58,72,52,.20);transform:translateX(-50%);filter:blur(1.5px);z-index:-1}
+.hero.run .shadow{animation:shk .46s ease-in-out infinite}
+@keyframes shk{0%,100%{transform:translateX(-50%) scaleX(1);opacity:.85}45%{transform:translateX(-50%) scaleX(.6);opacity:.4}}
+@keyframes hopk{0%{transform:translateY(0) rotate(-9deg)}22%{transform:translateY(-15%) rotate(3deg)}50%{transform:translateY(-24%) rotate(11deg)}78%{transform:translateY(-7%) rotate(1deg)}100%{transform:translateY(0) rotate(-9deg)}}
+@keyframes malsway{0%,100%{transform:rotate(-6deg) translateY(0)}50%{transform:rotate(6deg) translateY(-3px)}}
+/* 揚槌→落槌敲碎路障（落槌點在 42%，約 260ms） */
+@keyframes swingk{0%{transform:translate(0,0) rotate(-4deg)}18%{transform:translate(-3%,0) rotate(-48deg)}42%{transform:translate(9%,-3%) rotate(50deg)}54%{transform:translate(7%,0) rotate(43deg)}72%{transform:translate(2%,0) rotate(14deg)}100%{transform:translate(0,0) rotate(-4deg)}}
+@keyframes cheerk{0%{transform:translateY(0) rotate(0)}28%{transform:translateY(-26px) rotate(-16deg)}56%{transform:translateY(0) rotate(0)}78%{transform:translateY(-10px) rotate(13deg)}100%{transform:translateY(0) rotate(0)}}
+@keyframes bobk{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-4px) rotate(1deg)}}
+@keyframes breathe{0%,100%{transform:translateY(0) scaleY(1)}50%{transform:translateY(-1.5px) scaleY(1.025)}}
+@keyframes bumpk{0%{transform:translateX(0)}25%{transform:translateX(-8px) rotate(-4deg)}55%{transform:translateX(3px)}100%{transform:translateX(0)}}
+@keyframes jumpk{0%{transform:translateY(0)}26%{transform:translateY(-30px) rotate(-4deg)}52%{transform:translateY(0)}72%{transform:translateY(-12px)}100%{transform:translateY(0)}}
+.hero.swing{z-index:6}
+.hero.idle .mal{animation:malsway 2.4s ease-in-out infinite}
+.hero.run .mal{animation:hopk .46s ease-in-out infinite}
+.hero.bump .mal{animation:bumpk .38s ease-out}
+.hero.swing .mal{animation:swingk .62s cubic-bezier(.2,.85,.3,1)}
+.hero.cheer .mal{animation:cheerk .9s ease-out}
+.dust{position:absolute;left:2px;bottom:0;width:26px;height:14px;opacity:0}
+.dust i{position:absolute;bottom:0;width:9px;height:9px;border-radius:50%;background:rgba(196,176,138,.75)}
+.dust i:nth-child(1){left:0}.dust i:nth-child(2){left:9px;width:7px;height:7px}.dust i:nth-child(3){left:17px;width:6px;height:6px}
+.hero.run .dust{animation:dustk .42s linear infinite}
+@keyframes dustk{0%{opacity:.85;transform:translateX(0) scale(.6)}100%{opacity:0;transform:translateX(-24px) scale(1.25)}}
+
+/* 棒槌敲擊星光 */
+.hit{position:absolute;width:clamp(72px,15vw,132px);height:clamp(72px,15vw,132px);z-index:7;pointer-events:none;
+  transform:translate(-50%,-50%);animation:hitk .5s ease-out forwards}
+.hit svg{width:100%;height:100%}
+@keyframes hitk{0%{transform:translate(-50%,-50%) scale(.25) rotate(-14deg);opacity:0}
+  22%{opacity:1}60%{transform:translate(-50%,-50%) scale(1.02) rotate(6deg);opacity:.95}
+  100%{transform:translate(-50%,-50%) scale(1.32) rotate(16deg);opacity:0}}
+
+/* ---------- overlays in scene ---------- */
+.dots{position:absolute;top:12px;left:50%;transform:translateX(-50%);display:flex;gap:7px;z-index:5;
+  background:rgba(255,255,255,.72);border-radius:999px;padding:7px 12px;backdrop-filter:blur(4px)}
+.dot{width:10px;height:10px;border-radius:50%;background:#CFCEC9;transition:transform .25s,background .25s}
+.dot.done{background:var(--green)}
+.dot.now{background:var(--blue);transform:scale(1.5)}
+.popup{position:absolute;left:50%;top:20%;transform:translate(-50%,-50%) scale(.6);opacity:0;z-index:8;pointer-events:none;
+  font-size:clamp(26px,6vw,42px);font-weight:700;text-align:center;white-space:nowrap;
+  padding:12px 30px;border-radius:999px;background:#fff;box-shadow:0 14px 34px rgba(28,52,84,.18)}
+.popup.ok{color:var(--green)}
+.popup.bad{color:var(--red)}
+.popup.show{animation:popmsg 1.25s cubic-bezier(.16,1.5,.4,1) forwards}
+@keyframes popmsg{0%{opacity:0;transform:translate(-50%,-30%) scale(.5)}18%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}30%{transform:translate(-50%,-50%) scale(1)}78%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-78%) scale(.94)}}
+.fx{position:absolute;inset:0;pointer-events:none;z-index:9;overflow:hidden}
+.pc{position:absolute;width:9px;height:9px;border-radius:2px;animation:pck .85s ease-out forwards}
+@keyframes pck{0%{opacity:1;transform:translate(0,0) rotate(0) scale(1)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(320deg) scale(.4)}}
+.cf{position:absolute;top:-18px;width:10px;height:14px;border-radius:2px;animation:cfk 2.3s linear forwards}
+@keyframes cfk{0%{opacity:1;transform:translateY(0) translateX(0) rotate(0)}
+  100%{opacity:.92;transform:translateY(var(--fall,760px)) translateX(var(--dx2,0px)) rotate(560deg)}}
+
+/* ---------- screens ---------- */
+.screen{position:absolute;inset:0;z-index:12;background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;
+  display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:18px}
+#screenStart{background:linear-gradient(180deg,var(--sky1) 0%,var(--sky2) 46%,#FBFEFF 100%)}
+.stc{animation:cloudf 7s ease-in-out infinite !important;opacity:.9}
+@keyframes cloudf{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+.startInner{position:relative;z-index:2;width:100%;max-width:660px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:0;padding-bottom:34px}
+.startArt{width:100%;max-width:460px;height:140px;margin-bottom:4px}
+.startArt svg{width:100%;height:100%;overflow:visible}
+.startArt .fl{animation:floatk 3.4s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+@keyframes floatk{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.h1{font-size:clamp(23px,5.4vw,36px);font-weight:700;margin:6px 0 22px;letter-spacing:2px;line-height:1.4}
+.start{position:relative;border:0;cursor:pointer;font-family:inherit;color:#fff;font-weight:700;
+  font-size:clamp(23px,5vw,31px);letter-spacing:4px;text-indent:4px;padding:20px 58px;border-radius:999px;
+  background:linear-gradient(180deg,#FFC24A 0%,#FF9A2E 52%,#FF7A2F 100%);
+  box-shadow:0 7px 0 #D9601A,0 16px 30px rgba(255,122,47,.36);
+  animation:beat 2.1s ease-in-out infinite;transition:transform .12s,box-shadow .12s}
+.start:hover{transform:translateY(-2px);box-shadow:0 9px 0 #D9601A,0 20px 34px rgba(255,122,47,.42)}
+.start:active{transform:translateY(5px);box-shadow:0 2px 0 #D9601A,0 8px 16px rgba(255,122,47,.3);animation:none}
+@keyframes beat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-3px) scale(1.025)}}
+.steps{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 14px;margin-top:22px;opacity:.62}
+.steps span{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--ink2)}
+.steps b{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;
+  background:var(--soft2);color:var(--ink2);font-size:10px;font-weight:700}
+.envNote{margin-top:12px;font-size:12px;color:var(--ink2);min-height:16px}
+#screenDone{background:linear-gradient(180deg,var(--sky1) 0%,var(--sky2) 46%,#FBFEFF 100%)}
+#fx2{z-index:3}
+.doneArt{position:relative;left:auto;bottom:auto;width:158px;height:174px;margin:0 auto 6px;z-index:1}
+.doneArt svg{width:100%;height:100%;overflow:visible}
+.doneArt.trophy .cup{animation:cheerBig 1.15s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 92%}
+.doneArt.trophy .spk{animation:spkk 1.5s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 50%}
+.doneArt.trophy .spk2{animation-delay:.5s}
+.doneArt.trophy .spk3{animation-delay:.95s}
+.doneArt.mallet{width:146px;height:188px}
+.doneArt.mallet .malg{animation:malCheer 1.6s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 96%}
+@keyframes malCheer{0%,100%{transform:rotate(-5deg) translateY(0)}50%{transform:rotate(5deg) translateY(-7px)}}
+@keyframes spkk{0%,100%{opacity:.2;transform:scale(.55)}50%{opacity:1;transform:scale(1.2)}}
+@keyframes cheerBig{0%{transform:translateY(0) rotate(-6deg) scale(1)}
+  22%{transform:translateY(-26%) rotate(9deg) scale(1.06)}
+  44%{transform:translateY(0) rotate(-7deg) scale(.98)}
+  66%{transform:translateY(-16%) rotate(7deg) scale(1.04)}
+  100%{transform:translateY(0) rotate(-6deg) scale(1)}}
+.rays{position:absolute;left:50%;top:0;width:min(440px,94vw);height:min(440px,94vw);
+  transform:translate(-50%,-28%);border-radius:50%;z-index:0;pointer-events:none;
+  background:repeating-conic-gradient(from 0deg,rgba(255,196,74,.34) 0deg 8deg,rgba(255,196,74,0) 8deg 18deg);
+  -webkit-mask:radial-gradient(circle,#000 26%,transparent 70%);mask:radial-gradient(circle,#000 26%,transparent 70%);
+  animation:raysSpin 16s linear infinite,raysPulse 2.4s ease-in-out infinite}
+@keyframes raysSpin{to{transform:translate(-50%,-28%) rotate(360deg)}}
+@keyframes raysPulse{0%,100%{opacity:.5}50%{opacity:1}}
+.emj{position:absolute;top:-9%;font-size:clamp(24px,5.4vw,40px);line-height:1;pointer-events:none;
+  animation:emjFall 2.6s linear forwards;filter:drop-shadow(0 3px 6px rgba(0,0,0,.12))}
+@keyframes emjFall{0%{opacity:0;transform:translateY(0) rotate(0) scale(.7)}
+  10%{opacity:1;transform:translateY(7%) rotate(var(--r1,12deg)) scale(1.1)}
+  100%{opacity:1;transform:translateY(var(--fall,760px)) rotate(var(--rot,40deg)) scale(1)}}
+.doneInner{position:relative;z-index:2;width:100%;max-width:560px;text-align:center;padding-bottom:30px}
+.doneTitle{position:relative;z-index:1;font-size:clamp(32px,7.4vw,50px);font-weight:700;margin:0 0 8px;letter-spacing:2px;
+  animation:donePop .72s cubic-bezier(.16,1.7,.4,1) both, doneWave 2.5s ease-in-out .72s infinite}
+@keyframes donePop{0%{opacity:0;transform:scale(.45) rotate(-10deg)}62%{opacity:1;transform:scale(1.16) rotate(3deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+@keyframes doneWave{0%,100%{transform:translateY(0) rotate(-1.4deg)}50%{transform:translateY(-8px) rotate(1.4deg)}}
+@keyframes statPop{0%{opacity:0;transform:translateY(18px) scale(.86)}100%{opacity:1;transform:translateY(0) scale(1)}}
+.doneSub{position:relative;z-index:1;color:var(--ink2);font-size:14px;margin-bottom:20px;animation:statPop .5s ease-out .5s both}
+.stats{position:relative;z-index:1;display:flex;gap:10px;justify-content:center;margin-bottom:18px}
+.stat{flex:1;background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:14px 8px;
+  animation:statPop .52s cubic-bezier(.16,1.6,.4,1) both}
+.stat:nth-child(1){animation-delay:.62s}
+.stat:nth-child(2){animation-delay:.76s}
+.stat:nth-child(3){animation-delay:.90s}
+.stat .v{font-size:clamp(21px,4.6vw,28px);font-weight:700;color:var(--blue)}
+.stat .k{font-size:12px;color:var(--ink2);margin-top:3px}
+.review{text-align:left;background:#FFF9F3;border:1px solid #F6E2CC;border-radius:14px;padding:12px 14px;margin-bottom:18px}
+.review h4{margin:0 0 8px;font-size:13px;color:var(--orange-d)}
+.review ul{margin:0;padding-left:18px;font-size:14px;line-height:1.85}
+.review i{color:var(--ink2);font-size:13px;margin-left:6px}
+
+/* ---------- controls ---------- */
+.controls{flex:0 0 auto;padding:12px 0 6px;display:flex;flex-direction:column;align-items:center;gap:9px}
+.status{font-size:15px;font-weight:700;min-height:22px;text-align:center;color:var(--ink)}
+.status.live{color:var(--blue)}
+.status.ok{color:var(--green)}
+.status.bad{color:var(--red)}
+.heard{font-size:12px;color:var(--ink2);min-height:16px;margin-top:-4px}
+.mic{position:relative;width:88px;height:88px;border-radius:50%;border:0;cursor:pointer;color:#fff;font-family:inherit;
+  background:linear-gradient(180deg,#4FA0EC,#2783DE);box-shadow:0 6px 0 var(--blue-d),0 14px 26px rgba(39,131,222,.34);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;transition:transform .12s,box-shadow .12s}
+.mic:active{transform:translateY(4px);box-shadow:0 2px 0 var(--blue-d)}
+.mic:disabled{background:#C9CDD2;box-shadow:0 5px 0 #A9AEB4;cursor:not-allowed}
+.mic svg{width:26px;height:26px}
+.mic span{font-size:13px;font-weight:700;letter-spacing:1px}
+.mic.on{background:linear-gradient(180deg,#FF8E7A,#E5584C);box-shadow:0 6px 0 #B93B31,0 14px 26px rgba(229,88,76,.32)}
+.mic.on:before,.mic.on:after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid rgba(229,88,76,.5);animation:ring 1.5s ease-out infinite}
+.mic.on:after{animation-delay:.75s}
+@keyframes ring{0%{transform:scale(1);opacity:.75}100%{transform:scale(1.55);opacity:0}}
+.row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.btn{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;
+  padding:9px 16px;font-family:inherit;font-size:13px;color:var(--ink);cursor:pointer;transition:background .15s,transform .1s}
+.btn:hover{background:var(--soft)}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{color:#B9B7B3;cursor:not-allowed;background:#fff}
+.btn.skip{border-color:#F2D9BE;color:var(--orange-d);background:#FFF7EF}
+.btn.again{position:relative;z-index:1;background:linear-gradient(180deg,#FFC24A,#FF8A3D);border:0;color:#fff;font-size:17px;font-weight:700;padding:16px 44px;box-shadow:0 5px 0 #D9601A,0 14px 28px rgba(255,122,47,.3);animation:beat 2.1s ease-in-out infinite}
+footer{flex:0 0 auto;text-align:center;font-size:11.5px;color:var(--ink2);padding:8px 0 12px;border-top:1px solid var(--line);margin-top:6px}
+
+@media (max-width:560px){
+  :root{--gh:clamp(66px,9.5vh,90px); --hh:clamp(78px,12.5vh,112px); --oh:clamp(70px,11vh,100px); --fh:clamp(88px,14.5vh,124px)}
+  .brand{font-size:16px}.brand .logo{width:24px;height:24px}
+  .top{padding:10px 2px 8px}
+  .chip{padding:5px 10px;font-size:13px}
+  .ob .bubble{padding:8px 16px 10px}
+  .ob .bp{font-size:clamp(22px,6.6vw,31px);padding:0 15px;margin-top:0}
+  .ob.hint .bp{padding:5px 15px;margin-top:8px}
+  .popup{top:17%;padding:10px 22px}
+  .mic{width:78px;height:78px}
+  .controls{padding:10px 0 4px;gap:7px}
+  .status{font-size:14px}
+  .startArt{height:96px}
+  .h1{margin:4px 0 18px}
+  .start{padding:17px 44px}
+  .stats{gap:6px}
+  footer{font-size:10.5px;padding:7px 0 10px}
+}
+@media (max-height:620px){
+  .startArt{display:none}
+  .steps{margin-top:14px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="top">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="4" width="28" height="21" rx="7" fill="#2783DE"/><path d="M10 25l-3 5 8-5z" fill="#2783DE"/><circle cx="11" cy="14" r="2" fill="#fff"/><circle cx="16" cy="14" r="2" fill="#fff"/><circle cx="21" cy="14" r="2" fill="#fff"/></svg>
+      <span>普通話詞語大闖關</span>
+    </div>
+    <div class="hud" id="hud" hidden>
+      <span class="chip"><small>第</small><b id="hudLevel">1</b><small>/10 關</small></span>
+      <span class="chip">⏱ <b id="hudTime" style="font-variant-numeric:tabular-nums">00:00</b></span>
+    </div>
+  </header>
+
+  <main class="stage" id="stage">
+
+    <section class="scene" id="scene" hidden>
+      <div class="sun"></div>
+      <div class="cloud c1"><i style="left:0;top:12px;width:128px;height:30px"></i><i style="left:22px;top:0;width:64px;height:42px"></i></div>
+      <div class="cloud c2"><i style="left:0;top:9px;width:96px;height:24px"></i><i style="left:20px;top:0;width:50px;height:32px"></i></div>
+      <div class="cloud c3"><i style="left:0;top:14px;width:152px;height:34px"></i><i style="left:34px;top:0;width:78px;height:48px"></i></div>
+      <div class="hills" id="hills"><svg viewBox="0 0 1200 200" preserveAspectRatio="none" aria-hidden="true"><path d="M0 200 Q 150 60 300 200 Z" fill="#BCE0C9"/><path d="M240 200 Q 430 30 620 200 Z" fill="#CDE8D6"/><path d="M560 200 Q 740 70 920 200 Z" fill="#BCE0C9"/><path d="M860 200 Q 1040 40 1200 200 Z" fill="#CDE8D6"/></svg><svg viewBox="0 0 1200 200" preserveAspectRatio="none" aria-hidden="true"><path d="M0 200 Q 150 60 300 200 Z" fill="#BCE0C9"/><path d="M240 200 Q 430 30 620 200 Z" fill="#CDE8D6"/><path d="M560 200 Q 740 70 920 200 Z" fill="#BCE0C9"/><path d="M860 200 Q 1040 40 1200 200 Z" fill="#CDE8D6"/></svg><svg viewBox="0 0 1200 200" preserveAspectRatio="none" aria-hidden="true"><path d="M0 200 Q 150 60 300 200 Z" fill="#BCE0C9"/><path d="M240 200 Q 430 30 620 200 Z" fill="#CDE8D6"/><path d="M560 200 Q 740 70 920 200 Z" fill="#BCE0C9"/><path d="M860 200 Q 1040 40 1200 200 Z" fill="#CDE8D6"/></svg></div>
+      <div class="world" id="world"></div>
+      <div class="hero idle" id="hero">
+        <div class="dust"><i></i><i></i><i></i></div>
+        <span class="shadow"></span>
+        <svg class="mal" viewBox="0 0 64 84" role="img" aria-label="棒槌">
+          <rect x="26" y="32" width="12" height="50" rx="6" fill="#B9843F" stroke="#8A5A28" stroke-width="1.6"/>
+          <rect x="29" y="34" width="3.4" height="44" rx="1.7" fill="#D9A96A" opacity=".85"/>
+          <g stroke="#8A5A28" stroke-width="2.2" stroke-linecap="round"><path d="M26.8 62h10.4"/><path d="M26.8 68.5h10.4"/><path d="M26.8 75h10.4"/></g>
+          <rect x="5" y="5" width="54" height="31" rx="11" fill="#E9B876" stroke="#B0783C" stroke-width="3"/>
+          <rect x="9.5" y="9" width="45" height="8" rx="4" fill="#F7DCB0" opacity=".95"/>
+          <circle cx="12.5" cy="30" r="1.7" fill="#C89252"/><circle cx="51.5" cy="30" r="1.7" fill="#C89252"/>
+          <g class="eyes"><circle cx="24" cy="24" r="2.4" fill="#2C2C2B"/><circle cx="40" cy="24" r="2.4" fill="#2C2C2B"/>
+            <circle cx="24.8" cy="23.2" r=".8" fill="#fff"/><circle cx="40.8" cy="23.2" r=".8" fill="#fff"/></g>
+          <path d="M29 29.5q3 2.8 6 0" stroke="#B4553F" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="dots" id="dots"></div>
+      <div class="popup" id="popup"></div>
+      <div class="fx" id="fx"></div>
+    </section>
+
+    <section class="screen" id="screenStart">
+      <div class="cloud c1 stc" style="top:11%;left:7%"><i style="left:0;top:12px;width:128px;height:30px"></i><i style="left:22px;top:0;width:64px;height:42px"></i></div>
+      <div class="cloud c3 stc" style="top:19%;left:56%;animation-delay:-3.2s"><i style="left:0;top:14px;width:152px;height:34px"></i><i style="left:34px;top:0;width:78px;height:48px"></i></div>
+      <div class="startInner">
+        <div class="startArt">
+          <svg viewBox="0 0 390 118" aria-hidden="true">
+            <rect x="12" y="92" width="366" height="26" rx="12" fill="#E7DAC0"/>
+            <rect x="12" y="86" width="366" height="9" rx="4.5" fill="#7FC493"/>
+            <g class="fl" style="animation-delay:-.4s">
+              <rect x="120" y="56" width="32" height="32" rx="5" fill="#DFA55F" stroke="#B0783C" stroke-width="2.5"/>
+              <path d="M124 60l24 24M148 60l-24 24" stroke="#B0783C" stroke-width="2.5"/>
+            </g>
+            <g class="fl" style="animation-delay:-1.2s">
+              <path d="M186 88q-9-8-4-18 8-14 24-8 12 5 8 18-2 8-10 8z" fill="#BFC4C9" stroke="#94999E" stroke-width="2.5"/>
+            </g>
+            <g class="fl" style="animation-delay:-2s">
+              <rect x="244" y="54" width="34" height="34" rx="6" fill="#FFCE5C" stroke="#D79E27" stroke-width="2.5"/>
+              <text x="261" y="79" font-size="24" font-weight="700" fill="#B57C13" text-anchor="middle" font-family="sans-serif">?</text>
+            </g>
+            <g class="fl" style="animation-delay:-2.6s">
+              <rect x="318" y="30" width="3.6" height="58" rx="1.8" fill="#A9A6A0"/>
+              <path d="M322 32h30l-8 9 8 9h-30z" fill="#E5584C"/>
+            </g>
+            <g class="fl" style="animation-delay:-.9s">
+              <ellipse cx="72" cy="90" rx="24" ry="5" fill="rgba(0,0,0,.10)"/>
+              <g transform="rotate(-16 72 88)">
+                <rect x="66" y="52" width="11" height="36" rx="5.5" fill="#B9843F" stroke="#8A5A28" stroke-width="1.4"/>
+                <g stroke="#8A5A28" stroke-width="1.9" stroke-linecap="round"><path d="M67 72h9"/><path d="M67 78h9"/></g>
+                <rect x="50" y="30" width="44" height="26" rx="9" fill="#E9B876" stroke="#B0783C" stroke-width="2.6"/>
+                <rect x="54" y="33.5" width="36" height="7" rx="3.5" fill="#F7DCB0"/>
+                <circle cx="65" cy="47" r="2.1" fill="#2C2C2B"/><circle cx="79" cy="47" r="2.1" fill="#2C2C2B"/>
+              </g>
+            </g>
+          </svg>
+        </div>
+        <h1 class="h1">大聲朗讀，破除路障，勇往直前</h1>
+        <button class="start" id="btnStart">開始遊戲</button>
+        <div class="steps">
+          <span><b>1</b>允許麥克風</span>
+          <span><b>2</b>看詞朗讀</span>
+          <span><b>3</b>讀不準顯示拼音</span>
+          <span><b>4</b>破十關計時</span>
+        </div>
+        <div class="envNote" id="envNote"></div>
+      </div>
+    </section>
+
+    <section class="screen" id="screenDone" hidden>
+      <div class="doneInner">
+        <div class="rays" aria-hidden="true"></div>
+        <div class="doneArt trophy" id="doneArt" aria-hidden="true"></div>
+        <div class="doneTitle" id="doneTitle">🎉 恭喜通關！</div>
+        <div class="doneSub" id="doneSub"></div>
+        <div class="stats">
+          <div class="stat"><div class="v" id="stTime">00:00</div><div class="k">總用時</div></div>
+          <div class="stat"><div class="v" id="stFirst">0</div><div class="k">一次讀準</div></div>
+          <div class="stat"><div class="v" id="stTries">0</div><div class="k">朗讀次數</div></div>
+        </div>
+        <div class="review" id="review" hidden>
+          <h4>建議加強的詞語</h4>
+          <ul id="reviewList"></ul>
+        </div>
+        <button class="btn again" id="btnAgain">再玩一次</button>
+      </div>
+      <div class="fx" id="fx2"></div>
+    </section>
+
+  </main>
+
+  <div class="controls" id="controls" hidden>
+    <div class="status" id="status">準備好了嗎？</div>
+    <div class="heard" id="heard"></div>
+    <button class="mic" id="btnMic">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3a3 3 0 0 1 3 3v5a3 3 0 0 1-6 0V6a3 3 0 0 1 3-3z"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg>
+      <span id="micLabel">朗讀</span>
+    </button>
+    <div class="row">
+      <button class="btn" id="btnDemo">🔊 聽示範</button>
+      <button class="btn skip" id="btnSkip" hidden>放棄此關</button>
+    </div>
+  </div>
+
+  <footer>網頁僅供機構內部使用。普通話培訓測試中心版權所有。</footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ============ 後臺詞語庫（繁體|簡體|拼音） ============ */
+var BANK_RAW = [
+"東風|东风|dōng fēng","光輝|光辉|guāng huī","青春|青春|qīng chūn","繽紛|缤纷|bīn fēn",
+"追蹤|追踪|zhuī zōng","消失|消失|xiāo shī","科學|科学|kē xué","堅持|坚持|jiān chí",
+"溫柔|温柔|wēn róu","需求|需求|xū qiú","收集|收集|shōu jí","輝煌|辉煌|huī huáng",
+"生活|生活|shēng huó","開始|开始|kāi shǐ","溫暖|温暖|wēn nuǎn","擁有|拥有|yōng yǒu",
+"危險|危险|wēi xiǎn","艱苦|艰苦|jiān kǔ","悠久|悠久|yōu jiǔ","豐富|丰富|fēng fù",
+"經驗|经验|jīng yàn","深刻|深刻|shēn kè","珍貴|珍贵|zhēn guì","尊敬|尊敬|zūn jìng",
+"微笑|微笑|wēi xiào","濕潤|湿润|shī rùn","研究|研究|yán jiū","人生|人生|rén shēng",
+"延伸|延伸|yán shēn","繁星|繁星|fán xīng","如今|如今|rú jīn","燃燒|燃烧|rán shāo",
+"徘徊|徘徊|pái huái","懷疑|怀疑|huái yí","完全|完全|wán quán","文學|文学|wén xué",
+"學習|学习|xué xí","人民|人民|rén mín","宏偉|宏伟|hóng wěi","原始|原始|yuán shǐ",
+"情景|情景|qíng jǐng","沿海|沿海|yán hǎi","狹窄|狭窄|xiá zhǎi","寒冷|寒冷|hán lěng",
+"痕跡|痕迹|hén jì","炎熱|炎热|yán rè","植物|植物|zhí wù","呈現|呈现|chéng xiàn",
+"決定|决定|jué dìng","存在|存在|cún zài","獨立|独立|dú lì","組織|组织|zǔ zhī",
+"許多|许多|xǔ duō","祖先|祖先|zǔ xiān","母雞|母鸡|mǔ jī","海鷗|海鸥|hǎi ōu",
+"紡織|纺织|fǎng zhī","保存|保存|bǎo cún","感情|感情|gǎn qíng","滿足|满足|mǎn zú",
+"普及|普及|pǔ jí","考察|考察|kǎo chá","海拔|海拔|hǎi bá","表演|表演|biǎo yǎn",
+"影響|影响|yǐng xiǎng","勇敢|勇敢|yǒng gǎn","土壤|土壤|tǔ rǎng","鐵軌|铁轨|tiě guǐ",
+"眨眼|眨眼|zhǎ yǎn","導致|导致|dǎo zhì","軌道|轨道|guǐ dào","體現|体现|tǐ xiàn",
+"肯定|肯定|kěn dìng","享受|享受|xiǎng shòu","宇宙|宇宙|yǔ zhòu","滿意|满意|mǎn yì",
+"必須|必须|bì xū","誕生|诞生|dàn shēng","故鄉|故乡|gù xiāng","目標|目标|mù biāo",
+"氣息|气息|qì xī","立春|立春|lì chūn","幸福|幸福|xìng fú","現實|现实|xiàn shí",
+"自然|自然|zì rán","沸騰|沸腾|fèi téng","證明|证明|zhèng míng","事實|事实|shì shí",
+"歷史|历史|lì shǐ","確保|确保|què bǎo","跳舞|跳舞|tiào wǔ","婦女|妇女|fù nǚ",
+"記者|记者|jì zhě","報紙|报纸|bào zhǐ","繼續|继续|jì xù","智慧|智慧|zhì huì",
+"現象|现象|xiàn xiàng","建築|建筑|jiàn zhù","計算|计算|jì suàn","世紀|世纪|shì jì"
+];
+var BANK = BANK_RAW.map(function(l){ var a=l.split("|"); return {t:a[0],s:a[1],p:a[2]}; });
+
+/* ============ 路障造型 ============ */
+var OB=[
+/* 木箱 */'<svg viewBox="0 0 64 64"><rect x="6" y="14" width="52" height="50" rx="7" fill="#DFA55F" stroke="#B0783C" stroke-width="3"/><path d="M10 18l44 42M54 18L10 60" stroke="#B0783C" stroke-width="3"/><rect x="6" y="14" width="52" height="9" rx="4" fill="#E9B876"/></svg>',
+/* 石頭 */'<svg viewBox="0 0 64 64"><path d="M32 8 56 26 50 62 14 62 6 28z" fill="#C6CBD0" stroke="#9AA0A6" stroke-width="3"/><path d="M32 8 24 34l20 6z" fill="#DCE0E4"/></svg>',
+/* 磚牆 */'<svg viewBox="0 0 64 64"><rect x="4" y="16" width="56" height="48" rx="4" fill="#E0836B" stroke="#B45E48" stroke-width="3"/><path d="M4 32h56M4 48h56M20 16v16M44 16v16M12 32v16M36 32v16M56 32v16M28 48v16M52 48v16" stroke="#B45E48" stroke-width="2.4"/></svg>',
+/* 仙人掌 */'<svg viewBox="0 0 64 64"><rect x="25" y="10" width="14" height="54" rx="7" fill="#5FAE79" stroke="#3E8C5B" stroke-width="3"/><path d="M25 34h-8a6 6 0 0 1-6-6v-6" fill="none" stroke="#3E8C5B" stroke-width="11" stroke-linecap="round"/><path d="M25 34h-8a6 6 0 0 1-6-6v-6" fill="none" stroke="#5FAE79" stroke-width="6" stroke-linecap="round"/><path d="M39 42h8a6 6 0 0 0 6-6v-8" fill="none" stroke="#3E8C5B" stroke-width="11" stroke-linecap="round"/><path d="M39 42h8a6 6 0 0 0 6-6v-8" fill="none" stroke="#5FAE79" stroke-width="6" stroke-linecap="round"/></svg>',
+/* 冰塊 */'<svg viewBox="0 0 64 64"><path d="M32 6 58 20v30L32 64 6 50V20z" fill="#B9E3F6" stroke="#7FC4E4" stroke-width="3"/><path d="M32 6v58M6 20l52 30M58 20L6 50" stroke="#DCF2FB" stroke-width="2.4"/></svg>',
+/* 水管 */'<svg viewBox="0 0 64 64"><rect x="14" y="24" width="36" height="40" fill="#5FAE79" stroke="#3E8C5B" stroke-width="3"/><rect x="6" y="10" width="52" height="18" rx="5" fill="#6FBF88" stroke="#3E8C5B" stroke-width="3"/><rect x="20" y="30" width="7" height="30" fill="#8FD2A3" opacity=".85"/></svg>',
+/* 木桶 */'<svg viewBox="0 0 64 64"><path d="M14 14h36c4 10 4 26 0 50H14c-4-24-4-40 0-50z" fill="#D9A05C" stroke="#A9743A" stroke-width="3"/><path d="M11 28h42M11 48h42" stroke="#8E5C2C" stroke-width="4"/><path d="M32 16v46" stroke="#A9743A" stroke-width="2.2"/></svg>',
+/* 柵欄 */'<svg viewBox="0 0 64 64"><g fill="#E3C08C" stroke="#B4884F" stroke-width="3"><path d="M10 22l6-8 6 8v42H10z"/><path d="M26 18l6-8 6 8v46H26z"/><path d="M42 22l6-8 6 8v42H42z"/></g><path d="M6 34h52M6 50h52" stroke="#B4884F" stroke-width="5"/></svg>',
+/* 灌木 */'<svg viewBox="0 0 64 64"><rect x="28" y="44" width="8" height="20" rx="3" fill="#8E6B45"/><circle cx="20" cy="38" r="14" fill="#6FBF88"/><circle cx="44" cy="38" r="14" fill="#5FAE79"/><circle cx="32" cy="26" r="16" fill="#7FC493"/><circle cx="26" cy="22" r="4" fill="#A6DCB6" opacity=".8"/></svg>',
+/* 問號磚 */'<svg viewBox="0 0 64 64"><rect x="6" y="12" width="52" height="52" rx="7" fill="#FFCE5C" stroke="#D79E27" stroke-width="3"/><circle cx="13" cy="19" r="2.2" fill="#D79E27"/><circle cx="51" cy="19" r="2.2" fill="#D79E27"/><circle cx="13" cy="57" r="2.2" fill="#D79E27"/><circle cx="51" cy="57" r="2.2" fill="#D79E27"/><text x="32" y="50" font-size="34" font-weight="700" fill="#B57C13" text-anchor="middle" font-family="sans-serif">?</text></svg>'
+];
+var TUFT='<svg viewBox="0 0 22 16"><path d="M11 16V4M11 16 5 6M11 16l6-9" stroke="#5FAE79" stroke-width="3" stroke-linecap="round" fill="none"/></svg>';
+var FLAG='<svg viewBox="0 0 60 96"><rect x="26" y="6" width="5" height="90" rx="2.5" fill="#A9A6A0"/><path d="M31 8h26l-7 9 7 9H31z" fill="#E5584C"/><circle cx="28.5" cy="5" r="4" fill="#FFCE5C"/></svg>';
+
+/* ============ 元素 ============ */
+function $(id){ return document.getElementById(id); }
+var scene=$("scene"), world=$("world"), hills=$("hills"), hero=$("hero"), dots=$("dots"),
+    popup=$("popup"), fx=$("fx"), hud=$("hud"), hudLevel=$("hudLevel"), hudTime=$("hudTime"),
+    controls=$("controls"), statusEl=$("status"), heardEl=$("heard"),
+    btnMic=$("btnMic"), micLabel=$("micLabel"), btnDemo=$("btnDemo"), btnSkip=$("btnSkip"),
+    screenStart=$("screenStart"), screenDone=$("screenDone"), btnStart=$("btnStart"), btnAgain=$("btnAgain"),
+    stTime=$("stTime"), stFirst=$("stFirst"), stTries=$("stTries"), doneSub=$("doneSub"),
+    review=$("review"), reviewList=$("reviewList"), envNote=$("envNote"), fx2=$("fx2"), doneArt=$("doneArt"), doneTitle=$("doneTitle");
+
+var ROUND=10;
+var S={ words:[], els:[], idx:0, tries:0, wordTries:0, firstTry:0, misses:[], skips:0,
+         t0:0, timer:null, state:"idle", heroX:0, camX:0, step:300, gap:150, x0:60, playing:false };
+
+/* ============ 版面計算 ============ */
+function metrics(){
+  var w=scene.clientWidth||360;
+  var hw=hero.offsetWidth||90;
+  var ow=(S.els[0]&&S.els[0].offsetWidth)||Math.round(hw*0.86);
+  S.x0   = Math.round(w*0.14);
+  /* 小人以左邊定位，路障以中心定位：留出半個路障 + 一個小人的距離才不會疊在一起 */
+  S.stand= Math.round(ow/2 + hw + 10);
+  S.step = Math.max(Math.round(S.stand + ow*0.7 + 40), Math.min(460, Math.round(w*0.62)));
+  S.gap  = Math.max(S.stand + Math.round(w*0.20), Math.round(w*0.34));
+}
+function obX(i){ return S.x0 + S.gap + i*S.step; }
+function camFor(i){ return Math.max(0, obX(i) - Math.round(scene.clientWidth*0.60)); }
+function heroFor(i){ return obX(i) - S.stand; }
+function applyTransforms(dur){
+  var t = dur ? "transform "+dur+"s linear" : "none";
+  hero.style.transition=t; world.style.transition=t; hills.style.transition=t;
+  hero.style.transform ="translateX("+(S.heroX-S.camX)+"px)";
+  world.style.transform="translateX("+(-S.camX)+"px)";
+  hills.style.transform="translateX("+(-S.camX*0.34)+"px)";
+}
+
+/* ============ 建場景 ============ */
+function build(){
+  metrics();
+  var html='<div class="ground"></div>';
+  for(var i=0;i<S.words.length;i++){
+    html+='<div class="ob" data-i="'+i+'" style="left:'+obX(i)+'px">'
+        + '<div class="bubble"><div class="bw">'+S.words[i].t+'</div><div class="bp">'+S.words[i].p+'</div></div>'
+        + '<div class="art">'+OB[i%OB.length]+'</div></div>';
+  }
+  var endX=obX(S.words.length-1)+Math.round(S.step*0.62);
+  for(var g=1;g<endX+1200;g+=Math.round(90+Math.random()*70)){
+    html+='<div class="tuft" style="left:'+g+'px;animation-delay:-'+(g%28)/10+'s">'+TUFT+'</div>';
+  }
+  html+='<div class="flag" style="left:'+endX+'px">'+FLAG+'</div>';
+  world.style.width=(obX(S.words.length-1)+S.step*1.4)+"px";
+  world.innerHTML=html;
+  S.els=[].slice.call(world.querySelectorAll(".ob"));
+  /* 元素進 DOM 後才量得到真實寬度，重算一次版面 */
+  metrics();
+  for(var k=0;k<S.els.length;k++) S.els[k].style.left=obX(k)+"px";
+  var fg=world.querySelector(".flag");
+  if(fg) fg.style.left=(obX(S.words.length-1)+Math.round(S.step*0.62))+"px";
+  world.style.width=(obX(S.words.length-1)+S.step*1.4)+"px";
+  S.heroX=S.x0; S.camX=0; applyTransforms(0);
+  renderDots();
+}
+function renderDots(){
+  var h="";
+  for(var i=0;i<S.words.length;i++){
+    h+='<span class="dot'+(i<S.idx?" done":(i===S.idx?" now":""))+'"></span>';
+  }
+  dots.innerHTML=h;
+  hudLevel.textContent=Math.min(S.idx+1,ROUND);
+}
+
+/* ============ 特效 ============ */
+var COLORS=["#FFCE5C","#FF8A3D","#7FC493","#7FB8F0","#FF6F91","#B9E3F6"];
+function burst(el){
+  if(!el) return;
+  var r=el.getBoundingClientRect(), s=scene.getBoundingClientRect();
+  var cx=r.left-s.left+r.width/2, cy=r.top-s.top+r.height/2;
+  for(var i=0;i<16;i++){
+    var d=document.createElement("i"); d.className="pc";
+    var a=Math.random()*Math.PI*2, dist=45+Math.random()*85;
+    d.style.left=cx+"px"; d.style.top=cy+"px";
+    d.style.background=COLORS[i%COLORS.length];
+    d.style.setProperty("--dx",(Math.cos(a)*dist).toFixed(1)+"px");
+    d.style.setProperty("--dy",(Math.sin(a)*dist-28).toFixed(1)+"px");
+    d.style.animationDelay=(Math.random()*90).toFixed(0)+"ms";
+    fx.appendChild(d);
+    (function(n){ setTimeout(function(){ if(n.parentNode) n.parentNode.removeChild(n); },1000); })(d);
+  }
+}
+/* 棒槌落下的敲擊星光 */
+function impact(el){
+  if(!el) return;
+  var r=el.getBoundingClientRect(), s=scene.getBoundingClientRect();
+  var d=document.createElement("div"); d.className="hit";
+  d.style.left=(r.left-s.left+r.width*0.20)+"px";
+  d.style.top=(r.top-s.top+r.height*0.40)+"px";
+  d.innerHTML='<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 2 58.5 33 84 12 68 42 98 50 68 58 84 88 58.5 67 50 98 41.5 67 16 88 32 58 2 50 32 42 16 12 41.5 33z" fill="#FFF3C4" stroke="#FFC24A" stroke-width="3.5" stroke-linejoin="round"/></svg>';
+  fx.appendChild(d);
+  setTimeout(function(){ if(d.parentNode) d.parentNode.removeChild(d); },560);
+}
+function confetti(layer){
+  var host=layer||fx;
+  var fall=(host.clientHeight||620)+90;   /* 由上方一路飄落到畫面底部 */
+  for(var i=0;i<74;i++){
+    var d=document.createElement("i"); d.className="cf";
+    d.style.left=(Math.random()*100)+"%";
+    d.style.setProperty("--fall",fall+"px");
+    d.style.setProperty("--dx2",(Math.random()*80-40).toFixed(0)+"px");
+    d.style.background=COLORS[i%COLORS.length];
+    var wd=6+Math.random()*8;
+    d.style.width=wd.toFixed(1)+"px";
+    d.style.height=(wd*(0.8+Math.random()*1.1)).toFixed(1)+"px";
+    if(Math.random()<0.34) d.style.borderRadius="50%";
+    d.style.animationDuration=(1.7+Math.random()*1.5).toFixed(2)+"s";
+    d.style.animationDelay=(Math.random()*.7).toFixed(2)+"s";
+    host.appendChild(d);
+    (function(n){ setTimeout(function(){ if(n.parentNode) n.parentNode.removeChild(n); },4600); })(d);
+  }
+}
+var popT=null;
+function popMsg(text,kind){
+  popup.textContent=text;
+  popup.className="popup "+(kind||"");
+  void popup.offsetWidth;
+  popup.classList.add("show");
+  clearTimeout(popT);
+  popT=setTimeout(function(){ popup.classList.remove("show"); },1300);
+}
+function setStatus(t,k){ statusEl.textContent=t; statusEl.className="status "+(k||""); }
+function fmt(ms){
+  var s=Math.max(0,Math.round(ms/1000));
+  return ("0"+Math.floor(s/60)).slice(-2)+":"+("0"+(s%60)).slice(-2);
+}
+function tick(){ hudTime.textContent=fmt(Date.now()-S.t0); }
+
+/* ============ 流程 ============ */
+function pickWords(){
+  var a=BANK.slice(), out=[];
+  for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i];a[i]=a[j];a[j]=t; }
+  for(var k=0;k<ROUND && k<a.length;k++) out.push(a[k]);
+  return out;
+}
+function cur(){ return S.els[S.idx]; }
+function curWord(){ return S.words[S.idx]; }
+
+function runToCurrent(){
+  S.state="run";
+  btnMic.disabled=true; micLabel.textContent="前進中";
+  setStatus("衝向下一個路障…","live");
+  heardEl.textContent=""; btnSkip.hidden=true;
+  var tx=heroFor(S.idx), cx=camFor(S.idx);
+  var dist=Math.abs(tx-S.heroX);
+  var dur=Math.max(.55,Math.min(1.7,dist/300));
+  hero.classList.remove("idle","cheer"); hero.classList.add("run");
+  S.heroX=tx; S.camX=cx;
+  requestAnimationFrame(function(){ applyTransforms(dur); });
+  setTimeout(function(){
+    hero.classList.remove("run"); hero.classList.add("idle","bump");
+    setTimeout(function(){ hero.classList.remove("bump"); },400);
+    promptWord();
+  }, dur*1000+60);
+}
+function promptWord(){
+  S.state="prompt"; S.wordTries=0;
+  var el=cur(); if(!el) return;
+  el.classList.add("cur"); el.classList.remove("hint","bad");
+  renderDots();
+  btnMic.disabled=false; micLabel.textContent="朗讀";
+  setStatus("輪到你了！大聲讀出這個詞語");
+}
+function success(){
+  if(S.state==="ok") return;
+  S.state="ok";
+  var el=cur();
+  btnMic.disabled=true; micLabel.textContent="很好";
+  btnSkip.hidden=true;
+  if(S.wordTries<=1) S.firstTry++;
+  setStatus("讀準了！揚槌敲碎路障！","ok");
+  sfxOk();
+  /* 先揚棒槌，落槌那一刻才敲碎路障 */
+  hero.classList.remove("idle","cheer","bump"); void hero.offsetWidth; hero.classList.add("swing");
+  setTimeout(function(){
+    popMsg("念得真好！","ok");
+    sfxHit();
+    impact(el); burst(el);
+    if(el){ el.classList.add("gone"); el.classList.remove("cur","hint","bad"); }
+    scene.classList.remove("shake"); void scene.offsetWidth; scene.classList.add("shake");
+    setTimeout(function(){ scene.classList.remove("shake"); },440);
+  },255);
+  setTimeout(function(){ hero.classList.remove("swing"); hero.classList.add("cheer"); },640);
+  setTimeout(function(){ hero.classList.remove("cheer"); hero.classList.add("idle"); },1560);
+  setTimeout(function(){
+    S.idx++;
+    if(S.idx>=S.words.length) finish();
+    else runToCurrent();
+  },1500);
+}
+function miss(text,why){
+  S.state="prompt";
+  var el=cur();
+  /* 先輕晃一下，再讓拼音順暢展開，兩段動畫不重疊 */
+  if(el){
+    el.classList.remove("bad"); void el.offsetWidth; el.classList.add("bad");
+    setTimeout(function(){ if(el===cur()) el.classList.add("hint"); },190);
+  }
+  S.misses.push(curWord());
+  scene.classList.remove("shake"); void scene.offsetWidth; scene.classList.add("shake");
+  setTimeout(function(){ scene.classList.remove("shake"); },460);
+  hero.classList.remove("bump"); void hero.offsetWidth; hero.classList.add("bump");
+  setTimeout(function(){ hero.classList.remove("bump"); },420);
+  sfxBad();
+  popMsg("再試試看！","bad");
+  setStatus(why || "再試試看！照著拼音再讀一次","bad");
+  heardEl.textContent = text ? "聽到："+text : "";
+  btnMic.disabled=false; micLabel.textContent="再讀";
+  if(S.wordTries>=3) btnSkip.hidden=false;   /* 讀滿三次都不對，才出現「放棄此關」 */
+}
+function finish(){
+  S.state="done"; S.playing=false;
+  clearInterval(S.timer);
+  var used=Date.now()-S.t0;
+  scene.hidden=true; controls.hidden=true; hud.hidden=true;
+  screenDone.hidden=false;
+  stTime.textContent=fmt(used);
+  stFirst.textContent=S.firstTry+" / "+S.words.length;
+  stTries.textContent=S.tries;
+  if(S.skips>0){
+    doneTitle.textContent="💪 只差一點點";
+    doneSub.textContent="你破除了 "+(S.words.length-S.skips)+" 個路障，放棄了 "+S.skips+" 個，用時 "+fmt(used)+"。再來一次，一定可以全部讀準！";
+  }else{
+    doneTitle.textContent="🎉 恭喜通關！";
+    doneSub.textContent="你破除了 "+S.words.length+" 個路障，用時 "+fmt(used)+"。";
+  }
+  var uniq=[], seen={};
+  S.misses.forEach(function(w){ if(!seen[w.t]){ seen[w.t]=1; uniq.push(w); } });
+  if(uniq.length){
+    review.hidden=false;
+    reviewList.innerHTML=uniq.map(function(w){ return "<li>"+w.t+"<i>"+w.p+"</i></li>"; }).join("");
+  } else { review.hidden=true; }
+  doneArt.className="doneArt "+(S.skips>0?"mallet":"trophy");
+  doneArt.innerHTML=(S.skips>0?MALLET:TROPHY);
+  fx2.innerHTML=""; party();
+}
+
+/* ============ 麥克風（不錄音） ============
+   麥克風串流只即時用於語音識別與聲調分析，全程不建立錄音檔、不保存任何音檔 */
+var IS_IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+var mediaStream=null;
+var micReady=false, micDenied=false, micAsked=false;   /* micAsked：整個頁面只向瀏覽器索取一次麥克風 */
+
+function getStream(){
+  if(mediaStream && mediaStream.active) return Promise.resolve(mediaStream);
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return Promise.reject(new Error("unsupported"));
+  if(micAsked) return Promise.reject(new Error("already-asked"));   /* 問過一次就不再詢問 */
+  micAsked=true;
+  return navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}})
+    .then(function(st){ mediaStream=st; return st; });
+}
+function releaseMic(){
+  if(mediaStream){ try{ mediaStream.getTracks().forEach(function(t){ t.stop(); }); }catch(e){} mediaStream=null; }
+  micReady=false;
+}
+/* 整場遊戲只在開場時要一次麥克風權限，之後不再釋放、不再詢問 */
+function primeMic(){
+  if(mediaStream && mediaStream.active){ micReady=true; return Promise.resolve(true); }
+  if(micAsked) return Promise.resolve(micReady);   /* 已經問過，沒拿到也不再問 */
+  return getStream().then(function(){ micReady=true; micDenied=false; return true; })
+                    .catch(function(){ micDenied=true; return false; });
+}
+
+/* ============ 語音識別 ============ */
+var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+var rec=null, best="", listening=false, recStart=0, endTimer=null, retried=false, netFail=0;
+var altHit=false;   /* 目標詞只出現在次選結果：發音接近但不夠準 */
+var finalTx="", interimTx="", conf=0;
+
+function norm(s){ return (s||"").replace(/[\s，。、！？,.!?~·…—\-'"“”‘’()（）【】\[\]]/g,""); }
+function lcs(a,b){
+  var m=a.length,n=b.length; if(!m||!n) return 0;
+  var prev=new Array(n+1).fill(0), cw;
+  for(var i=1;i<=m;i++){ cw=new Array(n+1).fill(0);
+    for(var j=1;j<=n;j++){ cw[j]= a[i-1]===b[j-1] ? prev[j-1]+1 : Math.max(prev[j],cw[j-1]); }
+    prev=cw;
+  }
+  return prev[n];
+}
+/* 判分（嚴格）：只有「完整讀出該詞」才算過，
+   不再接受部分相似、兩字中只對一字、或只是句子裡包含該詞 */
+function score(text){
+  var w=curWord(); if(!w) return 0;
+  var g=norm(text); if(!g) return 0;
+  var t=norm(w.t), s=norm(w.s);
+  if(g===t || g===s) return 1;                                     /* 完全相同 */
+  if(g===t+t || g===s+s || g===t+s || g===s+t) return 1;           /* 連讀兩次 */
+  var r=Math.max(lcs(g,t)/t.length, lcs(g,s)/s.length);
+  return Math.min(r,0.9);                                          /* 其餘一律不算讀準 */
+}
+function listen(){
+  if(S.state!=="prompt" || !S.playing) return;
+  if(listening) return;
+  if(!SR){ noAsr(); return; }
+  listening=true; retried=false; best=""; finalTx=""; interimTx=""; conf=0;
+  S.state="listen"; S.tries++; S.wordTries++;
+  btnMic.classList.add("on"); micLabel.textContent="聆聽中";
+  setStatus("聆聽中…請清楚讀出詞語","live");
+  heardEl.textContent="";
+  startASR();
+}
+function startASR(){
+  /* 重複使用同一個識別器：每次 new SpeechRecognition 都可能讓瀏覽器再問一次權限 */
+  if(!rec){
+    rec=new SR();
+    rec.lang="zh-CN"; rec.continuous=false; rec.interimResults=true;
+    rec.maxAlternatives=5;   /* 取多個候選，只用來分辨「接近但不夠準」 */
+  }
+  finalTx=""; interimTx=""; conf=0; altHit=false;
+  recStart=Date.now();
+  pitchStart();   /* 同步記錄音高，用來檢查聲調 */
+  rec.onresult=function(ev){
+    for(var i=ev.resultIndex;i<ev.results.length;i++){
+      var r=ev.results[i], k, alt;
+      var tx=(r[0]&&r[0].transcript||"").trim();
+      /* 嚴格判分：只認識別引擎的首選結果；
+         目標詞只出現在次選，代表發音接近但不夠準 */
+      for(k=1;k<r.length;k++){
+        alt=((r[k]&&r[k].transcript)||"").trim();
+        if(alt && score(alt)>=1){ altHit=true; break; }
+      }
+      if(!tx) continue;
+      if(r.isFinal){
+        finalTx+=tx;
+        if(typeof r[0].confidence==="number" && r[0].confidence>0) conf=r[0].confidence;
+      }else{
+        interimTx=tx;
+      }
+    }
+    best=finalTx||interimTx||"";
+    if(best) heardEl.textContent="聽到："+best;
+    if(finalTx && score(finalTx)>=1) stopASR();   /* 確定讀準才提前結束 */
+  };
+  rec.onerror=function(ev){ asrError((ev&&ev.error)||"unknown"); };
+  rec.onend=function(){ if(listening) endListen(); };
+  try{ rec.start(); }
+  catch(e){ setTimeout(function(){ try{ rec.start(); }catch(e2){ asrError("start-failed"); } },320); }
+  clearTimeout(endTimer);
+  endTimer=setTimeout(function(){ stopASR(); },7000);
+}
+function stopASR(){ try{ if(rec) rec.stop(); }catch(e){} }
+function asrError(code){
+  if(!listening) return;
+  var quick=(Date.now()-recStart)<1800;
+  /* 常見情況：邊錄音邊識別搶麥（iOS/部分 Android）→ 靜默改為只識別後重試，不向玩家報錯 */
+  if(!retried && quick && (code==="aborted"||code==="audio-capture"||code==="start-failed")){
+    retried=true;
+    setTimeout(function(){ if(listening) startASR(); },380);
+    return;
+  }
+  if(code==="no-speech"){ endListen(); return; }
+  listening=false; clearTimeout(endTimer); pitchStop();
+  btnMic.classList.remove("on");
+  S.state="prompt"; btnMic.disabled=false; micLabel.textContent="再讀";
+  if(code==="not-allowed"||code==="service-not-allowed"){
+    setStatus("請允許瀏覽器使用麥克風，再點「朗讀」","bad");
+  }else if(code==="network"){
+    netFail++;
+    setStatus("網絡未連上語音識別服務，請檢查網絡","bad");
+    if(netFail>=2 && S.wordTries>=3) btnSkip.hidden=false;
+  }else{
+    setStatus("沒聽清楚，再讀一次","bad");
+  }
+}
+function endListen(){
+  if(!listening) return;
+  if(!norm(best) && (Date.now()-recStart)<1400 && !retried){
+    /* 部分裝置首次啟動識別會立刻結束且沒有結果，這裡靜默重試一次 */
+    retried=true;
+    setTimeout(function(){ if(listening) startASR(); },380);
+    return;
+  }
+  listening=false; clearTimeout(endTimer);
+  pitchStop();
+  btnMic.classList.remove("on");
+  var text=best;
+  if(!norm(text)){
+    S.state="prompt"; btnMic.disabled=false; micLabel.textContent="再讀";
+    setStatus("沒聽到聲音，靠近麥克風再讀一次","bad");
+    return;
+  }
+  heardEl.textContent="聽到："+text;
+  var v=judge(text, conf);
+  if(v.pass) success();
+  else miss(text, v.why);
+}
+/* 整體發音判定：以字音（整個詞的聲母＋韻母有沒有被聽成目標詞）為主，
+   識別信心為輔，聲調只作輔助；避免「明明讀對」卻判不過 */
+function judge(text, cf){
+  var w=curWord(), py=(w?w.p:"");
+  var sc=score(text);
+  /* 1) 字音：首選結果必須與整個詞完全相符 */
+  if(sc<1) return {pass:false, reason:"word",
+    why:(altHit ? "有點接近，但還不夠準！照「"+py+"」再讀一次" : null)};
+  /* 2) 必須有完整的辨識結果（不接受只有中途猜測的情況）*/
+  if(!finalTx) return {pass:false, why:"沒聽清楚，請完整再讀一次", reason:"interim"};
+  var tn=toneCheck();
+  /* 3) 聲量與長度：太短、太輕不算誮読 */
+  if(tn.frames>0 && tn.frames<10) return {pass:false, why:"聲音太短或太輕，請大聲、完整地讀一次", reason:"short"};
+  /* 4) 聲調：任何一個音節的調型明顯不對就不過關 */
+  if(tn.bad>0) return {pass:false, reason:"tone",
+    why:"第 "+tn.at+" 個字的聲調不對，照「"+py+"」再讀一次"};
+  /* 5) 識別信心：發音標準度的整體指標 */
+  if(cf>0 && cf<0.50) return {pass:false, reason:"unclear",
+    why:"讀音不夠準，照「"+py+"」再清楚讀一次"};
+  /* 6) 量不到聲調時（聲音太輕或裝置限制），信心必須更高才算通過 */
+  if(!tn.checked && cf>0 && cf<0.70) return {pass:false, reason:"unclear2",
+    why:"讀音不夠清楚，靠近麥克風再讀一次"};
+  return {pass:true, why:null, reason:"ok"};
+}
+function noAsr(){
+  setStatus("此瀏覽器不支援 AI 語音識別，請改用 Chrome 或 Safari","bad");
+  btnSkip.hidden=false;
+}
+
+/* ============ 提示音（Web Audio，不需外部音檔） ============ */
+var AC=null;
+function actx(){
+  try{
+    var C=window.AudioContext||window.webkitAudioContext;
+    if(!C) return null;
+    if(!AC) AC=new C();
+    if(AC.state==="suspended" && AC.resume) AC.resume();
+    return AC;
+  }catch(e){ return null; }
+}
+function tone(freq,at,dur,type,vol){
+  var ac=actx(); if(!ac) return;
+  try{
+    var o=ac.createOscillator(), g=ac.createGain();
+    o.type=type||"sine";
+    var t0=ac.currentTime+at;
+    o.frequency.setValueAtTime(freq,t0);
+    g.gain.setValueAtTime(0.0001,t0);
+    g.gain.exponentialRampToValueAtTime(vol||0.16,t0+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t0+dur);
+    o.connect(g); g.connect(ac.destination);
+    o.start(t0); o.stop(t0+dur+0.04);
+  }catch(e){}
+}
+function sfxOk(){    /* 讀準：明亮上行三音 */
+  tone(659.25,0,0.14,"triangle",0.18);
+  tone(880.00,0.10,0.15,"triangle",0.18);
+  tone(1318.5,0.21,0.26,"triangle",0.14);
+}
+function sfxHit(){   /* 敲碎路障：低沉一擊 */
+  tone(150,0,0.12,"square",0.15);
+  tone(90,0.02,0.20,"sine",0.20);
+}
+function sfxBad(){   /* 讀錯：柔和下行兩音 */
+  tone(392.00,0,0.17,"triangle",0.15);
+  tone(261.63,0.15,0.30,"triangle",0.15);
+}
+
+/* ============ 聲調檢查：抳「字對但不是普通話」（例如用廣東話念） ============ */
+var TONE_ON=true, ana=null, anaSrc=null, anaBuf=null, pitchTimer=null, pitchTrack=[];
+var TONE_MARK={1:"āēīōūǖ",2:"áéíóúǘ",3:"ǎěǐǒǔǚ",4:"àèìòùǜ"};
+function toneOfSyl(s){
+  for(var k=1;k<=4;k++){
+    for(var i=0;i<s.length;i++){ if(TONE_MARK[k].indexOf(s.charAt(i))>=0) return k; }
+  }
+  return 0;   /* 輕聲或查不到：不檢查 */
+}
+function toneSeq(){
+  var w=curWord(); if(!w||!w.p) return [];
+  return w.p.trim().split(/\s+/).map(toneOfSyl);
+}
+function toneSetup(){
+  if(ana) return true;
+  if(!TONE_ON) return false;
+  if(!mediaStream || !mediaStream.active) return false;
+  var ac=actx(); if(!ac) return false;
+  try{
+    anaSrc=ac.createMediaStreamSource(mediaStream);
+    ana=ac.createAnalyser(); ana.fftSize=2048; ana.smoothingTimeConstant=0;
+    anaSrc.connect(ana);
+    anaBuf=new Float32Array(ana.fftSize);
+    return true;
+  }catch(e){ ana=null; TONE_ON=false; return false; }
+}
+/* 自相關求基頸（人聲 70–400Hz） */
+function pitchOf(buf,sr){
+  var n=buf.length,i,rms=0;
+  for(i=0;i<n;i++) rms+=buf[i]*buf[i];
+  rms=Math.sqrt(rms/n);
+  if(rms<0.014) return 0;
+  var lo=Math.floor(sr/400), hi=Math.min(Math.floor(sr/70), n-4), bestLag=0, bestCor=0;
+  for(var lag=lo;lag<=hi;lag++){
+    var c=0, m=n-lag, cnt=0;
+    for(i=0;i<m;i+=2){ c+=buf[i]*buf[i+lag]; cnt++; }
+    c/=cnt;
+    if(c>bestCor){ bestCor=c; bestLag=lag; }
+  }
+  if(!bestLag || bestCor < rms*rms*0.34) return 0;
+  return sr/bestLag;
+}
+function pitchStart(){
+  pitchTrack=[];
+  if(!toneSetup()) return;
+  clearInterval(pitchTimer);
+  pitchTimer=setInterval(function(){
+    try{ ana.getFloatTimeDomainData(anaBuf); pitchTrack.push(pitchOf(anaBuf, AC.sampleRate)); }catch(e){}
+  },30);
+}
+function pitchStop(){ clearInterval(pitchTimer); pitchTimer=null; }
+function semis(a,b){ return 12*Math.log(a/b)/Math.log(2); }
+function voicedRuns(){
+  var out=[], cur=null;
+  for(var i=0;i<pitchTrack.length;i++){
+    var f=pitchTrack[i];
+    if(f>0){ if(!cur){ cur=[]; out.push(cur); } cur.push(f); }
+    else cur=null;
+  }
+  return out.filter(function(r){ return r.length>=5; });
+}
+/* 中值濾波：消除自相關偶發的倒八度跳變，避免聲調誤判 */
+function med3(a){
+  if(a.length<3) return a.slice();
+  var o=a.slice();
+  for(var i=1;i<a.length-1;i++){
+    var t3=[a[i-1],a[i],a[i+1]].sort(function(x,y){ return x-y; });
+    o[i]=t3[1];
+  }
+  return o;
+}
+function toneCheck(){
+  var want=toneSeq();
+  if(!TONE_ON || !ana || !want.length) return {ok:true, bad:0, at:0, checked:0, frames:0, why:"no-data"};
+  var segs=voicedRuns(), all=[];
+  segs.forEach(function(r){ all=all.concat(r); });
+  if(all.length<10) return {ok:true, bad:0, at:0, checked:0, frames:all.length, why:"too-short"};
+  var parts=[];
+  if(segs.length>=want.length) parts=segs.slice(0,want.length);
+  else{
+    var longest=segs.slice().sort(function(a,b){ return b.length-a.length; })[0]||all;
+    var k=Math.floor(longest.length/want.length);
+    if(k<5) return {ok:true, bad:0, at:0, checked:0, frames:all.length, why:"too-short"};
+    for(var i=0;i<want.length;i++) parts.push(longest.slice(i*k,(i+1)*k));
+  }
+  var bad=0, checked=0, at=0;
+  for(var j=0;j<want.length;j++){
+    var t=want[j], p=med3(parts[j]||[]);
+    if(!t || p.length<5) continue;
+    checked++;
+    var h=Math.max(2,Math.round(p.length*0.3)), a=0, b=0, q;
+    for(q=0;q<h;q++) a+=p[q];
+    for(q=p.length-h;q<p.length;q++) b+=p[q];
+    a/=h; b/=h;
+    var slope=semis(b,a), wrong=false;
+    if(t===1) wrong=(Math.abs(slope)>=5);                    /* 陰平：要平穩 */
+    else if(t===2) wrong=(slope<=-1.2);                      /* 陽平：要上揚 */
+    else if(t===3) wrong=(j<want.length-1 && slope>=2.5);    /* 上聲（非末字）：要低降 */
+    else if(t===4) wrong=(slope>=1.2);                       /* 去聲：要下降 */
+    if(wrong){ bad++; if(!at) at=j+1; }
+  }
+  return {ok:bad===0, bad:bad, at:at, checked:checked, frames:all.length, why:bad?"tone":"pass"};
+}
+
+/* ============ 通關慶祝 ============ */
+var MALLET='<svg viewBox="0 0 64 84" role="img" aria-label="棒槌">'
+  +'<g class="malg">'
+  +'<rect x="26" y="32" width="12" height="50" rx="6" fill="#B9843F" stroke="#8A5A28" stroke-width="1.6"/>'
+  +'<rect x="29" y="34" width="3.4" height="44" rx="1.7" fill="#D9A96A" opacity=".85"/>'
+  +'<g stroke="#8A5A28" stroke-width="2.2" stroke-linecap="round"><path d="M26.8 62h10.4"/><path d="M26.8 68.5h10.4"/><path d="M26.8 75h10.4"/></g>'
+  +'<rect x="5" y="5" width="54" height="31" rx="11" fill="#E9B876" stroke="#B0783C" stroke-width="3"/>'
+  +'<rect x="9.5" y="9" width="45" height="8" rx="4" fill="#F7DCB0" opacity=".95"/>'
+  +'<circle cx="12.5" cy="30" r="1.7" fill="#C89252"/><circle cx="51.5" cy="30" r="1.7" fill="#C89252"/>'
+  +'<circle cx="24" cy="24" r="2.4" fill="#2C2C2B"/><circle cx="40" cy="24" r="2.4" fill="#2C2C2B"/>'
+  +'<circle cx="24.8" cy="23.2" r=".8" fill="#fff"/><circle cx="40.8" cy="23.2" r=".8" fill="#fff"/>'
+  +'<path d="M29 29.5q3 2.8 6 0" fill="none" stroke="#B4553F" stroke-width="2" stroke-linecap="round"/>'
+  +'</g>'
+  +'</svg>';
+var TROPHY='<svg viewBox="0 0 120 132" role="img" aria-label="獎杯">'
+  +'<g class="cup">'
+  +'<path d="M26 28 C7 28 8 60 30 64" fill="none" stroke="#E8A62A" stroke-width="8" stroke-linecap="round"/>'
+  +'<path d="M94 28 C113 28 112 60 90 64" fill="none" stroke="#E8A62A" stroke-width="8" stroke-linecap="round"/>'
+  +'<path d="M24 24 H96 V46 C96 71 82 85 60 85 C38 85 24 71 24 46 Z" fill="#FFC24A" stroke="#E09415" stroke-width="3.5" stroke-linejoin="round"/>'
+  +'<rect x="19" y="13" width="82" height="13" rx="6.5" fill="#FFD777" stroke="#E09415" stroke-width="3.5"/>'
+  +'<path d="M36 33 C34 52 40 65 51 72" fill="none" stroke="#FFF0C2" stroke-width="6" stroke-linecap="round" opacity=".8"/>'
+  +'<path d="M60 38 l5.6 11.5 12.7 1.8 -9.2 8.9 2.2 12.6 -11.3-6 -11.3 6 2.2-12.6 -9.2-8.9 12.7-1.8 Z" fill="#FFF3C4" stroke="#F0A81F" stroke-width="2.4" stroke-linejoin="round"/>'
+  +'<rect x="52" y="84" width="16" height="12" fill="#E8A62A"/>'
+  +'<rect x="42" y="95" width="36" height="11" rx="5.5" fill="#FFC24A" stroke="#E09415" stroke-width="3"/>'
+  +'<rect x="29" y="105" width="62" height="17" rx="7" fill="#C88B4A" stroke="#A8702F" stroke-width="3"/>'
+  +'</g>'
+  +'<circle class="spk" cx="12" cy="18" r="5" fill="#FFE9A8"/>'
+  +'<circle class="spk spk2" cx="108" cy="86" r="4.5" fill="#FFE9A8"/>'
+  +'<circle class="spk spk3" cx="102" cy="10" r="3.8" fill="#FFE9A8"/>'
+  +'</svg>';
+function sfxWin(){
+  var seq=[523.25,659.25,783.99,1046.5];
+  for(var i=0;i<seq.length;i++) tone(seq[i], i*0.12, 0.20, "triangle", 0.17);
+  tone(1318.5,0.54,0.55,"triangle",0.14);
+  tone(783.99,0.54,0.55,"sine",0.12);
+  tone(523.25,0.54,0.60,"sine",0.12);
+}
+function emojiRain(){
+  var E=["🎉","🎊","⭐","✨","🎈","🏆"];
+  var fall=(fx2.clientHeight||620)+120;
+  for(var i=0;i<12;i++){
+    var s=document.createElement("span"); s.className="emj";
+    s.textContent=E[Math.floor(Math.random()*E.length)];
+    s.style.left=(2+Math.random()*94).toFixed(1)+"%";        /* 整個畫面上方均勻落下 */
+    s.style.setProperty("--fall",fall+"px");
+    s.style.setProperty("--rot",(Math.random()*240-120).toFixed(0)+"deg");
+    s.style.setProperty("--r1",(Math.random()*30-15).toFixed(0)+"deg");
+    s.style.animationDuration=(2.2+Math.random()*1.3).toFixed(2)+"s";
+    s.style.animationDelay=(Math.random()*.6).toFixed(2)+"s";
+    fx2.appendChild(s);
+    (function(n){ setTimeout(function(){ if(n.parentNode) n.parentNode.removeChild(n); },4600); })(s);
+  }
+}
+function party(){
+  sfxWin();
+  var waves=[0,420,900,1500,2200];
+  for(var i=0;i<waves.length;i++){
+    (function(idx){
+      setTimeout(function(){
+        confetti(fx2);
+        if(idx % 2 === 0) emojiRain();
+      }, waves[idx]);
+    })(i);
+  }
+}
+
+/* ============ 示範 / 播放 ============ */
+function speak(){
+  var w=curWord(); if(!w) return;
+  if(!("speechSynthesis" in window)){ setStatus("此瀏覽器不支援語音示範","bad"); return; }
+  try{
+    window.speechSynthesis.cancel();
+    var u=new SpeechSynthesisUtterance(w.s||w.t);
+    u.lang="zh-CN"; u.rate=.78; u.pitch=1.02;
+    var vs=window.speechSynthesis.getVoices()||[];
+    for(var i=0;i<vs.length;i++){ if(/zh[-_](CN|Hans)|Chinese|普通话|中文/i.test(vs[i].lang+" "+vs[i].name)){ u.voice=vs[i]; break; } }
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+btnDemo.addEventListener("click",speak);
+btnMic.addEventListener("click",function(){ actx(); listen(); });
+btnSkip.addEventListener("click",function(){
+  if(S.state==="ok"||S.state==="done") return;
+  if(listening){ listening=false; stopASR(); pitchStop(); btnMic.classList.remove("on"); }
+  S.misses.push(curWord());
+  S.skips++;
+  var el=cur(); if(el){ el.classList.remove("cur","hint","bad"); el.classList.add("gone"); }
+  btnSkip.hidden=true; S.state="ok";
+  setStatus("已放棄這關，前進！");
+  setTimeout(function(){ S.idx++; if(S.idx>=S.words.length) finish(); else runToCurrent(); },600);
+});
+
+/* ============ 開始 / 重玩 ============ */
+function startGame(){
+  S.words=pickWords(); S.idx=0; S.tries=0; S.wordTries=0; S.firstTry=0; S.misses=[]; S.skips=0;
+  S.playing=true; retried=false; netFail=0;
+  if(!micAsked && !micDenied) primeMic();   /* 只有從未詢問過才會開麥克風 */
+  screenStart.hidden=true; screenDone.hidden=true;
+  scene.hidden=false; controls.hidden=false; hud.hidden=false;
+  fx.innerHTML=""; popup.className="popup";
+  btnSkip.hidden=true;
+  build();
+  S.t0=Date.now(); clearInterval(S.timer); S.timer=setInterval(tick,250); tick();
+  if(!SR) noAsr();
+  runToCurrent();
+}
+btnStart.addEventListener("click",function(){
+  if(btnStart.disabled) return;
+  actx();   /* 在使用者手勢中解鎖提示音 */
+  var started=false;
+  function go(){ if(started) return; started=true; btnStart.disabled=false; startGame(); }
+  if(micReady || micDenied || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){ go(); return; }
+  btnStart.disabled=true;
+  envNote.textContent="正在開啟麥克風…請按「允許」（整場遊戲只需授權這一次）";
+  setTimeout(go,6000);
+  primeMic().then(function(ok){
+    envNote.textContent = ok ? "麥克風已開啟，遊戲中不會再詢問。"
+                             : "未取得麥克風權限，請在瀏覽器網址列允許後再試。";
+    go();
+  });
+});
+btnAgain.addEventListener("click",startGame);
+
+/* ============ 其他 ============ */
+var rz=null;
+window.addEventListener("resize",function(){
+  clearTimeout(rz);
+  rz=setTimeout(function(){
+    if(!S.playing) return;
+    metrics();
+    for(var i=0;i<S.els.length;i++) S.els[i].style.left=obX(i)+"px";
+    var f=world.querySelector(".flag");
+    if(f) f.style.left=(obX(S.words.length-1)+Math.round(S.step*0.62))+"px";
+    world.style.width=(obX(S.words.length-1)+S.step*1.4)+"px";
+    S.heroX=heroFor(S.idx); S.camX=camFor(S.idx);
+    applyTransforms(0);
+  },160);
+});
+document.addEventListener("keydown",function(e){
+  if(e.code==="Space"){
+    if(!S.playing && !screenStart.hidden){ e.preventDefault(); btnStart.click(); }
+    else if(S.state==="prompt"){ e.preventDefault(); listen(); }
+  }
+});
+if(!SR) envNote.textContent="提示：此瀏覽器不支援 AI 語音識別，建議使用 Chrome 或 Safari。";
+else envNote.textContent="";
+if("speechSynthesis" in window){ try{ window.speechSynthesis.getVoices(); }catch(e){} }
+
+})();
+</script>
+</body>
+</html>
