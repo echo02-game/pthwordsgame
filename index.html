@@ -12,7 +12,7 @@
   --orange:#FF8A3D; --orange-d:#E2621B;   --red:#E5584C; --pink:#FF6F91;
   --sky1:#BFE3FA; --sky2:#E7F4FD; --hill1:#BCE0C9; --hill2:#CDE8D6;
   --grass:#7FC493; --grass-d:#5FAE79; --dirt:#E7DAC0; --dirt-d:#D6C5A2;
-  --gh:clamp(76px,11.5vh,112px); --hh:clamp(90px,16.5vh,156px); --oh:clamp(80px,14.5vh,136px); --fh:clamp(104px,19vh,172px); --r:16px;
+  --gh:clamp(46px,11vh,112px); --hh:clamp(58px,15.5vh,156px); --oh:clamp(50px,13.5vh,136px); --fh:clamp(66px,18vh,172px); --r:16px;
   --font:"Yuanti SC","Yuanti TC","Yuanti","YouYuan","幼圆","幼圓","STYuanti","PingFang SC","PingFang TC","Hiragino Sans GB","Microsoft YaHei","微軟雅黑",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -26,14 +26,14 @@ body{
 .app{height:100%;max-width:1120px;margin:0 auto;padding:0 14px;display:flex;flex-direction:column}
 
 /* ---------- header ---------- */
-.top{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 2px 10px}
-.brand{display:flex;align-items:center;gap:8px;font-size:19px;font-weight:700;letter-spacing:.5px}
-.brand .logo{width:28px;height:28px;flex:0 0 auto}
+.top{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:clamp(6px,1.5vh,12px) 2px clamp(5px,1.2vh,10px)}
+.brand{display:flex;align-items:center;gap:8px;font-size:clamp(15px,3.1vh,19px);font-weight:700;letter-spacing:.5px}
+.brand .logo{width:clamp(22px,4.2vh,28px);height:clamp(22px,4.2vh,28px);flex:0 0 auto}
 .hud{display:flex;gap:8px;align-items:center}
-.chip{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:14px;font-weight:700;color:var(--ink)}
+.chip{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:clamp(4px,1vh,6px) clamp(9px,1.7vh,12px);font-size:clamp(12px,2.3vh,14px);font-weight:700;color:var(--ink)}
 .chip small{color:var(--ink2);font-weight:400;font-size:12px}
-.chip b{color:var(--blue);font-size:16px}
-.mbtn{flex:0 0 auto;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:#fff;
+.chip b{color:var(--blue);font-size:clamp(13px,2.6vh,16px)}
+.mbtn{flex:0 0 auto;width:clamp(30px,5.6vh,38px);height:clamp(30px,5.6vh,38px);border-radius:50%;border:1px solid var(--line);background:#fff;
   font-size:17px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;
   box-shadow:0 2px 0 rgba(0,0,0,.05);transition:transform .1s,background .15s,opacity .15s}
 .mbtn:hover{background:var(--soft)}
@@ -77,19 +77,19 @@ body{
 .ob .bubble:after{content:"";position:absolute;left:50%;top:100%;margin-left:-10px;border:10px solid transparent;border-top-color:#fff;filter:drop-shadow(0 3px 2px rgba(28,52,84,.08))}
 .ob.cur .bubble{opacity:1;transform:translate(-50%,0) scale(1);animation:popin .46s cubic-bezier(.18,1.5,.4,1) forwards}
 @keyframes popin{0%{opacity:0;transform:translate(-50%,14px) scale(.55)}60%{opacity:1;transform:translate(-50%,-4px) scale(1.06)}100%{opacity:1;transform:translate(-50%,0) scale(1)}}
-.ob .bw{font-size:clamp(34px,8vw,64px);font-weight:700;line-height:1.16;letter-spacing:6px;text-indent:6px}
+.ob .bw{font-size:clamp(27px,min(8vw,9.4vh),64px);font-weight:700;line-height:1.16;letter-spacing:6px;text-indent:6px}
 /* 拼音永遠存在於版面（高度 0、完全透明），因此氣泡寬度不會跳動；
    提示時只用 max-height / opacity / transform 順暢展開 */
 .ob .bp{display:block;overflow:hidden;max-height:0;opacity:0;margin-top:0;
   transform:translateY(-7px);transform-origin:50% 0;
   font-family:inherit;font-style:normal;font-weight:700;
-  font-size:clamp(26px,5.8vw,40px);line-height:1.25;color:#D2521A;letter-spacing:2px;
+  font-size:clamp(20px,min(5.8vw,6.4vh),40px);line-height:1.25;color:#D2521A;letter-spacing:2px;
   background:rgba(255,241,228,0);border:2.5px solid rgba(255,201,143,0);border-radius:999px;padding:0 20px;
   box-shadow:none;will-change:max-height,opacity,transform;
   transition:max-height .38s cubic-bezier(.22,.9,.3,1),opacity .26s ease .05s,
     transform .44s cubic-bezier(.2,1.2,.35,1),margin-top .38s cubic-bezier(.22,.9,.3,1),
     padding .32s ease,background-color .3s ease,border-color .3s ease}
-.ob.hint .bp{max-height:92px;opacity:1;margin-top:10px;transform:none;padding:6px 20px;
+.ob.hint .bp{max-height:clamp(54px,12vh,92px);opacity:1;margin-top:clamp(6px,1.4vh,10px);transform:none;padding:6px 20px;
   background:#FFF1E4;border-color:#FFC98F;box-shadow:0 4px 12px rgba(226,98,27,.16);
   animation:bpGlow 2.6s ease-in-out .6s infinite}
 @keyframes bpGlow{0%,100%{box-shadow:0 4px 12px rgba(226,98,27,.16)}50%{box-shadow:0 7px 20px rgba(226,98,27,.30)}}
@@ -161,31 +161,31 @@ body{
 
 /* ---------- screens ---------- */
 .screen{position:absolute;inset:0;z-index:12;background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;
-  display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:18px}
+  display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:clamp(9px,2vh,18px)}
 /* 結束畫面：永不出現滾動條，內容自動縮到剛好完整顯示 */
 #screenDone{overflow:hidden;padding:12px 14px}
 #screenStart{background:linear-gradient(180deg,var(--sky1) 0%,var(--sky2) 46%,#FBFEFF 100%)}
 .stc{animation:cloudf 7s ease-in-out infinite !important;opacity:.9}
 @keyframes cloudf{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
-.startInner{position:relative;z-index:2;width:100%;max-width:660px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:0;padding-bottom:34px}
-.startArt{width:100%;max-width:460px;height:140px;margin-bottom:4px}
+.startInner{position:relative;z-index:2;width:100%;max-width:660px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:0;padding-bottom:clamp(14px,4vh,34px)}
+.startArt{width:100%;max-width:460px;height:clamp(74px,16vh,140px);margin-bottom:4px}
 .startArt svg{width:100%;height:100%;overflow:visible}
 .startArt .fl{animation:floatk 3.4s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
 @keyframes floatk{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.h1{font-size:clamp(23px,5.4vw,36px);font-weight:700;margin:6px 0 22px;letter-spacing:2px;line-height:1.4}
+.h1{font-size:clamp(19px,min(5.4vw,4.4vh),36px);font-weight:700;margin:clamp(3px,1vh,6px) 0 clamp(11px,3vh,22px);letter-spacing:2px;line-height:1.4}
 .start{position:relative;border:0;cursor:pointer;font-family:inherit;color:#fff;font-weight:700;
-  font-size:clamp(23px,5vw,31px);letter-spacing:4px;text-indent:4px;padding:20px 58px;border-radius:999px;
+  font-size:clamp(20px,min(5vw,4.2vh),31px);letter-spacing:4px;text-indent:4px;padding:clamp(13px,2.7vh,20px) clamp(38px,7vw,58px);border-radius:999px;
   background:linear-gradient(180deg,#FFC24A 0%,#FF9A2E 52%,#FF7A2F 100%);
   box-shadow:0 7px 0 #D9601A,0 16px 30px rgba(255,122,47,.36);
   animation:beat 2.1s ease-in-out infinite;transition:transform .12s,box-shadow .12s}
 .start:hover{transform:translateY(-2px);box-shadow:0 9px 0 #D9601A,0 20px 34px rgba(255,122,47,.42)}
 .start:active{transform:translateY(5px);box-shadow:0 2px 0 #D9601A,0 8px 16px rgba(255,122,47,.3);animation:none}
 @keyframes beat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-3px) scale(1.025)}}
-.steps{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 14px;margin-top:22px;opacity:.62}
+.steps{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 14px;margin-top:clamp(10px,2.6vh,22px);opacity:.62}
 .steps span{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--ink2)}
 .steps b{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;
   background:var(--soft2);color:var(--ink2);font-size:10px;font-weight:700}
-.envNote{margin-top:12px;font-size:12px;color:var(--ink2);min-height:16px}
+.envNote{margin-top:clamp(6px,1.6vh,12px);font-size:clamp(10.5px,2vh,12px);color:var(--ink2);min-height:clamp(12px,2.2vh,16px)}
 #screenDone{background:linear-gradient(180deg,var(--sky1) 0%,var(--sky2) 46%,#FBFEFF 100%)}
 #fx2{z-index:3}
 .doneArt{position:relative;left:auto;bottom:auto;width:clamp(100px,15vh,152px);height:clamp(110px,16.5vh,168px);margin:0 auto 2px;z-index:1}
@@ -241,26 +241,26 @@ body{
 .review i{font-style:normal;color:var(--ink2);font-size:12px;font-weight:400;margin-left:5px}
 
 /* ---------- controls ---------- */
-.controls{flex:0 0 auto;padding:12px 0 6px;display:flex;flex-direction:column;align-items:center;gap:9px}
-.status{font-size:15px;font-weight:700;min-height:22px;text-align:center;color:var(--ink)}
+.controls{flex:0 0 auto;padding:clamp(6px,1.6vh,12px) 0 clamp(3px,0.8vh,6px);display:flex;flex-direction:column;align-items:center;gap:clamp(4px,1.2vh,9px)}
+.status{font-size:clamp(13px,2.4vh,15px);font-weight:700;min-height:clamp(17px,2.9vh,22px);text-align:center;color:var(--ink)}
 .status.live{color:var(--blue)}
 .status.ok{color:var(--green)}
 .status.bad{color:var(--red)}
-.heard{font-size:12px;color:var(--ink2);min-height:16px;margin-top:-4px}
-.mic{position:relative;width:88px;height:88px;border-radius:50%;border:0;cursor:pointer;color:#fff;font-family:inherit;
+.heard{font-size:clamp(10.5px,2vh,12px);color:var(--ink2);min-height:clamp(12px,2.2vh,16px);margin-top:-4px}
+.mic{position:relative;width:clamp(54px,10.6vh,88px);height:clamp(54px,10.6vh,88px);border-radius:50%;border:0;cursor:pointer;color:#fff;font-family:inherit;
   background:linear-gradient(180deg,#4FA0EC,#2783DE);box-shadow:0 6px 0 var(--blue-d),0 14px 26px rgba(39,131,222,.34);
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;transition:transform .12s,box-shadow .12s}
 .mic:active{transform:translateY(4px);box-shadow:0 2px 0 var(--blue-d)}
 .mic:disabled{background:#C9CDD2;box-shadow:0 5px 0 #A9AEB4;cursor:not-allowed}
-.mic svg{width:26px;height:26px}
-.mic span{font-size:13px;font-weight:700;letter-spacing:1px}
+.mic svg{width:clamp(18px,3.4vh,26px);height:clamp(18px,3.4vh,26px)}
+.mic span{font-size:clamp(11px,2.1vh,13px);font-weight:700;letter-spacing:1px}
 .mic.on{background:linear-gradient(180deg,#FF8E7A,#E5584C);box-shadow:0 6px 0 #B93B31,0 14px 26px rgba(229,88,76,.32)}
 .mic.on:before,.mic.on:after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid rgba(229,88,76,.5);animation:ring 1.5s ease-out infinite}
 .mic.on:after{animation-delay:.75s}
 @keyframes ring{0%{transform:scale(1);opacity:.75}100%{transform:scale(1.55);opacity:0}}
 .row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
 .btn{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;
-  padding:9px 16px;font-family:inherit;font-size:13px;color:var(--ink);cursor:pointer;transition:background .15s,transform .1s}
+  padding:clamp(6px,1.4vh,9px) clamp(12px,2.4vh,16px);font-family:inherit;font-size:clamp(11.5px,2.2vh,13px);color:var(--ink);cursor:pointer;transition:background .15s,transform .1s}
 .btn:hover{background:var(--soft)}
 .btn:active{transform:translateY(1px)}
 .btn:disabled{color:#B9B7B3;cursor:not-allowed;background:#fff}
@@ -268,7 +268,7 @@ body{
 .btn.again{position:relative;z-index:1;background:linear-gradient(180deg,#FFC24A,#FF8A3D);border:0;color:#fff;
   font-size:clamp(15px,2.1vh,17px);font-weight:700;padding:clamp(10px,1.9vh,16px) clamp(30px,5vw,44px);
   box-shadow:0 5px 0 #D9601A,0 14px 28px rgba(255,122,47,.3);animation:beat 2.1s ease-in-out infinite}
-footer{flex:0 0 auto;text-align:center;font-size:11.5px;color:var(--ink2);padding:8px 0 12px;border-top:1px solid var(--line);margin-top:6px}
+footer{flex:0 0 auto;text-align:center;font-size:clamp(9.5px,1.8vh,11.5px);color:var(--ink2);padding:clamp(4px,1vh,8px) 0 clamp(6px,1.4vh,12px);border-top:1px solid var(--line);margin-top:clamp(3px,0.8vh,6px)}
 
 @media (max-width:560px){
   :root{--gh:clamp(66px,9.5vh,90px); --hh:clamp(78px,12.5vh,112px); --oh:clamp(70px,11vh,100px); --fh:clamp(88px,14.5vh,124px)}
@@ -288,9 +288,27 @@ footer{flex:0 0 auto;text-align:center;font-size:11.5px;color:var(--ink2);paddin
   .stats{gap:6px}
   footer{font-size:10.5px;padding:7px 0 10px}
 }
-@media (max-height:620px){
+@media (max-height:780px){
+  .ob .bubble{padding:8px 18px 10px}
+  .ob .bw{letter-spacing:4px;text-indent:4px}
+}
+@media (max-height:680px){
+  .ob .bubble{padding:6px 15px 8px}
+  .steps span{font-size:11px}
+  .popup{top:18%}
+}
+@media (max-height:600px){
   .startArt{display:none}
-  .steps{margin-top:14px}
+  .steps{margin-top:10px}
+  .row{gap:6px}
+  .sun{opacity:.55}
+  .cloud{opacity:.6}
+}
+@media (max-height:500px){
+  .heard{display:none}
+  .steps{display:none}
+  .envNote{margin-top:4px}
+  .mic{width:clamp(48px,9.6vh,78px);height:clamp(48px,9.6vh,78px)}
 }
 @media (prefers-reduced-motion:reduce){
   *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
@@ -376,7 +394,7 @@ footer{flex:0 0 auto;text-align:center;font-size:11.5px;color:var(--ink2);paddin
             </g>
           </svg>
         </div>
-        <h1 class="h1">大聲朗讀，破除路障，勇往直前</h1>
+        <h1 class="h1"><span style="display:block;font-size:.68em;font-weight:700;opacity:.92;margin-bottom:.12em">請使用普通話大聲朗讀詞語</span><span style="display:block">破除路障，勇往直前</span></h1>
         <button class="start" id="btnStart">開始遊戲</button>
         <div class="steps">
           <span><b>1</b>允許麥克風</span>
@@ -394,6 +412,7 @@ footer{flex:0 0 auto;text-align:center;font-size:11.5px;color:var(--ink2);paddin
         <div class="doneArt trophy" id="doneArt" aria-hidden="true"></div>
         <div class="doneTitle" id="doneTitle">🎉 恭喜通關！</div>
         <div class="doneSub" id="doneSub"></div>
+        <div class="doneNote" style="position:relative;z-index:1;margin-top:5px;color:var(--ink2);opacity:.75;font-size:clamp(10.5px,1.4vh,12px);line-height:1.4">AI 發音檢測結果僅供參考，可能存在誤差。</div>
         <div class="stats">
           <div class="stat"><div class="v" id="stTime">00:00</div><div class="k">總用時</div></div>
           <div class="stat"><div class="v" id="stFirst">0</div><div class="k">一次讀準</div></div>
@@ -432,8 +451,8 @@ footer{flex:0 0 auto;text-align:center;font-size:11.5px;color:var(--ink2);paddin
 
 /* ============ 後臺詞語庫（繁體|簡體|拼音） ============ */
 var BANK_RAW = [
-"東風|东风|dōng fēng","光輝|光辉|guāng huī","青春|青春|qīng chūn","繽紛|缤纷|bīn fēn",
-"追蹤|追踪|zhuī zōng","消失|消失|xiāo shī","科學|科学|kē xué","堅持|坚持|jiān chí",
+"形式|形式|xíng shì","營造|营造|yíng zào","損壞|损坏|sǔn huài","氣象|气象|qì xiàng",
+"盼望|盼望|pàn wàng","仍然|仍然|réng rán","科學|科学|kē xué","堅持|坚持|jiān chí",
 "溫柔|温柔|wēn róu","需求|需求|xū qiú","收集|收集|shōu jí","輝煌|辉煌|huī huáng",
 "生活|生活|shēng huó","開始|开始|kāi shǐ","溫暖|温暖|wēn nuǎn","擁有|拥有|yōng yǒu",
 "危險|危险|wēi xiǎn","艱苦|艰苦|jiān kǔ","悠久|悠久|yōu jiǔ","豐富|丰富|fēng fù",
@@ -448,8 +467,8 @@ var BANK_RAW = [
 "許多|许多|xǔ duō","祖先|祖先|zǔ xiān","母雞|母鸡|mǔ jī","海鷗|海鸥|hǎi ōu",
 "紡織|纺织|fǎng zhī","保存|保存|bǎo cún","感情|感情|gǎn qíng","滿足|满足|mǎn zú",
 "普及|普及|pǔ jí","考察|考察|kǎo chá","海拔|海拔|hǎi bá","表演|表演|biǎo yǎn",
-"影響|影响|yǐng xiǎng","勇敢|勇敢|yǒng gǎn","土壤|土壤|tǔ rǎng","鐵軌|铁轨|tiě guǐ",
-"眨眼|眨眼|zhǎ yǎn","導致|导致|dǎo zhì","軌道|轨道|guǐ dào","體現|体现|tǐ xiàn",
+"影響|影响|yǐng xiǎng","勇敢|勇敢|yǒng gǎn","掌管|掌管|zhǎng guǎn","鐵軌|铁轨|tiě guǐ",
+"也許|也许|yě xǔ","導致|导致|dǎo zhì","軌道|轨道|guǐ dào","體現|体现|tǐ xiàn",
 "肯定|肯定|kěn dìng","享受|享受|xiǎng shòu","宇宙|宇宙|yǔ zhòu","滿意|满意|mǎn yì",
 "必須|必须|bì xū","誕生|诞生|dàn shēng","故鄉|故乡|gù xiāng","目標|目标|mù biāo",
 "氣息|气息|qì xī","立春|立春|lì chūn","幸福|幸福|xìng fú","現實|现实|xiàn shí",
@@ -689,7 +708,7 @@ function miss(text,why){
   sfxBad();
   popMsg("再試試看！","bad");
   setStatus(why || "再試試看！照著拼音再讀一次","bad");
-  heardEl.textContent = text ? "聽到："+text : "";
+  heardEl.textContent = text ? "聽到："+text+dbgTail : "";
   btnMic.disabled=false; micLabel.textContent="再讀";
   if(S.wordTries>=3) btnSkip.hidden=false;   /* 讀滿三次都不對，才出現「放棄此關」 */
 }
@@ -765,6 +784,7 @@ var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 var rec=null, best="", listening=false, recStart=0, endTimer=null, retried=false, netFail=0;
 var altHit=false;   /* 目標詞只出現在次選結果：發音接近但不夠準 */
 var finalTx="", interimTx="", conf=0;
+var DEBUG=/[?&]debug=1/.test((location.search||"")), dbgTail="";
 
 function norm(s){ return (s||"").replace(/[\s，。、！？,.!?~·…—\-'"“”‘’()（）【】\[\]]/g,""); }
 function lcs(a,b){
@@ -776,16 +796,27 @@ function lcs(a,b){
   }
   return prev[n];
 }
-/* 判分（嚴格）：只有「完整讀出該詞」才算過，
-   不再接受部分相似、兩字中只對一字、或只是句子裡包含該詞 */
+/* 判分（以整個詞為單位）：必須完整讀出該詞，
+   但容許尾巴的語氣助詞（例如「幸福的」），避免讀對卻被判錯 */
+var FILLER="了啊呀吧嗯的是哦噢喔嘛呢麼么欸誡呃哎唉噓";
+function trimFiller(g){
+  var x=g;
+  while(x.length>1 && FILLER.indexOf(x.charAt(x.length-1))>=0) x=x.slice(0,-1);
+  while(x.length>1 && FILLER.indexOf(x.charAt(0))>=0) x=x.slice(1);
+  return x;
+}
 function score(text){
   var w=curWord(); if(!w) return 0;
-  var g=norm(text); if(!g) return 0;
-  var t=norm(w.t), s=norm(w.s);
-  if(g===t || g===s) return 1;                                     /* 完全相同 */
-  if(g===t+t || g===s+s || g===t+s || g===s+t) return 1;           /* 連讀兩次 */
-  var r=Math.max(lcs(g,t)/t.length, lcs(g,s)/s.length);
-  return Math.min(r,0.9);                                          /* 其餘一律不算讀準 */
+  var g0=norm(text); if(!g0) return 0;
+  var t=norm(w.t), s=norm(w.s), i, g;
+  var cands=[g0, trimFiller(g0)];
+  for(i=0;i<cands.length;i++){
+    g=cands[i]; if(!g) continue;
+    if(g===t || g===s) return 1;
+    if(g===t+t || g===s+s || g===t+s || g===s+t) return 1;
+  }
+  var r=Math.max(lcs(g0,t)/t.length, lcs(g0,s)/s.length);
+  return Math.min(r,0.9);
 }
 function listen(){
   if(S.state!=="prompt" || !S.playing) return;
@@ -883,41 +914,29 @@ function endListen(){
     setStatus("沒聽到聲音，靠近麥克風再讀一次","bad");
     return;
   }
-  heardEl.textContent="聽到："+text;
   var v=judge(text, conf);
+  dbgTail = DEBUG ? "  ["+((v.tn&&v.tn.dbg)||"-")+" cf="+(conf?conf.toFixed(2):"-")+" "+v.reason+"]" : "";
+  heardEl.textContent="聽到："+text+dbgTail;
   if(v.pass) success();
   else miss(text, v.why);
 }
-/* 整體發音判定：以字音（整個詞的聲母＋韻母有沒有被聽成目標詞）為主，
-   識別信心為輔，聲調只作輔助；避免「明明讀對」卻判不過 */
+/* 整體發音判定（以實測証據為準）：
+   字音對了之後，只有「量到明確錯誤」或「信心值極低」才不給過 */
 function judge(text, cf){
   var w=curWord(), py=(w?w.p:"");
-  var sc=score(text);
-  /* 1) 字音：識別引擎的首選結果必須與整個詞完全相符 */
-  if(sc<1) return {pass:false, reason:"word",
-    why:(altHit ? "有點接近，但還不夠準！照「"+py+"」再讀一次" : null)};
-  /* 2) 必須有完整的辨識結果 */
-  if(!finalTx) return {pass:false, why:"沒聽清楚，請完整再讀一次", reason:"interim"};
+  var sc=Math.max(score(text), score(finalTx), score(interimTx));
   var tn=toneCheck();
-  /* 3) 聲量與長度 */
-  if(tn.why==="too-short") return {pass:false, reason:"short",
-    why:"聲音太短或太輕，請大聲、完整地讀一次"};
-  /* 4) 平調（例如用粵語念）：普通話的調型沒有做出來 */
-  if(tn.why==="flat") return {pass:false, reason:"canto",
+  if(sc<1) return {pass:false, reason:"word", tn:tn,
+    why:(altHit ? "有點接近，但還不夠準！照「"+py+"」再讀一次" : null)};
+  if(tn.verdict==="flat") return {pass:false, reason:"canto", tn:tn,
     why:"聽起來不是普通話聲調，請用普通話照「"+py+"」讀一次"};
-  /* 5) 任何一個音節的調型不對 */
-  if(!tn.ok) return {pass:false, reason:"tone",
+  if(tn.verdict==="wrong") return {pass:false, reason:"tone", tn:tn,
     why:"第 "+(tn.at||1)+" 個字的聲調不對，照「"+py+"」再讀一次"};
-  /* 6) 每個字的聲調都必須量得到（避免氣聲、小聲蒙混過關）*/
-  if(tn.why!=="no-data" && tn.checked<tn.total) return {pass:false, reason:"measure",
-    why:"聽不清聲調，靠近麥克風大聲再讀一次"};
-  /* 7) 識別信心 */
-  if(cf>0 && cf<0.60) return {pass:false, reason:"unclear",
-    why:"讀音不夠準，照「"+py+"」再清楚讀一次"};
-  /* 8) 裝置無法分析音高時，信心要求更高 */
-  if(tn.why==="no-data" && cf>0 && cf<0.85) return {pass:false, reason:"unclear2",
-    why:"讀音不夠清楚，靠近麥克風再讀一次"};
-  return {pass:true, why:null, reason:"ok"};
+  if(cf>0 && cf<0.30) return {pass:false, reason:"unclear", tn:tn,
+    why:"讀音不夠清楚，靳近麥克風再讀一次"};
+  if(tn.why==="no-data" && cf>0 && cf<0.45) return {pass:false, reason:"unclear2", tn:tn,
+    why:"讀音不夠清楚，靳近麥克風再讀一次"};
+  return {pass:true, why:null, reason:"ok", tn:tn};
 }
 function noAsr(){
   setStatus("此瀏覽器不支援 AI 語音識別，請改用 Chrome 或 Safari","bad");
@@ -1099,7 +1118,7 @@ function voicedRuns(){
       if(gap>1) run=null;   /* 連續兩格無聲才算分音節 */
     }
   }
-  return out.filter(function(r){ return r.length>=4; });
+  return out.filter(function(r){ return r.length>=3; });
 }
 /* 中值濾波：消除自相關偶發的倒八度跳變，避免聲調誤判 */
 function med3(a){
@@ -1111,9 +1130,19 @@ function med3(a){
   }
   return o;
 }
-/* ---- 聲調檢查（雙向嚴格）----
-   普通話的調型必須「真的做出來」：陽平要上揚、去聲要下降、上聲要壓低。
-   粵語大多是平調（斜率近於 0），會在這裡被擋下來。 */
+/* ---- 聲調檢查（以實測証據為準）----
+   字音已經完全對了之後，只有「明確量到的錯誤」才判不過：
+     1) 該有調型的音節全部沒有起伏（粵語念法的典型特征）→ 判平調
+     2) 明確量到方向相反（該升卻降、該降卻升）→ 判聲調錯
+   量不到、太短、資料不足一律不扣分，避免「讀對卻不給過」。*/
+function pctOf(a,p){
+  var b=a.slice().sort(function(x,y){ return x-y; });
+  if(!b.length) return 0;
+  var i=Math.round((b.length-1)*p);
+  if(i<0) i=0;
+  if(i>b.length-1) i=b.length-1;
+  return b[i];
+}
 function clamp01(x){ return x<0?0:(x>1?1:x); }
 function avgOf(a,i0,i1){ var s=0,n=0; for(var i=i0;i<i1;i++){ s+=a[i]; n++; } return n?s/n:0; }
 function medOf(a){ var b=a.slice().sort(function(x,y){ return x-y; }); return b.length ? b[Math.floor(b.length/2)] : 0; }
@@ -1136,61 +1165,57 @@ function pickRuns(segs,n){
 }
 function toneCheck(){
   var want=wantTones(), i;
-  var out={ok:true, bad:0, at:0, checked:0, total:0, need:0, frames:0, score:1, flat:false, why:"pass"};
+  var out={verdict:"pass", why:"pass", at:0, checked:0, total:0, need:0,
+           frames:0, maxRange:0, flatN:0, contourN:0, dbg:""};
   for(i=0;i<want.length;i++) if(want[i]) out.total++;
-  if(!TONE_ON || !ana || !out.total){ out.why="no-data"; return out; }
-  var segs=voicedRuns(), all=[];
-  segs.forEach(function(r){ all=all.concat(r); });
-  out.frames=all.length;
-  if(all.length<12){ out.why="too-short"; return out; }
-  var base=medOf(all) || 1;                        /* 個人音高基準：整句中位數 */
-  var parts=[];
-  if(segs.length>=want.length) parts=pickRuns(segs,want.length);
-  else{
-    var longest=segs.slice().sort(function(a,b){ return b.length-a.length; })[0] || all;
-    var k=Math.floor(longest.length/want.length);
-    if(k<4){ out.why="too-short"; return out; }
-    for(i=0;i<want.length;i++) parts.push(longest.slice(i*k,(i+1)*k));
-  }
-  var scores=[], flats=0, worst=1, at=0;
-  for(var j=0;j<want.length;j++){
-    var t=want[j];
-    if(!t) continue;                                /* 輕聲不檢查 */
-    var p=cleanSyl(med3(parts[j]||[]));
-    if(p.length<4) continue;
+  out.need=out.total;
+  if(!ana || !out.total){ out.why="no-data"; return out; }
+  var fr=0;
+  for(i=0;i<pitchTrack.length;i++) if(pitchTrack[i]>0) fr++;
+  out.frames=fr;
+  if(fr<8){ out.why="no-data"; return out; }
+  var segs=pickRuns(voicedRuns(), want.length);
+  if(!segs.length){ out.why="no-data"; return out; }
+  var dbg=[], firstFlat=0;
+  for(i=0;i<segs.length && i<want.length;i++){
+    var tone=want[i]; if(!tone) continue;
+    var a=cleanSyl(med3(segs[i]));
+    if(a.length<4) continue;
     out.checked++;
-    var h=Math.max(2,Math.round(p.length*0.3));
-    var head=avgOf(p,0,h), tail=avgOf(p,p.length-h,p.length);
-    var slope=semis(tail,head);                     /* 正＝上揚，負＝下降（半音）*/
-    var lvl=semis(avgOf(p,0,p.length), base);       /* 相對整句的高低 */
-    var dip=semis(Math.min.apply(null,p), base);
-    var last=(j===want.length-1), sc=1;
-    if(t===1){                                      /* 陰平：平而偏高 */
-      sc=clamp01(1-(Math.abs(slope)-1.5)/3.0);
-      if(lvl<-3.0) sc=Math.min(sc,0.45);
-    }else if(t===2){                                /* 陽平：一定要上揚 */
-      sc=clamp01((slope-0.3)/2.2);
-    }else if(t===3){                                /* 上聲：一定要壓低 */
-      sc=clamp01((0.6-Math.min(lvl,dip+0.8))/2.0);
-      if(!last && slope>=2.8) sc=Math.min(sc,0.35);
-    }else{                                          /* 去聲：一定要下降 */
-      sc=clamp01((-slope-0.7)/2.3);
+    var n=a.length, k=Math.max(1,Math.round(n*0.28));
+    var head=avgOf(a,0,k), tail=avgOf(a,n-k,n);
+    var slope=semis(tail,head);
+    var lo=pctOf(a,0.08), hi=pctOf(a,0.92);
+    var rng=semis(hi,lo), dipv=semis(lo,head);
+    var flat=false, wrong=false;
+    if(tone===2){
+      out.contourN++;
+      flat=(slope<1.2 && rng<2.2);
+      wrong=(n>=6 && rng>=2.2 && slope<=-2.2);
+    }else if(tone===4){
+      out.contourN++;
+      flat=(slope>-1.2 && rng<2.2);
+      wrong=(n>=6 && rng>=1.6 && slope>=1.4);
+    }else if(tone===3){
+      out.contourN++;
+      flat=(dipv>-0.8 && Math.abs(slope)<1.5 && rng<2.2); var mi3=0,qq3; for(qq3=1;qq3<n;qq3++){ if(a[qq3]<a[mi3]) mi3=qq3; } var mp3=(n>1?mi3/(n-1):0), dip03=semis(a[mi3],a[0]); wrong=(n>=6 && rng>=1.6 && slope>=1.4 && mp3<0.30 && dip03>-0.8);
+    }else if(tone===1){
+      var mi1=0,qq1; for(qq1=1;qq1<n;qq1++){ if(a[qq1]<a[mi1]) mi1=qq1; }
+      var mp1=(n>1?mi1/(n-1):0);
+      wrong=(n>=6 && ((rng>=3.2 && slope>=3.0) || (rng>=3.6 && slope<=-3.4)
+                   || (rng>=3.2 && dipv<=-2.6 && mp1>=0.2 && mp1<=0.85)));
     }
-    scores.push(sc);
-    if(t!==1){
-      out.need++;
-      if(t===3){ if(lvl>1.0 && Math.abs(slope)<1.8) flats++; }
-      else if(Math.abs(slope)<1.0) flats++;         /* 該升不升、該降不降：平調 */
-    }
-    if(sc<worst){ worst=sc; at=j+1; }
+    if(tone!==1 && rng>out.maxRange) out.maxRange=rng;
+    if(flat){ out.flatN++; if(!firstFlat) firstFlat=i+1; }
+    dbg.push(tone+":s"+(slope>=0?"+":"")+slope.toFixed(1)+" r"+rng.toFixed(1));
+    if(wrong && out.verdict==="pass"){ out.verdict="wrong"; out.why="tone"; out.at=i+1; }
   }
-  if(!out.checked){ out.why="too-short"; return out; }
-  var mean=0; for(i=0;i<scores.length;i++) mean+=scores[i];
-  mean = scores.length ? mean/scores.length : 1;
-  out.score=mean; out.at=at||1;
-  out.flat=(out.need>0 && flats>=out.need);         /* 該有調型的音節全是平的：像粵語 */
-  if(out.flat){ out.ok=false; out.bad=out.need; out.why="flat"; return out; }
-  if(worst<0.30 || mean<0.58){ out.ok=false; out.bad=1; out.why="tone"; return out; }
+  out.dbg=dbg.join("|");
+  if(!out.checked){ out.why="no-data"; return out; }
+  if(out.verdict==="wrong") return out;
+  if(out.contourN>=1 && out.flatN===out.contourN && out.maxRange<2.4){
+    out.verdict="flat"; out.why="flat"; out.at=firstFlat||1;
+  }
   return out;
 }
 
