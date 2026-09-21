@@ -185,6 +185,17 @@ body{
 .steps span{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--ink2)}
 .steps b{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;
   background:var(--soft2);color:var(--ink2);font-size:10px;font-weight:700}
+#screenCal{background:linear-gradient(180deg,var(--sky1) 0%,var(--sky2) 46%,#FBFEFF 100%)}
+.calTitle{font-size:clamp(17px,3.4vh,24px);font-weight:700;letter-spacing:1px}
+.calHint{margin-top:clamp(5px,1.3vh,10px);font-size:clamp(11.5px,1.95vh,13.5px);color:var(--ink2);line-height:1.6}
+.calWord{margin-top:clamp(8px,2.4vh,20px);font-size:clamp(38px,min(12vw,8.6vh),74px);font-weight:700;letter-spacing:8px;text-indent:8px;color:var(--ink)}
+.calPy{margin-top:clamp(2px,.7vh,6px);font-size:clamp(16px,3vh,23px);color:#F08A24;font-weight:700;letter-spacing:1px}
+.calStatus{margin-top:clamp(9px,2.2vh,17px);min-height:clamp(19px,3vh,24px);font-size:clamp(12.5px,2.2vh,15px);font-weight:700;color:var(--ink);line-height:1.45;padding:0 10px}
+.calStatus.live{color:#2E9BE6}
+.calStatus.ok{color:#2FA84F}
+.calStatus.bad{color:#E4572E}
+.calSkip{margin-top:clamp(8px,2vh,15px);border:1.6px solid var(--line);background:#fff;color:var(--ink2);font-family:inherit;font-size:12.5px;font-weight:700;padding:7px 18px;border-radius:999px;cursor:pointer}
+.calSkip:active{transform:translateY(1px)}
 .envNote{margin-top:clamp(6px,1.6vh,12px);font-size:clamp(10.5px,2vh,12px);color:var(--ink2);min-height:clamp(12px,2.2vh,16px)}
 #screenDone{background:linear-gradient(180deg,var(--sky1) 0%,var(--sky2) 46%,#FBFEFF 100%)}
 #fx2{z-index:3}
@@ -406,6 +417,17 @@ footer{flex:0 0 auto;text-align:center;font-size:clamp(9.5px,1.8vh,11.5px);color
       </div>
     </section>
 
+    <section class="screen" id="screenCal" hidden>
+      <div class="startInner">
+        <div class="calTitle">🎤 熱身校準</div>
+        <div class="calHint">請用普通話大聲讀出下面的詞語，<br>系統會認識你的嗓音，之後按你的音域比例評分。</div>
+        <div class="calWord" id="calWord">明亮</div>
+        <div class="calPy" id="calPy">míng liàng</div>
+        <div class="calStatus" id="calStatus">準備中…</div>
+        <button class="calSkip" id="btnCalSkip">跳過熱身</button>
+      </div>
+    </section>
+
     <section class="screen" id="screenDone" hidden>
       <div class="doneInner" id="doneInner">
         <div class="rays" aria-hidden="true"></div>
@@ -451,8 +473,8 @@ footer{flex:0 0 auto;text-align:center;font-size:clamp(9.5px,1.8vh,11.5px);color
 
 /* ============ 後臺詞語庫（繁體|簡體|拼音） ============ */
 var BANK_RAW = [
-"形式|形式|xíng shì","營造|营造|yíng zào","損壞|损坏|sǔn huài","氣象|气象|qì xiàng",
-"盼望|盼望|pàn wàng","仍然|仍然|réng rán","科學|科学|kē xué","堅持|坚持|jiān chí",
+"形式|形式|xíng shì","營造|营造|yíng zào","損壞|损坏|sǔn huài","醞釀|酝酿|yùn niàng",
+"抱怨|抱怨|bào yuàn","仍然|仍然|réng rán","科學|科学|kē xué","堅持|坚持|jiān chí",
 "溫柔|温柔|wēn róu","需求|需求|xū qiú","收集|收集|shōu jí","輝煌|辉煌|huī huáng",
 "生活|生活|shēng huó","開始|开始|kāi shǐ","溫暖|温暖|wēn nuǎn","擁有|拥有|yōng yǒu",
 "危險|危险|wēi xiǎn","艱苦|艰苦|jiān kǔ","悠久|悠久|yōu jiǔ","豐富|丰富|fēng fù",
@@ -460,22 +482,22 @@ var BANK_RAW = [
 "微笑|微笑|wēi xiào","濕潤|湿润|shī rùn","研究|研究|yán jiū","人生|人生|rén shēng",
 "延伸|延伸|yán shēn","繁星|繁星|fán xīng","如今|如今|rú jīn","燃燒|燃烧|rán shāo",
 "徘徊|徘徊|pái huái","懷疑|怀疑|huái yí","完全|完全|wán quán","文學|文学|wén xué",
-"學習|学习|xué xí","人民|人民|rén mín","宏偉|宏伟|hóng wěi","原始|原始|yuán shǐ",
-"情景|情景|qíng jǐng","沿海|沿海|yán hǎi","狹窄|狭窄|xiá zhǎi","寒冷|寒冷|hán lěng",
-"痕跡|痕迹|hén jì","炎熱|炎热|yán rè","植物|植物|zhí wù","呈現|呈现|chéng xiàn",
-"決定|决定|jué dìng","存在|存在|cún zài","獨立|独立|dú lì","組織|组织|zǔ zhī",
+"疲勞|疲劳|pí láo","人民|人民|rén mín","宏偉|宏伟|hóng wěi","原始|原始|yuán shǐ",
+"情景|情景|qíng jǐng","沿海|沿海|yán hǎi","雲朵|云朵|yún duǒ","寒冷|寒冷|hán lěng",
+"痕跡|痕迹|hén jì","炎熱|炎热|yán rè","年紀|年纪|nián jì","呈現|呈现|chéng xiàn",
+"人類|人类|rén lèi","存在|存在|cún zài","無限|无限|wú xiàn","組織|组织|zǔ zhī",
 "許多|许多|xǔ duō","祖先|祖先|zǔ xiān","母雞|母鸡|mǔ jī","海鷗|海鸥|hǎi ōu",
 "紡織|纺织|fǎng zhī","保存|保存|bǎo cún","感情|感情|gǎn qíng","滿足|满足|mǎn zú",
 "普及|普及|pǔ jí","考察|考察|kǎo chá","海拔|海拔|hǎi bá","表演|表演|biǎo yǎn",
 "影響|影响|yǐng xiǎng","勇敢|勇敢|yǒng gǎn","掌管|掌管|zhǎng guǎn","鐵軌|铁轨|tiě guǐ",
-"也許|也许|yě xǔ","導致|导致|dǎo zhì","軌道|轨道|guǐ dào","體現|体现|tǐ xiàn",
+"也許|也许|yě xǔ","展示|展示|zhǎn shì","軌道|轨道|guǐ dào","體現|体现|tǐ xiàn",
 "肯定|肯定|kěn dìng","享受|享受|xiǎng shòu","宇宙|宇宙|yǔ zhòu","滿意|满意|mǎn yì",
 "必須|必须|bì xū","誕生|诞生|dàn shēng","故鄉|故乡|gù xiāng","目標|目标|mù biāo",
-"氣息|气息|qì xī","立春|立春|lì chūn","幸福|幸福|xìng fú","現實|现实|xiàn shí",
-"自然|自然|zì rán","沸騰|沸腾|fèi téng","證明|证明|zhèng míng","事實|事实|shì shí",
+"氣息|气息|qì xī","立春|立春|lì chūn","幸福|幸福|xìng fú","命名|命名|mìng míng",
+"自然|自然|zì rán","沸騰|沸腾|fèi téng","證明|证明|zhèng míng","霧霾|雾霾|wù mái",
 "歷史|历史|lì shǐ","確保|确保|què bǎo","跳舞|跳舞|tiào wǔ","婦女|妇女|fù nǚ",
-"記者|记者|jì zhě","報紙|报纸|bào zhǐ","繼續|继续|jì xù","智慧|智慧|zhì huì",
-"現象|现象|xiàn xiàng","建築|建筑|jiàn zhù","計算|计算|jì suàn","世紀|世纪|shì jì"
+"記者|记者|jì zhě","報紙|报纸|bào zhǐ","境界|境界|jìng jiè","智慧|智慧|zhì huì",
+"映照|映照|yìng zhào","建築|建筑|jiàn zhù","計算|计算|jì suàn","世紀|世纪|shì jì"
 ];
 var BANK = BANK_RAW.map(function(l){ var a=l.split("|"); return {t:a[0],s:a[1],p:a[2]}; });
 
@@ -503,6 +525,7 @@ var scene=$("scene"), world=$("world"), hills=$("hills"), hero=$("hero"), dots=$
     btnMic=$("btnMic"), micLabel=$("micLabel"), btnDemo=$("btnDemo"), btnSkip=$("btnSkip"), btnMusic=$("btnMusic"),
     screenStart=$("screenStart"), screenDone=$("screenDone"), btnStart=$("btnStart"), btnAgain=$("btnAgain"),
     stTime=$("stTime"), stFirst=$("stFirst"), stTries=$("stTries"), doneSub=$("doneSub"),
+    screenCal=$("screenCal"), calStatus=$("calStatus"), btnCalSkip=$("btnCalSkip"),
     review=$("review"), reviewList=$("reviewList"), envNote=$("envNote"), fx2=$("fx2"), doneArt=$("doneArt"), doneTitle=$("doneTitle"), doneInner=$("doneInner");
 
 var ROUND=10;
@@ -1176,7 +1199,7 @@ function toneCheck(){
   if(fr<8){ out.why="no-data"; return out; }
   var segs=pickRuns(voicedRuns(), want.length);
   if(!segs.length){ out.why="no-data"; return out; }
-  var dbg=[], firstFlat=0;
+  var dbg=[], firstFlat=0, K=(typeof CAL!=="undefined" && CAL && CAL.k)?CAL.k:1, Kf=(K>1?K:1);
   for(i=0;i<segs.length && i<want.length;i++){
     var tone=want[i]; if(!tone) continue;
     var a=cleanSyl(med3(segs[i]));
@@ -1190,30 +1213,30 @@ function toneCheck(){
     var flat=false, wrong=false;
     if(tone===2){
       out.contourN++;
-      flat=(slope<1.2 && rng<2.2);
-      wrong=(n>=6 && rng>=2.2 && slope<=-2.2);
+      flat=(slope<1.2*Kf && rng<2.2*Kf);
+      wrong=(n>=6 && rng>=2.2*K && slope<=-2.2*K);
     }else if(tone===4){
       out.contourN++;
-      flat=(slope>-1.2 && rng<2.2);
-      wrong=(n>=6 && rng>=1.6 && slope>=1.4);
+      flat=(slope>-1.2*Kf && rng<2.2*Kf);
+      wrong=(n>=6 && rng>=1.6*K && slope>=1.4*K);
     }else if(tone===3){
       out.contourN++;
-      flat=(dipv>-0.8 && Math.abs(slope)<1.5 && rng<2.2); var mi3=0,qq3; for(qq3=1;qq3<n;qq3++){ if(a[qq3]<a[mi3]) mi3=qq3; } var mp3=(n>1?mi3/(n-1):0), dip03=semis(a[mi3],a[0]); wrong=(n>=6 && rng>=1.6 && slope>=1.4 && mp3<0.30 && dip03>-0.8);
+      flat=(dipv>-0.8*K && Math.abs(slope)<1.5*Kf && rng<2.2*Kf); var mi3=0,qq3; for(qq3=1;qq3<n;qq3++){ if(a[qq3]<a[mi3]) mi3=qq3; } var mp3=(n>1?mi3/(n-1):0), dip03=semis(a[mi3],a[0]); wrong=(n>=6 && rng>=1.6*K && slope>=1.4*K && mp3<0.30 && dip03>-0.8*K);
     }else if(tone===1){
       var mi1=0,qq1; for(qq1=1;qq1<n;qq1++){ if(a[qq1]<a[mi1]) mi1=qq1; }
       var mp1=(n>1?mi1/(n-1):0);
-      wrong=(n>=6 && ((rng>=3.2 && slope>=3.0) || (rng>=3.6 && slope<=-3.4)
-                   || (rng>=3.2 && dipv<=-2.6 && mp1>=0.2 && mp1<=0.85)));
+      wrong=(n>=6 && ((rng>=3.2*K && slope>=3.0*K) || (rng>=3.6*K && slope<=-3.4*K)
+                   || (rng>=3.2*K && dipv<=-2.6*K && mp1>=0.2 && mp1<=0.85)));
     }
     if(tone!==1 && rng>out.maxRange) out.maxRange=rng;
     if(flat){ out.flatN++; if(!firstFlat) firstFlat=i+1; }
     dbg.push(tone+":s"+(slope>=0?"+":"")+slope.toFixed(1)+" r"+rng.toFixed(1));
     if(wrong && out.verdict==="pass"){ out.verdict="wrong"; out.why="tone"; out.at=i+1; }
   }
-  out.dbg=dbg.join("|");
+  out.dbg=dbg.join("|")+(K!==1?" k"+K.toFixed(2):"");
   if(!out.checked){ out.why="no-data"; return out; }
   if(out.verdict==="wrong") return out;
-  if(out.contourN>=1 && out.flatN===out.contourN && out.maxRange<2.4){
+  if(out.contourN>=1 && out.flatN===out.contourN && out.maxRange<2.4*Kf){
     out.verdict="flat"; out.why="flat"; out.at=firstFlat||1;
   }
   return out;
@@ -1437,13 +1460,66 @@ function startGame(){
   if(!SR) noAsr();
   runToCurrent();
 }
+/* ============ 熱身校準：估算個人音域，之後按比例評分 ============ */
+var CAL={k:1,span:0,done:false};
+var calWatch=null, calTries=0;
+function calScale(sp){
+  if(!(sp>=1.5 && sp<=24)) return 1;          /* 離譜的測量值一律不採用 */
+  return Math.max(0.62, Math.min(1.30, sp/7.0));  /* 寧可低估：低估只會更嚴格，高估才會漏判 */
+}
+function calSpan(){
+  var runs=voicedRuns(), all=[], i, a;
+  for(i=0;i<runs.length;i++){ a=cleanSyl(med3(runs[i])); if(a.length>=4) all=all.concat(a); }
+  if(all.length<12) return 0;
+  var sp=semis(pctOf(all,0.92), pctOf(all,0.08));
+  return (isFinite(sp)&&sp>0)?sp:0;
+}
+function calStart(){
+  screenStart.hidden=true; screenDone.hidden=true;
+  scene.hidden=true; controls.hidden=true; hud.hidden=true;
+  if(!micReady){ CAL.k=1; screenCal.hidden=true; startGame(); return; }
+  screenCal.hidden=false; calTries=0;
+  calStatus.className="calStatus"; calStatus.textContent="準備中…";
+  setTimeout(calListen,600);
+}
+function calListen(){
+  calTries++;
+  calStatus.className="calStatus live";
+  calStatus.textContent="聆聽中…請大聲讀出「明亮」";
+  micGate(false); musDuck(true); pitchStart();
+  if(!pitchTimer){ CAL.k=1; setTimeout(calGo,400); return; }
+  clearTimeout(calWatch);
+  calWatch=setTimeout(calDone,3800);
+}
+function calDone(){
+  pitchStop(); musDuck(false);
+  var sp=calSpan();
+  if(sp>0){
+    CAL.span=sp; CAL.k=calScale(sp); CAL.done=true;
+    var lab=(CAL.k<0.95?"偏窄":(CAL.k>1.12?"偏寬":"適中"));
+    calStatus.className="calStatus ok";
+    calStatus.textContent="校準完成！你的聲調起伏"+lab+"，評分標準已按你的嗓音調整。";
+    setTimeout(calGo,1300);
+  }else if(calTries<2){
+    calStatus.className="calStatus bad";
+    calStatus.textContent="沒聽到聲音，請靠近麥克風再讀一次";
+    setTimeout(calListen,900);
+  }else{
+    CAL.k=1; CAL.done=false;
+    calStatus.className="calStatus bad";
+    calStatus.textContent="沒有收到聲音，將用預設標準開始遊戲";
+    setTimeout(calGo,1200);
+  }
+}
+function calGo(){ clearTimeout(calWatch); pitchStop(); screenCal.hidden=true; startGame(); }
+btnCalSkip.addEventListener("click",function(){ CAL.k=1; CAL.done=false; calGo(); });
 btnStart.addEventListener("click",function(){
   if(btnStart.disabled) return;
   actx();     /* 在使用者手勢中解鎖音效 */
   ttsWarm();  /* 同時喚醒語音合成，iOS／Android 才播得出示範 */
   musStart(); /* 開始背景音樂 */
   var started=false;
-  function go(){ if(started) return; started=true; btnStart.disabled=false; startGame(); }
+  function go(){ if(started) return; started=true; btnStart.disabled=false; calStart(); }
   if(micReady || micDenied || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){ go(); return; }
   btnStart.disabled=true;
   envNote.textContent="正在開啟麥克風…請按「允許」（整場遊戲只需授權這一次）";
