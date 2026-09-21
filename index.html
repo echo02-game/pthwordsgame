@@ -149,6 +149,7 @@ body{
   font-size:clamp(26px,6vw,42px);font-weight:700;text-align:center;white-space:nowrap;
   padding:12px 30px;border-radius:999px;background:#fff;box-shadow:0 14px 34px rgba(28,52,84,.18)}
 .popup.ok{color:var(--green)}
+.popup.long{font-size:clamp(16px,3.1vw,25px);padding:10px 20px;letter-spacing:.5px}
 .popup.bad{color:var(--red)}
 .popup.show{animation:popmsg 1.25s cubic-bezier(.16,1.5,.4,1) forwards}
 @keyframes popmsg{0%{opacity:0;transform:translate(-50%,-30%) scale(.5)}18%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}30%{transform:translate(-50%,-50%) scale(1)}78%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-78%) scale(.94)}}
@@ -197,6 +198,7 @@ body{
 .calSkip{margin-top:clamp(8px,2vh,15px);border:1.6px solid var(--line);background:#fff;color:var(--ink2);font-family:inherit;font-size:12.5px;font-weight:700;padding:7px 18px;border-radius:999px;cursor:pointer}
 .calSkip:active{transform:translateY(1px)}
 .envNote{margin-top:clamp(6px,1.6vh,12px);font-size:clamp(10.5px,2vh,12px);color:var(--ink2);min-height:clamp(12px,2.2vh,16px)}
+.noRec{margin-top:clamp(3px,.9vh,8px);font-size:clamp(10.5px,2vh,12.5px);color:var(--ink2);letter-spacing:.3px;opacity:.95}
 #screenDone{background:linear-gradient(180deg,var(--sky1) 0%,var(--sky2) 46%,#FBFEFF 100%)}
 #fx2{z-index:3}
 .doneArt{position:relative;left:auto;bottom:auto;width:clamp(100px,15vh,152px);height:clamp(110px,16.5vh,168px);margin:0 auto 2px;z-index:1}
@@ -207,6 +209,12 @@ body{
 .doneArt.trophy .spk3{animation-delay:.95s}
 .doneArt.mallet{width:clamp(94px,13.8vh,142px);height:clamp(120px,17.6vh,182px)}
 .doneArt.mallet .malg{animation:malCheer 1.6s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 96%}
+.doneArt.medal{width:clamp(100px,15vh,150px);height:clamp(112px,16.5vh,166px)}
+.doneArt.medal .mdg{animation:cheerBig 1.15s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 62%}
+.doneArt.medal .rib{animation:malCheer 2.2s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 4%}
+.doneArt.medal .spk{animation:spkk 1.5s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 50%}
+.doneArt.medal .spk2{animation-delay:.5s}
+.doneArt.medal .spk3{animation-delay:.95s}
 @keyframes malCheer{0%,100%{transform:rotate(-5deg) translateY(0)}50%{transform:rotate(5deg) translateY(-7px)}}
 @keyframes spkk{0%,100%{opacity:.2;transform:scale(.55)}50%{opacity:1;transform:scale(1.2)}}
 @keyframes cheerBig{0%{transform:translateY(0) rotate(-6deg) scale(1)}
@@ -413,6 +421,7 @@ footer{flex:0 0 auto;text-align:center;font-size:clamp(9.5px,1.8vh,11.5px);color
           <span><b>3</b>讀不準顯示拼音</span>
           <span><b>4</b>破十關計時</span>
         </div>
+        <div class="noRec">本系統沒有錄音功能。</div>
         <div class="envNote" id="envNote"></div>
       </div>
     </section>
@@ -425,6 +434,7 @@ footer{flex:0 0 auto;text-align:center;font-size:clamp(9.5px,1.8vh,11.5px);color
         <div class="calPy" id="calPy">míng liàng</div>
         <div class="calStatus" id="calStatus">準備中…</div>
         <button class="calSkip" id="btnCalSkip">跳過熱身</button>
+        <div class="noRec">本系統沒有錄音功能。</div>
       </div>
     </section>
 
@@ -477,8 +487,8 @@ var BANK_RAW = [
 "抱怨|抱怨|bào yuàn","仍然|仍然|réng rán","科學|科学|kē xué","堅持|坚持|jiān chí",
 "溫柔|温柔|wēn róu","需求|需求|xū qiú","收集|收集|shōu jí","輝煌|辉煌|huī huáng",
 "生活|生活|shēng huó","開始|开始|kāi shǐ","溫暖|温暖|wēn nuǎn","擁有|拥有|yōng yǒu",
-"危險|危险|wēi xiǎn","艱苦|艰苦|jiān kǔ","悠久|悠久|yōu jiǔ","豐富|丰富|fēng fù",
-"經驗|经验|jīng yàn","深刻|深刻|shēn kè","珍貴|珍贵|zhēn guì","尊敬|尊敬|zūn jìng",
+"危險|危险|wēi xiǎn","艱苦|艰苦|jiān kǔ","悠久|悠久|yōu jiǔ","尋常|寻常|xún cháng",
+"經驗|经验|jīng yàn","庭院|庭院|tíng yuàn","懷抱|怀抱|huái bào","補償|补偿|bǔ cháng",
 "微笑|微笑|wēi xiào","濕潤|湿润|shī rùn","研究|研究|yán jiū","人生|人生|rén shēng",
 "延伸|延伸|yán shēn","繁星|繁星|fán xīng","如今|如今|rú jīn","燃燒|燃烧|rán shāo",
 "徘徊|徘徊|pái huái","懷疑|怀疑|huái yí","完全|完全|wán quán","文學|文学|wén xué",
@@ -492,12 +502,12 @@ var BANK_RAW = [
 "影響|影响|yǐng xiǎng","勇敢|勇敢|yǒng gǎn","掌管|掌管|zhǎng guǎn","鐵軌|铁轨|tiě guǐ",
 "也許|也许|yě xǔ","展示|展示|zhǎn shì","軌道|轨道|guǐ dào","體現|体现|tǐ xiàn",
 "肯定|肯定|kěn dìng","享受|享受|xiǎng shòu","宇宙|宇宙|yǔ zhòu","滿意|满意|mǎn yì",
-"必須|必须|bì xū","誕生|诞生|dàn shēng","故鄉|故乡|gù xiāng","目標|目标|mù biāo",
-"氣息|气息|qì xī","立春|立春|lì chūn","幸福|幸福|xìng fú","命名|命名|mìng míng",
+"晚霞|晚霞|wǎn xiá","舞台|舞台|wǔ tái","水稻|水稻|shuǐ dào","目標|目标|mù biāo",
+"閃爍|闪烁|shǎn shuò","立春|立春|lì chūn","幸福|幸福|xìng fú","命名|命名|mìng míng",
 "自然|自然|zì rán","沸騰|沸腾|fèi téng","證明|证明|zhèng míng","霧霾|雾霾|wù mái",
 "歷史|历史|lì shǐ","確保|确保|què bǎo","跳舞|跳舞|tiào wǔ","婦女|妇女|fù nǚ",
-"記者|记者|jì zhě","報紙|报纸|bào zhǐ","境界|境界|jìng jiè","智慧|智慧|zhì huì",
-"映照|映照|yìng zhào","建築|建筑|jiàn zhù","計算|计算|jì suàn","世紀|世纪|shì jì"
+"記者|记者|jì zhě","報紙|报纸|bào zhǐ","境界|境界|jìng jiè","偶然|偶然|ǒu rán",
+"映照|映照|yìng zhào","建築|建筑|jiàn zhù","自從|自从|zì cóng","世紀|世纪|shì jì"
 ];
 var BANK = BANK_RAW.map(function(l){ var a=l.split("|"); return {t:a[0],s:a[1],p:a[2]}; });
 
@@ -529,7 +539,7 @@ var scene=$("scene"), world=$("world"), hills=$("hills"), hero=$("hero"), dots=$
     review=$("review"), reviewList=$("reviewList"), envNote=$("envNote"), fx2=$("fx2"), doneArt=$("doneArt"), doneTitle=$("doneTitle"), doneInner=$("doneInner");
 
 var ROUND=10;
-var S={ words:[], els:[], idx:0, tries:0, wordTries:0, firstTry:0, misses:[], skips:0,
+var S={ words:[], els:[], idx:0, tries:0, wordTries:0, firstTry:0, misses:[], skips:0, softPass:0,
          t0:0, timer:null, state:"idle", heroX:0, camX:0, step:300, gap:150, x0:60, playing:false };
 
 /* ============ 版面計算 ============ */
@@ -688,19 +698,20 @@ function promptWord(){
   btnMic.disabled=false; micLabel.textContent="朗讀";
   setStatus("輪到你了！大聲讀出這個詞語");
 }
-function success(){
+function success(lenient){
   if(S.state==="ok") return;
   S.state="ok";
   var el=cur();
   btnMic.disabled=true; micLabel.textContent="很好";
   btnSkip.hidden=true;
   if(S.wordTries<=1) S.firstTry++;
-  setStatus("讀準了！揚槌敲碎路障！","ok");
+  if(lenient) S.softPass=(S.softPass||0)+1;
+  setStatus(lenient?"很欣賞你的努力，繼續下一關吧":"讀準了！揚槌敲碎路障！","ok");
   sfxOk();
   /* 先揚棒槌，落槌那一刻才敲碎路障 */
   hero.classList.remove("idle","cheer","bump"); void hero.offsetWidth; hero.classList.add("swing");
   setTimeout(function(){
-    popMsg("念得真好！","ok");
+    popMsg(lenient?"很欣賞你的努力，繼續下一關吧":"念得真好！", lenient?"ok long":"ok");
     sfxHit();
     impact(el); burst(el);
     if(el){ el.classList.add("gone"); el.classList.remove("cur","hint","bad"); }
@@ -733,7 +744,7 @@ function miss(text,why){
   setStatus(why || "再試試看！照著拼音再讀一次","bad");
   heardEl.textContent = text ? "聽到："+text+dbgTail : "";
   btnMic.disabled=false; micLabel.textContent="再讀";
-  if(S.wordTries>=3) btnSkip.hidden=false;   /* 讀滿三次都不對，才出現「放棄此關」 */
+  if(S.wordTries>=2) btnSkip.hidden=false;   /* 讀滿三次都不對，才出現「放棄此關」 */
 }
 /* 結束畫面自動縮放：小畫面也能一眼看完，不需要右側滾動條 */
 function fitDone(){
@@ -757,9 +768,13 @@ function finish(){
   stTime.textContent=fmt(used);
   stFirst.textContent=S.firstTry+" / "+S.words.length;
   stTries.textContent=S.tries;
+  var soft3=S.softPass||0, medal=(S.skips<=0 && soft3>5);
   if(S.skips>0){
     doneTitle.textContent="💪 只差一點點";
     doneSub.textContent="你破除了 "+(S.words.length-S.skips)+" 個路障，放棄了 "+S.skips+" 個，用時 "+fmt(used)+"。再來一次，一定可以全部讀準！";
+  }else if(medal){
+    doneTitle.textContent="🏅 獲得努力勳章";
+    doneSub.textContent="你破除了全部 "+S.words.length+" 個路障，其中 "+soft3+" 個試了三次，用時 "+fmt(used)+"。堅持練習，發音會越來越準！";
   }else{
     doneTitle.textContent="🎉 恭喜通關！";
     doneSub.textContent="你破除了 "+S.words.length+" 個路障，用時 "+fmt(used)+"。";
@@ -770,8 +785,8 @@ function finish(){
     review.hidden=false;
     reviewList.innerHTML=uniq.map(function(w){ return "<li>"+w.t+"<i>"+w.p+"</i></li>"; }).join("");
   } else { review.hidden=true; }
-  doneArt.className="doneArt "+(S.skips>0?"mallet":"trophy");
-  doneArt.innerHTML=(S.skips>0?MALLET:TROPHY);
+  doneArt.className="doneArt "+(S.skips>0?"mallet":(medal?"medal":"trophy"));
+  doneArt.innerHTML=(S.skips>0?MALLET:(medal?MEDAL:TROPHY));
   fx2.innerHTML=""; party();
   fitDone();
 }
@@ -914,7 +929,7 @@ function asrError(code){
   }else if(code==="network"){
     netFail++;
     setStatus("網絡未連上語音識別服務，請檢查網絡","bad");
-    if(netFail>=2 && S.wordTries>=3) btnSkip.hidden=false;
+    if(netFail>=2 && S.wordTries>=2) btnSkip.hidden=false;
   }else{
     setStatus("沒聽清楚，再讀一次","bad");
   }
@@ -940,7 +955,7 @@ function endListen(){
   var v=judge(text, conf);
   dbgTail = DEBUG ? "  ["+((v.tn&&v.tn.dbg)||"-")+" cf="+(conf?conf.toFixed(2):"-")+" "+v.reason+"]" : "";
   heardEl.textContent="聽到："+text+dbgTail;
-  if(v.pass) success();
+  if(v.pass) success(v.lenient);
   else miss(text, v.why);
 }
 /* 整體發音判定（以實測証據為準）：
@@ -949,16 +964,20 @@ function judge(text, cf){
   var w=curWord(), py=(w?w.p:"");
   var sc=Math.max(score(text), score(finalTx), score(interimTx));
   var tn=toneCheck();
-  if(sc<1) return {pass:false, reason:"word", tn:tn,
+  if(S.wordTries>=3){          /* 第三次：一律放行，鼓勵玩家繼續 */
+    return {pass:true, why:null, reason:"soft", lenient:true, tn:tn};
+  }
+  var T2=(S.wordTries>=2), wmin=(T2?0.4:0.5);
+  if(sc<1 && !(sc>=wmin && tn.verdict==="pass")) return {pass:false, reason:"word", tn:tn,
     why:(altHit ? "有點接近，但還不夠準！照「"+py+"」再讀一次" : null)};
   if(tn.verdict==="flat") return {pass:false, reason:"canto", tn:tn,
-    why:"聽起來不是普通話聲調，請用普通話照「"+py+"」讀一次"};
+    why:"聽聽示範錄音，請用普通話照「"+py+"」讀一次"};
   if(tn.verdict==="wrong") return {pass:false, reason:"tone", tn:tn,
-    why:"第 "+(tn.at||1)+" 個字的聲調不對，照「"+py+"」再讀一次"};
-  if(cf>0 && cf<0.30) return {pass:false, reason:"unclear", tn:tn,
-    why:"讀音不夠清楚，靳近麥克風再讀一次"};
-  if(tn.why==="no-data" && cf>0 && cf<0.45) return {pass:false, reason:"unclear2", tn:tn,
-    why:"讀音不夠清楚，靳近麥克風再讀一次"};
+    why:"聽聽示範錄音，照「"+py+"」再讀一次"};
+  if(!T2 && cf>0 && cf<0.15) return {pass:false, reason:"unclear", tn:tn,
+    why:"讀音不夠清楚，靠近麥克風再讀一次"};
+  if(!T2 && tn.why==="no-data" && cf>0 && cf<0.25) return {pass:false, reason:"unclear2", tn:tn,
+    why:"讀音不夠清楚，靠近麥克風再讀一次"};
   return {pass:true, why:null, reason:"ok", tn:tn};
 }
 function noAsr(){
@@ -1172,7 +1191,14 @@ function medOf(a){ var b=a.slice().sort(function(x,y){ return x-y; }); return b.
 function cleanSyl(a){
   if(a.length<4) return a;
   var m=medOf(a); if(!m) return a;
-  return a.filter(function(f){ return Math.abs(semis(f,m))<=7; });   /* 排除倍頻／半頻跳點 */
+  var b=a.map(function(f){                 /* 倍頻／半頻跳點先折回正確八度 */
+    var d=semis(f,m);
+    if(d>7) return f/2;
+    if(d<-7) return f*2;
+    return f;
+  });
+  var m2=medOf(b);
+  return b.filter(function(f){ return Math.abs(semis(f,m2))<=7; });
 }
 function wantTones(){
   var w=toneSeq(), out=[], i;
@@ -1186,10 +1212,24 @@ function pickRuns(segs,n){
     .sort(function(a,b){ return a.i-b.i; })
     .map(function(o){ return o.r; });
 }
+/* 判定參數：r* = 音區寬容度（半音），d3 = 三聲最少要先降多少 */
+var TONE_P={r1:4.0, r2:4.0, r3:1.2, r4:3.6, d3:0.55, kmin:0.70,
+            mg:0.30, sum:1.40, hard:2.40,
+            fl1:0.55, fl2:0.40, rgs:0.01, softSev:0.20, softSum:0.40,
+            dir1:0.60, dir2:0.85, dq2:0.90, dq4:0.90, dq3:0.45};
+/* 兩個字黏成一段時（中間沒斷音），對半切開，以免整詞量不到而放行 */
+function splitRuns(segs,n){
+  if(n!==2 || segs.length!==1) return segs;
+  var r=segs[0]; if(r.length<12) return segs;
+  var h=Math.floor(r.length/2), g=Math.max(1,Math.round(r.length*0.06));
+  return [r.slice(0,h-g), r.slice(h+g)];
+}
 function toneCheck(){
   var want=wantTones(), i;
   var out={verdict:"pass", why:"pass", at:0, checked:0, total:0, need:0,
-           frames:0, maxRange:0, flatN:0, contourN:0, dbg:""};
+           frames:0, maxRange:0, flatN:0, contourN:0, dbg:"",
+           sev:0, svSum:0, sevR:0, sumR:0, regR:0, wrongN:0, hard:false, k:1,
+           dir:0, dirR:0, dirAt:0};
   for(i=0;i<want.length;i++) if(want[i]) out.total++;
   out.need=out.total;
   if(!ana || !out.total){ out.why="no-data"; return out; }
@@ -1197,12 +1237,49 @@ function toneCheck(){
   for(i=0;i<pitchTrack.length;i++) if(pitchTrack[i]>0) fr++;
   out.frames=fr;
   if(fr<8){ out.why="no-data"; return out; }
-  var segs=pickRuns(voicedRuns(), want.length);
+  var segs=splitRuns(pickRuns(voicedRuns(), want.length), want.length);
   if(!segs.length){ out.why="no-data"; return out; }
-  var dbg=[], firstFlat=0, K=(typeof CAL!=="undefined" && CAL && CAL.k)?CAL.k:1, Kf=(K>1?K:1);
+  var dbg=[], firstFlat=0, rg=0, rgv=0, FL=(S.wordTries>=2?TONE_P.fl2:TONE_P.fl1), K=(typeof CAL!=="undefined" && CAL && CAL.k)?CAL.k:1, Kf=(K>TONE_P.kmin?K:TONE_P.kmin);
+  var uAll=[], uN=0, uq, ua, uSy=[], uRef=0, uBest=-1, uDm=0;   /* 全詞音高 → 個人高音區參照 */
+  for(uq=0;uq<segs.length && uq<want.length;uq++){
+    uSy.push(cleanSyl(med3(segs[uq])));
+  }
+  var uAnc=0, uTg=0, uD0=0, uDu=0, uDd=0;
+  var EM={1:4.0, 2:1.5, 3:-2.5, 4:1.5};    /* 各聲調預期的音高中心 */
+  for(uq=0;uq<uSy.length;uq++){            /* 以最長的音節為基準 */
+    if(uSy[uq].length>=4 && uSy[uq].length>uBest){ uBest=uSy[uq].length; uRef=medOf(uSy[uq]); uAnc=uq; }
+  }
+  for(uq=0;uq<uSy.length;uq++){            /* 整個音節鎖錯八度時，按預期音區拉回 */
+    ua=uSy[uq];
+    if(ua.length<4) continue;
+    uDm=uRef?semis(medOf(ua),uRef):0;
+    uTg=(EM[want[uq]]||0)-(EM[want[uAnc]]||0);
+    uD0=Math.abs(uDm-uTg); uDu=Math.abs(uDm+12-uTg); uDd=Math.abs(uDm-12-uTg);
+    if(uDu<uD0-7) ua=ua.map(function(f){ return f*2; });
+    else if(uDd<uD0-7) ua=ua.map(function(f){ return f/2; });
+    uSy[uq]=ua;
+    uAll=uAll.concat(ua); uN++;
+  }
+  var uMax=(uN>=2 && uAll.length>=10)?pctOf(uAll,0.92):0;   /* 測不齊兩個字就不做音區檢查 */
+  var uReg=(uMax>0);
+  /* 先估算說話者的音高漂移：一聲字本該平，它的斜率就是漂移量 */
+  var d1x=null, dmx=null, drift=0, pi;
+  for(pi=0;pi<segs.length && pi<want.length;pi++){
+    var pt=want[pi]; if(!pt) continue;
+    var pa=(uSy[pi] && uSy[pi].length>=4) ? uSy[pi] : cleanSyl(med3(segs[pi]));
+    if(pa.length<5) continue;
+    var pk=Math.max(1,Math.round(pa.length*0.28));
+    var ps=semis(avgOf(pa,pa.length-pk,pa.length), avgOf(pa,0,pk));
+    var pe=(pt===1?0:(pt===2?2.2:(pt===3?-1.0:-3.0))), rr=ps-pe;
+    if(pt===1){ if(d1x===null || ps>d1x) d1x=ps; }
+    if(dmx===null || rr>dmx) dmx=rr;
+  }
+  if(d1x!==null) drift=Math.min(0, Math.max(-3.0*Kf, d1x));
+  else if(dmx!==null) drift=Math.min(0, Math.max(-0.5*Kf, dmx));
+  out.drift=drift;
   for(i=0;i<segs.length && i<want.length;i++){
     var tone=want[i]; if(!tone) continue;
-    var a=cleanSyl(med3(segs[i]));
+    var a=(uSy[i] && uSy[i].length>=4) ? uSy[i] : cleanSyl(med3(segs[i]));
     if(a.length<4) continue;
     out.checked++;
     var n=a.length, k=Math.max(1,Math.round(n*0.28));
@@ -1210,34 +1287,66 @@ function toneCheck(){
     var slope=semis(tail,head);
     var lo=pctOf(a,0.08), hi=pctOf(a,0.92);
     var rng=semis(hi,lo), dipv=semis(lo,head);
-    var flat=false, wrong=false;
+    var flat=false, sv=0;
     if(tone===2){
       out.contourN++;
-      flat=(slope<1.2*Kf && rng<2.2*Kf);
-      wrong=(n>=6 && rng>=2.2*K && slope<=-2.2*K);
+      flat=((slope-drift)<FL*Kf && rng<2.2*Kf);
+      if(n>=5){ var dv2=TONE_P.dq2*Kf-(slope-drift); if(dv2>0){ out.dir+=dv2; if(!out.dirAt) out.dirAt=i+1; } }
+      if(n>=6 && rng>=2.2*K) sv=Math.max(sv, -(slope-drift)-2.2*K);
+      /* 二聲要收在高音區；粵語中平 33、低平 22、低降 21 都收得太低 */
+      if(n>=6 && uReg){ rgv=-semis(tail,uMax)-TONE_P.r2*K+drift*i; if(rgv>rg) rg=rgv; if(rgv>sv) sv=rgv; }
     }else if(tone===4){
       out.contourN++;
-      flat=(slope>-1.2*Kf && rng<2.2*Kf);
-      wrong=(n>=6 && rng>=1.6*K && slope>=1.4*K);
+      flat=((slope-drift)>-FL*Kf && rng<2.2*Kf);
+      if(n>=5){ var dv4=(slope-drift)+TONE_P.dq4*Kf; if(dv4>0){ out.dir+=dv4; if(!out.dirAt) out.dirAt=i+1; } }
+      if(n>=6 && rng>=1.6*K) sv=Math.max(sv, slope-1.4*K);
+      /* 四聲要從高音區一路掉下來；粵語 22／33 起點太低 */
+      if(n>=6 && uReg){ rgv=-semis(head,uMax)-TONE_P.r4*K+drift*i; if(rgv>rg) rg=rgv; if(rgv>sv) sv=rgv; }
     }else if(tone===3){
       out.contourN++;
-      flat=(dipv>-0.8*K && Math.abs(slope)<1.5*Kf && rng<2.2*Kf); var mi3=0,qq3; for(qq3=1;qq3<n;qq3++){ if(a[qq3]<a[mi3]) mi3=qq3; } var mp3=(n>1?mi3/(n-1):0), dip03=semis(a[mi3],a[0]); wrong=(n>=6 && rng>=1.6*K && slope>=1.4*K && mp3<0.30 && dip03>-0.8*K);
+      flat=(dipv>-0.8*K && Math.abs(slope-drift)<(FL+0.3)*Kf && rng<2.2*Kf);
+      if(n>=5 && dipv>-0.5*K){ var dv3=(slope-drift)+TONE_P.dq3*Kf; if(dv3>0){ out.dir+=dv3; if(!out.dirAt) out.dirAt=i+1; } }
+      var mi3=0,qq3; for(qq3=1;qq3<n;qq3++){ if(a[qq3]<a[mi3]) mi3=qq3; } var mp3=(n>1?mi3/(n-1):0), dip03=semis(a[mi3],a[0]); if(n>=6 && rng>=1.6*K && ((mp3<0.30 && dip03>-0.8*K) || dipv>-TONE_P.d3*K)) sv=Math.max(sv, slope-1.4*K);
+      /* 三聲是低調：粵語低升 25 會升到全詞最高處 */
+      if(n>=6 && uReg && slope>=1.0*K){ rgv=semis(hi,uMax)+TONE_P.r3*K; if(rgv>rg) rg=rgv; if(rgv>sv) sv=rgv; }
     }else if(tone===1){
       var mi1=0,qq1; for(qq1=1;qq1<n;qq1++){ if(a[qq1]<a[mi1]) mi1=qq1; }
       var mp1=(n>1?mi1/(n-1):0);
-      wrong=(n>=6 && ((rng>=3.2*K && slope>=3.0*K) || (rng>=3.6*K && slope<=-3.4*K)
-                   || (rng>=3.2*K && dipv<=-2.6*K && mp1>=0.2 && mp1<=0.85)));
+      if(n>=6){
+        if(rng>=3.2*K) sv=Math.max(sv, (slope-drift)-3.0*K);
+        if(rng>=3.6*K) sv=Math.max(sv, -(slope-drift)-3.4*K);
+        if(rng>=2.6*K && mp1>=0.2 && mp1<=0.85) sv=Math.max(sv, -dipv-2.1*K);
+      }
+      /* 一聲是高平調；粵語低平調拿來充一聲會整個偏低 */
+      if(n>=6 && uReg){ rgv=-semis(medOf(a),uMax)-TONE_P.r1*K+drift*i; if(rgv>rg) rg=rgv; if(rgv>sv) sv=rgv; }
     }
     if(tone!==1 && rng>out.maxRange) out.maxRange=rng;
     if(flat){ out.flatN++; if(!firstFlat) firstFlat=i+1; }
-    dbg.push(tone+":s"+(slope>=0?"+":"")+slope.toFixed(1)+" r"+rng.toFixed(1));
-    if(wrong && out.verdict==="pass"){ out.verdict="wrong"; out.why="tone"; out.at=i+1; }
+    var gv=uReg?(tone===2?semis(tail,uMax):(tone===4?semis(head,uMax):(tone===3?semis(hi,uMax):semis(medOf(a),uMax)))):0;
+    dbg.push(tone+":s"+(slope>=0?"+":"")+slope.toFixed(1)+" r"+rng.toFixed(1)+(uReg?" g"+gv.toFixed(1):""));
+    if(sv<0) sv=0;
+    if(sv>out.sev) out.sev=sv;
+    out.svSum+=sv;
+    if(sv>=TONE_P.mg*K){ out.wrongN++; if(!out.at) out.at=i+1; }
   }
-  out.dbg=dbg.join("|")+(K!==1?" k"+K.toFixed(2):"");
+  out.k=K;
+  out.sevR=out.sev/(K||1); out.sumR=out.svSum/(K||1); out.regR=rg/(K||1); out.dirR=out.dir/(Kf||1);
+  out.dbg=dbg.join("|")+" v"+out.sevR.toFixed(1)+"/"+out.sumR.toFixed(1)+" g"+out.regR.toFixed(1)+" d"+out.dirR.toFixed(1)+(drift?" t"+drift.toFixed(1):"")+(K!==1?" k"+K.toFixed(2):"");
   if(!out.checked){ out.why="no-data"; return out; }
-  if(out.verdict==="wrong") return out;
-  if(out.contourN>=1 && out.flatN===out.contourN && out.maxRange<2.4*Kf){
+  out.hard=(out.dirR>=TONE_P.dir1 || out.sevR>=TONE_P.hard || out.sumR>=TONE_P.hard+0.8);
+  var Tx=(S.wordTries>=2), DT=(Tx?TONE_P.dir2:TONE_P.dir1),
+      MGx=TONE_P.mg*(Tx?1.8:1), SUMx=TONE_P.sum*(Tx?1.8:1);
+  /* 方向證據：該升不升、該降不降、三聲不低。粵語必犯，普通話幾乎不會犯 */
+  if(out.dirR>=DT){
+    out.verdict="flat"; out.why="dir"; out.at=out.dirAt||firstFlat||1;
+    return out;
+  }
+  if(out.flatN>=2){   /* 兩個字都念成平調 */
     out.verdict="flat"; out.why="flat"; out.at=firstFlat||1;
+    return out;
+  }
+  if(out.sevR>=MGx || out.sumR>=SUMx){
+    out.verdict="wrong"; out.why="tone"; out.at=out.at||1;
   }
   return out;
 }
@@ -1271,6 +1380,20 @@ var TROPHY='<svg viewBox="0 0 120 132" role="img" aria-label="獎杯">'
   +'<circle class="spk" cx="12" cy="18" r="5" fill="#FFE9A8"/>'
   +'<circle class="spk spk2" cx="108" cy="86" r="4.5" fill="#FFE9A8"/>'
   +'<circle class="spk spk3" cx="102" cy="10" r="3.8" fill="#FFE9A8"/>'
+  +'</svg>';
+var MEDAL='<svg viewBox="0 0 120 132" role="img" aria-label="努力勳章">'
+  +'<g class="rib">'
+  +'<path d="M38 4 L56 58 H36 L22 12 Z" fill="#E56A5A" stroke="#C04A3C" stroke-width="3" stroke-linejoin="round"/>'
+  +'<path d="M82 4 L98 12 84 58 H64 Z" fill="#6FA8E0" stroke="#3E79B8" stroke-width="3" stroke-linejoin="round"/>'
+  +'</g>'
+  +'<g class="mdg">'
+  +'<circle cx="60" cy="88" r="34" fill="#FFC24A" stroke="#E09415" stroke-width="4"/>'
+  +'<circle cx="60" cy="88" r="25.5" fill="#FFD777" stroke="#F0A81F" stroke-width="2.6"/>'
+  +'<path d="M60 70 l5.6 11.6 12.8 1.8 -9.3 9 2.2 12.7 -11.3-6 -11.3 6 2.2-12.7 -9.3-9 12.8-1.8 Z" fill="#FFF3C4" stroke="#F0A81F" stroke-width="2.4" stroke-linejoin="round"/>'
+  +'</g>'
+  +'<circle class="spk" cx="14" cy="62" r="5" fill="#FFE9A8"/>'
+  +'<circle class="spk spk2" cx="106" cy="100" r="4.5" fill="#FFE9A8"/>'
+  +'<circle class="spk spk3" cx="100" cy="50" r="3.8" fill="#FFE9A8"/>'
   +'</svg>';
 function sfxWin(){
   var seq=[523.25,659.25,783.99,1046.5];
@@ -1448,7 +1571,7 @@ btnSkip.addEventListener("click",function(){
 
 /* ============ 開始 / 重玩 ============ */
 function startGame(){
-  S.words=pickWords(); S.idx=0; S.tries=0; S.wordTries=0; S.firstTry=0; S.misses=[]; S.skips=0;
+  S.words=pickWords(); S.idx=0; S.tries=0; S.wordTries=0; S.firstTry=0; S.misses=[]; S.skips=0; S.softPass=0;
   S.playing=true; retried=false; netFail=0;
   if(!micAsked && !micDenied) primeMic();   /* 只有從未詢問過才會開麥克風 */
   screenStart.hidden=true; screenDone.hidden=true;
@@ -1465,7 +1588,7 @@ var CAL={k:1,span:0,done:false};
 var calWatch=null, calTries=0;
 function calScale(sp){
   if(!(sp>=1.5 && sp<=24)) return 1;          /* 離譜的測量值一律不採用 */
-  return Math.max(0.62, Math.min(1.30, sp/7.0));  /* 寧可低估：低估只會更嚴格，高估才會漏判 */
+  return Math.max(0.62, Math.min(1.30, sp/6.0));  /* 寧可低估：低估只會更嚴格，高估才會漏判 */
 }
 function calSpan(){
   var runs=voicedRuns(), all=[], i, a;
