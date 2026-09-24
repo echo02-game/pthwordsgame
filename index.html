@@ -486,26 +486,26 @@ var BANK_RAW = [
 "形式|形式|xíng shì","營造|营造|yíng zào","損壞|损坏|sǔn huài","醞釀|酝酿|yùn niàng",
 "抱怨|抱怨|bào yuàn","仍然|仍然|réng rán","科學|科学|kē xué","堅持|坚持|jiān chí",
 "溫柔|温柔|wēn róu","需求|需求|xū qiú","收集|收集|shōu jí","輝煌|辉煌|huī huáng",
-"生活|生活|shēng huó","開始|开始|kāi shǐ","溫暖|温暖|wēn nuǎn","擁有|拥有|yōng yǒu",
+"生活|生活|shēng huó","開始|开始|kāi shǐ","陡然|陡然|dǒu rán","雷達|雷达|léi dá",
 "危險|危险|wēi xiǎn","艱苦|艰苦|jiān kǔ","悠久|悠久|yōu jiǔ","尋常|寻常|xún cháng",
 "經驗|经验|jīng yàn","庭院|庭院|tíng yuàn","懷抱|怀抱|huái bào","補償|补偿|bǔ cháng",
-"微笑|微笑|wēi xiào","濕潤|湿润|shī rùn","研究|研究|yán jiū","人生|人生|rén shēng",
+"霎時|霎时|shà shí","遲疑|迟疑|chí yí","研究|研究|yán jiū","人生|人生|rén shēng",
 "延伸|延伸|yán shēn","繁星|繁星|fán xīng","如今|如今|rú jīn","燃燒|燃烧|rán shāo",
 "徘徊|徘徊|pái huái","懷疑|怀疑|huái yí","完全|完全|wán quán","文學|文学|wén xué",
 "疲勞|疲劳|pí láo","人民|人民|rén mín","宏偉|宏伟|hóng wěi","原始|原始|yuán shǐ",
 "情景|情景|qíng jǐng","沿海|沿海|yán hǎi","雲朵|云朵|yún duǒ","寒冷|寒冷|hán lěng",
 "痕跡|痕迹|hén jì","炎熱|炎热|yán rè","年紀|年纪|nián jì","呈現|呈现|chéng xiàn",
 "人類|人类|rén lèi","存在|存在|cún zài","無限|无限|wú xiàn","組織|组织|zǔ zhī",
-"許多|许多|xǔ duō","祖先|祖先|zǔ xiān","母雞|母鸡|mǔ jī","海鷗|海鸥|hǎi ōu",
+"許多|许多|xǔ duō","祖先|祖先|zǔ xiān","年齡|年龄|nián líng","海鷗|海鸥|hǎi ōu",
 "紡織|纺织|fǎng zhī","保存|保存|bǎo cún","感情|感情|gǎn qíng","滿足|满足|mǎn zú",
 "普及|普及|pǔ jí","考察|考察|kǎo chá","海拔|海拔|hǎi bá","表演|表演|biǎo yǎn",
 "影響|影响|yǐng xiǎng","勇敢|勇敢|yǒng gǎn","掌管|掌管|zhǎng guǎn","鐵軌|铁轨|tiě guǐ",
-"也許|也许|yě xǔ","展示|展示|zhǎn shì","軌道|轨道|guǐ dào","體現|体现|tǐ xiàn",
-"肯定|肯定|kěn dìng","享受|享受|xiǎng shòu","宇宙|宇宙|yǔ zhòu","滿意|满意|mǎn yì",
+"比如|比如|bǐ rú","展示|展示|zhǎn shì","軌道|轨道|guǐ dào","體現|体现|tǐ xiàn",
+"肯定|肯定|kěn dìng","享受|享受|xiǎng shòu","品味|品味|pǐn wèi","海峽|海峡|hǎi xiá",
 "晚霞|晚霞|wǎn xiá","舞台|舞台|wǔ tái","水稻|水稻|shuǐ dào","目標|目标|mù biāo",
 "閃爍|闪烁|shǎn shuò","立春|立春|lì chūn","幸福|幸福|xìng fú","命名|命名|mìng míng",
 "自然|自然|zì rán","沸騰|沸腾|fèi téng","證明|证明|zhèng míng","霧霾|雾霾|wù mái",
-"歷史|历史|lì shǐ","確保|确保|què bǎo","跳舞|跳舞|tiào wǔ","婦女|妇女|fù nǚ",
+"歷史|历史|lì shǐ","確保|确保|què bǎo","寫字|写字|xiě zì","婦女|妇女|fù nǚ",
 "記者|记者|jì zhě","報紙|报纸|bào zhǐ","境界|境界|jìng jiè","偶然|偶然|ǒu rán",
 "映照|映照|yìng zhào","建築|建筑|jiàn zhù","自從|自从|zì cóng","世紀|世纪|shì jì"
 ];
@@ -664,10 +664,29 @@ function fmt(ms){
 function tick(){ hudTime.textContent=fmt(Date.now()-S.t0); }
 
 /* ============ 流程 ============ */
+/* 首字「普通話一聲＝粵語55」的詞：音高上本質分不出粵普，每回合最多出一個 */
+var AMB_MAX=1, AMB_CACHE=null;
+function isAmbig(w){
+  if(!AMB_CACHE) AMB_CACHE={};
+  if(AMB_CACHE[w.t]!==undefined) return AMB_CACHE[w.t];
+  var r=false;
+  try{
+    var mt=(w.p||"").trim().split(/\s+/).map(toneOfSyl), cy=CANTO_T[w.t];
+    r=!!(cy && cy.length===mt.length && mt[0]===1 && cy[0]===1);
+  }catch(e){ r=false; }
+  AMB_CACHE[w.t]=r; return r;
+}
 function pickWords(){
-  var a=BANK.slice(), out=[];
-  for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i];a[i]=a[j];a[j]=t; }
-  for(var k=0;k<ROUND && k<a.length;k++) out.push(a[k]);
+  var a=BANK.slice(), out=[], spare=[], amb=0, i, j, t, k;
+  for(i=a.length-1;i>0;i--){ j=Math.floor(Math.random()*(i+1)); t=a[i];a[i]=a[j];a[j]=t; }
+  for(k=0;k<a.length && out.length<ROUND;k++){
+    if(isAmbig(a[k])){
+      if(amb>=AMB_MAX){ spare.push(a[k]); continue; }
+      amb++;
+    }
+    out.push(a[k]);
+  }
+  for(k=0;out.length<ROUND && k<spare.length;k++) out.push(spare[k]);   /* 詞庫不夠才補滿 */
   return out;
 }
 function cur(){ return S.els[S.idx]; }
@@ -960,24 +979,48 @@ function endListen(){
 }
 /* 整體發音判定（以實測証據為準）：
    字音對了之後，只有「量到明確錯誤」或「信心值極低」才不給過 */
+/* v28：「聲調檢測說不過就一律不過」改成「要有明確的粵語調型證據才擋」；
+   兩個字都真的量到、且證據強度達到正常門檻的倍數，才算「念成粵語」 */
+var CANG={d1:1.10, d2:2.00, s1:3.00, s2:5.00};
+function cantoStrong(tn){
+  if(!tn || !tn.total || tn.checked<tn.total) return false;
+  if(tn.flatN>=2 || tn.flatT>=1) return true;
+  var T2=(S.wordTries>=2);
+  return tn.dir>=(T2?CANG.d2:CANG.d1) || tn.sev>=(T2?CANG.s2:CANG.s1);
+}
+/* 前兩次：需要普通話聲調的正面證據，而非只靠「未發現粵語錯誤」。
+   第三次鼓勵放行保留原樣。 */
+function mandarinEvidence(tn){
+  if(!tn || tn.verdict!=="pass" || !tn.total || !tn.checked) return false;
+  if(tn.checked<tn.total) return (tn.posCk||0)>=1 && tn.cn>=1;
+  if(tn.cn===0) return false;
+  if(tn.cn===1) return (tn.posCk||0)>=1 && !cantoStrong(tn);
+  return !cantoStrong(tn);
+}
 function judge(text, cf){
   var w=curWord(), py=(w?w.p:"");
   var sc=Math.max(score(text), score(finalTx), score(interimTx));
   var tn=toneCheck();
-  if(S.wordTries>=3){          /* 第三次：一律放行，鼓勵玩家繼續 */
+  if(S.wordTries>=3){
     return {pass:true, why:null, reason:"soft", lenient:true, tn:tn};
   }
   var T2=(S.wordTries>=2), wmin=(T2?0.4:0.5);
-  if(sc<1 && !(sc>=wmin && tn.verdict==="pass")) return {pass:false, reason:"word", tn:tn,
-    why:(altHit ? "有點接近，但還不夠準！照「"+py+"」再讀一次" : null)};
-  if(tn.verdict==="flat") return {pass:false, reason:"canto", tn:tn,
-    why:"聽聽示範錄音，請用普通話照「"+py+"」讀一次"};
-  if(tn.verdict==="wrong") return {pass:false, reason:"tone", tn:tn,
-    why:"聽聽示範錄音，照「"+py+"」再讀一次"};
-  if(!T2 && cf>0 && cf<0.15) return {pass:false, reason:"unclear", tn:tn,
-    why:"讀音不夠清楚，靠近麥克風再讀一次"};
-  if(!T2 && tn.why==="no-data" && cf>0 && cf<0.25) return {pass:false, reason:"unclear2", tn:tn,
-    why:"讀音不夠清楚，靠近麥克風再讀一次"};
+  if(sc<1 && !(sc>=wmin && mandarinEvidence(tn))){
+    return {pass:false, reason:"word", tn:tn,
+      why:(altHit ? "有點接近，但還不夠準！照「"+py+"」再讀一次" : null)};
+  }
+  if(cantoStrong(tn)){
+    return {pass:false, reason:"canto", tn:tn,
+      why:"請用普通話照「"+py+"」再讀一次"};
+  }
+  if(!mandarinEvidence(tn)){
+    return {pass:false, reason:"unclear", tn:tn,
+      why:"未能確認普通話聲調，請照「"+py+"」再讀一次"};
+  }
+  if(!T2 && cf>0 && cf<0.15){
+    return {pass:false, reason:"unclear", tn:tn,
+      why:"讀音不夠清楚，靠近麥克風再讀一次"};
+  }
   return {pass:true, why:null, reason:"ok", tn:tn};
 }
 function noAsr(){
@@ -1126,15 +1169,15 @@ function pitchOf(buf,sr){
   var n=buf.length,i,rms=0;
   for(i=0;i<n;i++) rms+=buf[i]*buf[i];
   rms=Math.sqrt(rms/n);
-  if(rms<0.010) return 0;
-  var lo=Math.floor(sr/400), hi=Math.min(Math.floor(sr/70), n-4), bestLag=0, bestCor=0;
+  if(rms<0.0042) return 0;
+  var lo=Math.floor(sr/420), hi=Math.min(Math.floor(sr/65), n-4), bestLag=0, bestCor=0;
   for(var lag=lo;lag<=hi;lag++){
     var c=0, m=n-lag, cnt=0;
-    for(i=0;i<m;i+=2){ c+=buf[i]*buf[i+lag]; cnt++; }
+    for(i=0;i<m;i+=3){ c+=buf[i]*buf[i+lag]; cnt++; }
     c/=cnt;
     if(c>bestCor){ bestCor=c; bestLag=lag; }
   }
-  if(!bestLag || bestCor < rms*rms*0.34) return 0;
+  if(!bestLag || bestCor < rms*rms*0.17) return 0;
   return sr/bestLag;
 }
 function pitchStart(){
@@ -1143,7 +1186,7 @@ function pitchStart(){
   clearInterval(pitchTimer);
   pitchTimer=setInterval(function(){
     try{ ana.getFloatTimeDomainData(anaBuf); pitchTrack.push(pitchOf(anaBuf, AC.sampleRate)); }catch(e){}
-  },25);
+  },14);
 }
 function pitchStop(){ clearInterval(pitchTimer); pitchTimer=null; }
 function semis(a,b){ return 12*Math.log(a/b)/Math.log(2); }
@@ -1212,34 +1255,167 @@ function pickRuns(segs,n){
     .sort(function(a,b){ return a.i-b.i; })
     .map(function(o){ return o.r; });
 }
+/* 取音分段 v23：雜訊短段先排除；段數多於字數時「就近合併」而不是丟掉，
+   段數少於字數時再切開，避免一個字被倔成兩段而整詞誤判 */
+function voicedRuns2(){
+  var out=[], run=null, gap=0, i, f;
+  for(i=0;i<pitchTrack.length;i++){
+    f=pitchTrack[i];
+    if(f>0){
+      if(!run){ run={a:[], s:i, e:i}; out.push(run); }
+      else if(gap>=1 && gap<=2 && run.a.length){ var bq; for(bq=0;bq<gap;bq++) run.a.push((run.a[run.a.length-1]+f)/2); }
+      run.a.push(f); run.e=i; gap=0;
+    }else{ gap++; if(gap>2) run=null; }
+  }
+  return out.filter(function(r){ return r.a.length>=3; });
+}
+function mergeRuns(rs,n){
+  var a=rs.slice(), bi, bs, i, g, sc;
+  while(a.length>n){
+    bi=0; bs=1e9;
+    for(i=0;i+1<a.length;i++){
+      g=a[i+1].s-a[i].e-1;
+      sc=g*6+Math.min(a[i].a.length,a[i+1].a.length);
+      if(sc<bs){ bs=sc; bi=i; }
+    }
+    a.splice(bi,2,{a:a[bi].a.concat(a[bi+1].a), s:a[bi].s, e:a[bi+1].e});
+  }
+  return a;
+}
+function cutLongest(ss,n){
+  var a=ss.slice(), bi, bl, i, r, h, g;
+  while(a.length<n){
+    bi=-1; bl=0;
+    for(i=0;i<a.length;i++) if(a[i].length>bl){ bl=a[i].length; bi=i; }
+    if(bi<0 || bl<30) break;
+    r=a[bi]; h=Math.floor(r.length/2); g=Math.max(1,Math.round(r.length*0.06));
+    if(h-g<10 || r.length-(h+g)<10) break;
+    a.splice(bi,1,r.slice(0,h-g),r.slice(h+g));
+  }
+  return a;
+}
+/* v27 關鍵修正：呼吸聲、點擃聲、「嘅」、背景人聲都會產生「假音節」；
+   舊做法只挑最長的 n 段，雜音一旦夠長就被當成第一個字，
+   兩個真字反而黏成一段，整詞聲調錯位而誤判。
+   現在先按靈音間隔分群，取真正的說話群，雜音群直接丟棄。 */
+function pickSpan(rs,n){
+  if(rs.length<2) return rs;
+  var GAPC=12, gs=[], cur=[rs[0]], i, g;
+  for(i=1;i<rs.length;i++){
+    g=rs[i].s-cur[cur.length-1].e-1;
+    if(g<=GAPC) cur.push(rs[i]); else { gs.push(cur); cur=[rs[i]]; }
+  }
+  gs.push(cur);
+  if(gs.length<2) return rs;
+  function tot(a){ var t=0,j; for(j=0;j<a.length;j++) t+=a[j].a.length; return t; }
+  function nrun(a){ var c=0,j; for(j=0;j<a.length;j++) if(a[j].a.length>=5) c++; return c; }
+  var bi=0, bs=-1, sc;
+  for(i=0;i<gs.length;i++){
+    sc=tot(gs[i])+10*Math.min(nrun(gs[i]),n);
+    if(sc>=bs){ bs=sc; bi=i; }
+  }
+  var lo=bi, hi=bi, span=gs[bi].slice();
+  /* 們慢念、字間停頓較長時，把旁邊「像是字」的群拉回來；假音節太短則不拉 */
+  while(nrun(span)<n){
+    var cand=-1, cg=0, g2;
+    if(lo>0){ cand=lo-1; cg=gs[lo][0].s-gs[lo-1][gs[lo-1].length-1].e-1; }
+    if(hi<gs.length-1){
+      g2=gs[hi+1][0].s-gs[hi][gs[hi].length-1].e-1;
+      if(cand<0 || tot(gs[hi+1])>tot(gs[cand])){ cand=hi+1; cg=g2; }
+    }
+    if(cand<0) break;
+    var ct=tot(gs[cand]), st=tot(span);
+    if(cg>30) break;
+    if(!(ct>=0.42*st || st<26)) break;
+    if(ct<6) break;
+    if(cand<lo){ lo=cand; span=gs[cand].concat(span); } else { hi=cand; span=span.concat(gs[cand]); }
+  }
+  return span;
+}
+/* 自相關取音偶爾會拿到倍頻或半頻，造成假的大幅升降；
+   以每個字的中位數為基準折回來，同一個詞才不會時過時不過 */
+function octFold(a){
+  var i, p, b, m, v;
+  for(p=0;p<2;p++){
+    b=a.slice().sort(function(x,y){ return x-y; });
+    m=b[b.length>>1];
+    if(!m) return a;
+    for(i=0;i<a.length;i++){
+      v=a[i];
+      if(v>m*1.75) v=v/2; else if(v<m*0.57) v=v*2;
+      a[i]=v;
+    }
+  }
+  return a;
+}
+function fitSegs(n){
+  var rs=pickSpan(voicedRuns2(), n);
+  var big=rs.filter(function(r){ return r.a.length>=8; });
+  var mid=rs.filter(function(r){ return r.a.length>=5; });
+  if(big.length>=n) rs=big; else if(mid.length>=n) rs=mid;
+  rs=mergeRuns(rs,n);
+  return cutLongest(rs.map(function(r){ return r.a; }), n).map(octFold);
+}
 /* 判定參數：r* = 音區寬容度（半音），d3 = 三聲最少要先降多少 */
-var TONE_P={r1:4.0, r2:4.0, r3:1.2, r4:3.6, d3:0.55, kmin:0.70,
+var TONE_P={r1:4.0, r2:4.0, r3:2.2, r4:3.6, d3:0.55, kmin:0.70,
             mg:0.30, sum:1.40, hard:2.40,
             fl1:0.55, fl2:0.40, rgs:0.01, softSev:0.20, softSum:0.40,
-            dir1:0.60, dir2:0.85, dq2:0.90, dq4:0.90, dq3:0.45};
+            dir1:0.60, dir2:0.72, dq2:0.90, dq4:0.90, dq3:0.45, dqR:0.90};
 /* 兩個字黏成一段時（中間沒斷音），對半切開，以免整詞量不到而放行 */
 function splitRuns(segs,n){
   if(n!==2 || segs.length!==1) return segs;
-  var r=segs[0]; if(r.length<12) return segs;
+  var r=segs[0]; if(r.length<30) return segs;
   var h=Math.floor(r.length/2), g=Math.max(1,Math.round(r.length*0.06));
   return [r.slice(0,h-g), r.slice(h+g)];
+}
+/* 粵語聲調表（1=55 2=25 3=33 4=21 5=23 6=22）：用來算這個詞真正能分辨粵/普的字有幾個 */
+var CANTO_T={"形式":[4,1],"營造":[4,6],"損壞":[2,6],"醞釀":[2,6],"抱怨":[5,3],"仍然":[4,4],"科學":[1,6],"堅持":[1,4],"溫柔":[1,4],"需求":[1,4],"收集":[1,6],"輝煌":[1,4],"生活":[1,6],"開始":[1,2],"陡然":[2,4],"雷達":[4,6],"危險":[4,2],"艱苦":[1,2],"悠久":[1,2],"經驗":[1,6],"霎時":[3,4],"遲疑":[4,4],"研究":[4,3],"人生":[4,1],"延伸":[4,1],"繁星":[4,1],"如今":[4,1],"燃燒":[4,1],"徘徊":[4,4],"懷疑":[4,4],"完全":[4,4],"文學":[4,6],"疲勞":[4,4],"人民":[4,4],"宏偉":[4,5],"原始":[4,2],"情景":[4,2],"沿海":[4,2],"雲朵":[4,2],"寒冷":[4,5],"痕跡":[4,1],"炎熱":[4,6],"年紀":[4,2],"呈現":[4,6],"人類":[4,6],"存在":[4,6],"無限":[4,6],"組織":[2,1],"許多":[2,1],"祖先":[2,1],"年齡":[4,4],"海鷗":[2,1],"紡織":[2,1],"保存":[2,4],"感情":[2,4],"滿足":[5,1],"普及":[2,6],"考察":[2,3],"海拔":[2,6],"表演":[2,2],"影響":[2,2],"勇敢":[2,2],"掌管":[2,2],"鐵軌":[3,2],"比如":[2,4],"展示":[2,6],"軌道":[2,6],"體現":[2,6],"肯定":[2,6],"享受":[2,6],"品味":[2,6],"海峽":[2,6],"歷史":[6,2],"確保":[3,2],"寫字":[2,6],"婦女":[5,5],"記者":[3,2],"報紙":[3,2],"目標":[6,1],"立春":[6,1],"幸福":[6,1],"命名":[6,4],"自然":[6,4],"沸騰":[3,4],"證明":[3,4],"霧霾":[6,4],"境界":[2,3],"映照":[2,3],"建築":[3,1],"世紀":[3,2],"尋常":[4,4],"庭院":[4,2],"懷抱":[4,5],"補償":[2,4],"晚霞":[5,4],"舞台":[5,4],"水稻":[2,6],"閃爍":[2,3],"偶然":[5,4],"自從":[6,4]};
+var MT_TPL={1:{L:3.0,D:0.0}, 2:{L:0.5,D:4.0}, 3:{L:-3.0,D:-1.0}, 4:{L:1.0,D:-5.0}};
+var YT_TPL={1:{L:3.0,D:0.0}, 2:{L:0.5,D:3.5}, 3:{L:0.0,D:0.0}, 4:{L:-3.0,D:-1.2}, 5:{L:-1.5,D:1.8}, 6:{L:-2.0,D:0.0}};
+function contrastN(want){
+  var w=curWord(), cy=(w && CANTO_T[w.t])?CANTO_T[w.t]:null, i, m, c, n=0;
+  if(!cy || cy.length!==want.length) return 2;   /* 不在表內的詞維持原有行為 */
+  for(i=0;i<want.length;i++){
+    m=MT_TPL[want[i]]; c=YT_TPL[cy[i]];
+    if(!m || !c){ n++; continue; }
+    if(Math.abs(m.L-c.L)>=1.0 || Math.abs(m.D-c.D)>=1.2) n++;
+  }
+  return n;
+}
+function trapsOf(want){
+  var w=curWord(), cy=(w && CANTO_T[w.t])?CANTO_T[w.t]:null, i, m, c;
+  var o={known:!!(cy && cy.length===want.length), ctr:[], L:[], R:[], Lo:[], seen:[]};
+  for(i=0;i<want.length;i++){
+    o.ctr.push(true); o.L.push(false); o.R.push(false); o.Lo.push(false); o.seen.push(false);
+    if(!o.known) continue;
+    m=MT_TPL[want[i]]; c=YT_TPL[cy[i]];
+    if(!m || !c) continue;
+    o.ctr[i]=(Math.abs(m.L-c.L)>=1.0 || Math.abs(m.D-c.D)>=1.2);
+    if(want[i]!==1 && (cy[i]===1 || cy[i]===3 || cy[i]===6)) o.L[i]=true;
+    if(want[i]===3 && (cy[i]===2 || cy[i]===5)) o.R[i]=true;
+    if(want[i]===1 && (cy[i]===2 || cy[i]===4 || cy[i]===5 || cy[i]===6)) o.Lo[i]=true;
+  }
+  return o;
 }
 function toneCheck(){
   var want=wantTones(), i;
   var out={verdict:"pass", why:"pass", at:0, checked:0, total:0, need:0,
            frames:0, maxRange:0, flatN:0, contourN:0, dbg:"",
            sev:0, svSum:0, sevR:0, sumR:0, regR:0, wrongN:0, hard:false, k:1,
-           dir:0, dirR:0, dirAt:0};
+           dir:0, dirR:0, dirAt:0, flatT:0};
   for(i=0;i<want.length;i++) if(want[i]) out.total++;
   out.need=out.total;
+  var TR=trapsOf(want);
+  out.cn=contrastN(want);   /* 只剩一個對比點的詞，不能再放寬 */
   if(!ana || !out.total){ out.why="no-data"; return out; }
   var fr=0;
   for(i=0;i<pitchTrack.length;i++) if(pitchTrack[i]>0) fr++;
   out.frames=fr;
-  if(fr<8){ out.why="no-data"; return out; }
-  var segs=splitRuns(pickRuns(voicedRuns(), want.length), want.length);
-  if(!segs.length){ out.why="no-data"; return out; }
-  var dbg=[], firstFlat=0, rg=0, rgv=0, FL=(S.wordTries>=2?TONE_P.fl2:TONE_P.fl1), K=(typeof CAL!=="undefined" && CAL && CAL.k)?CAL.k:1, Kf=(K>TONE_P.kmin?K:TONE_P.kmin);
+  if(fr<16){ out.verdict="unclear"; out.why="no-data"; return out; }
+  var segs=fitSegs(want.length);
+  if(!segs.length){ out.verdict="unclear"; out.why="no-data"; return out; }
+  if(segs.length<want.length){ out.verdict="unclear"; out.why="miss"; return out; }
+  var dbg=[], firstFlat=0, rg=0, rgv=0, FL=((S.wordTries>=2 && out.cn>=2)?TONE_P.fl2:TONE_P.fl1), K=(typeof CAL!=="undefined" && CAL && CAL.k)?CAL.k:1, Kf=(K>1?K:1); K=Kf;
   var uAll=[], uN=0, uq, ua, uSy=[], uRef=0, uBest=-1, uDm=0;   /* 全詞音高 → 個人高音區參照 */
   for(uq=0;uq<segs.length && uq<want.length;uq++){
     uSy.push(cleanSyl(med3(segs[uq])));
@@ -1251,7 +1427,7 @@ function toneCheck(){
   }
   for(uq=0;uq<uSy.length;uq++){            /* 整個音節鎖錯八度時，按預期音區拉回 */
     ua=uSy[uq];
-    if(ua.length<4) continue;
+    if(ua.length<7) continue;
     uDm=uRef?semis(medOf(ua),uRef):0;
     uTg=(EM[want[uq]]||0)-(EM[want[uAnc]]||0);
     uD0=Math.abs(uDm-uTg); uDu=Math.abs(uDm+12-uTg); uDd=Math.abs(uDm-12-uTg);
@@ -1260,10 +1436,15 @@ function toneCheck(){
     uSy[uq]=ua;
     uAll=uAll.concat(ua); uN++;
   }
-  var uMax=(uN>=2 && uAll.length>=10)?pctOf(uAll,0.92):0;   /* 測不齊兩個字就不做音區檢查 */
+  var uMax=(uN>=2 && uAll.length>=20)?pctOf(uAll,0.92):0;   /* 測不齊兩個字就不做音區檢查 */
   var uReg=(uMax>0);
+  var wTop=0, wq, wa, wHis=[];
+  for(wq=0;wq<uSy.length;wq++){ wa=uSy[wq]; wHis.push(wa.length>=4?pctOf(wa,0.92):0); }
+  for(wq=0;wq<wHis.length;wq++){ if(wHis[wq]>wTop) wTop=wHis[wq]; }
+  var hiRef=false, hq;
+  for(hq=0;hq<want.length;hq++) if(want[hq]===1) hiRef=true;
   /* 先估算說話者的音高漂移：一聲字本該平，它的斜率就是漂移量 */
-  var d1x=null, dmx=null, drift=0, pi;
+  var d1n=null, d1f=null, dmx=null, drift=0, pi;
   for(pi=0;pi<segs.length && pi<want.length;pi++){
     var pt=want[pi]; if(!pt) continue;
     var pa=(uSy[pi] && uSy[pi].length>=4) ? uSy[pi] : cleanSyl(med3(segs[pi]));
@@ -1271,17 +1452,19 @@ function toneCheck(){
     var pk=Math.max(1,Math.round(pa.length*0.28));
     var ps=semis(avgOf(pa,pa.length-pk,pa.length), avgOf(pa,0,pk));
     var pe=(pt===1?0:(pt===2?2.2:(pt===3?-1.0:-3.0))), rr=ps-pe;
-    if(pt===1){ if(d1x===null || ps>d1x) d1x=ps; }
+    if(pt===1){ if(pi===want.length-1){ if(d1f===null || ps>d1f) d1f=ps; }
+                else { if(d1n===null || ps>d1n) d1n=ps; } }
     if(dmx===null || rr>dmx) dmx=rr;
   }
-  if(d1x!==null) drift=Math.min(0, Math.max(-3.0*Kf, d1x));
+  if(d1n!==null) drift=Math.min(0, Math.max(-3.0*Kf, d1n));
+  else if(d1f!==null) drift=Math.min(0, Math.max(-0.5*Kf, d1f));
   else if(dmx!==null) drift=Math.min(0, Math.max(-0.5*Kf, dmx));
   out.drift=drift;
   for(i=0;i<segs.length && i<want.length;i++){
     var tone=want[i]; if(!tone) continue;
     var a=(uSy[i] && uSy[i].length>=4) ? uSy[i] : cleanSyl(med3(segs[i]));
-    if(a.length<4) continue;
-    out.checked++;
+    if(a.length<7) continue;
+    out.checked++; TR.seen[i]=true; if(TR.ctr[i]) out.ctrCk=(out.ctrCk||0)+1;
     var n=a.length, k=Math.max(1,Math.round(n*0.28));
     var head=avgOf(a,0,k), tail=avgOf(a,n-k,n);
     var slope=semis(tail,head);
@@ -1291,37 +1474,60 @@ function toneCheck(){
     if(tone===2){
       out.contourN++;
       flat=((slope-drift)<FL*Kf && rng<2.2*Kf);
-      if(n>=5){ var dv2=TONE_P.dq2*Kf-(slope-drift); if(dv2>0){ out.dir+=dv2; if(!out.dirAt) out.dirAt=i+1; } }
-      if(n>=6 && rng>=2.2*K) sv=Math.max(sv, -(slope-drift)-2.2*K);
+      if(n>=9){ var dv2=TONE_P.dq2*Kf-(slope-drift); if(dv2>0){ out.dir+=dv2; if(!out.dirAt) out.dirAt=i+1; } }
+      if(n>=11 && rng>=2.2*K) sv=Math.max(sv, -(slope-drift)-2.2*K);
       /* 二聲要收在高音區；粵語中平 33、低平 22、低降 21 都收得太低 */
-      if(n>=6 && uReg){ rgv=-semis(tail,uMax)-TONE_P.r2*K+drift*i; if(rgv>rg) rg=rgv; if(rgv>sv) sv=rgv; }
+      if(n>=11 && uReg){ rgv=-semis(tail,uMax)-TONE_P.r2*K+drift*i; if(rgv>rg) rg=rgv; if(rgv>sv) sv=rgv; }
     }else if(tone===4){
       out.contourN++;
       flat=((slope-drift)>-FL*Kf && rng<2.2*Kf);
-      if(n>=5){ var dv4=(slope-drift)+TONE_P.dq4*Kf; if(dv4>0){ out.dir+=dv4; if(!out.dirAt) out.dirAt=i+1; } }
-      if(n>=6 && rng>=1.6*K) sv=Math.max(sv, slope-1.4*K);
+      if(n>=9){ var dv4=(slope-drift)+TONE_P.dq4*Kf; if(dv4>0){ out.dir+=dv4; if(!out.dirAt) out.dirAt=i+1; } }
+      if(n>=11 && rng>=1.6*K) sv=Math.max(sv, slope-1.4*K);
       /* 四聲要從高音區一路掉下來；粵語 22／33 起點太低 */
-      if(n>=6 && uReg){ rgv=-semis(head,uMax)-TONE_P.r4*K+drift*i; if(rgv>rg) rg=rgv; if(rgv>sv) sv=rgv; }
+      if(n>=11 && uReg){ rgv=-semis(head,uMax)-TONE_P.r4*K+drift*i; if(rgv>rg) rg=rgv; if(rgv>sv) sv=rgv; }
     }else if(tone===3){
       out.contourN++;
       flat=(dipv>-0.8*K && Math.abs(slope-drift)<(FL+0.3)*Kf && rng<2.2*Kf);
-      if(n>=5 && dipv>-0.5*K){ var dv3=(slope-drift)+TONE_P.dq3*Kf; if(dv3>0){ out.dir+=dv3; if(!out.dirAt) out.dirAt=i+1; } }
-      var mi3=0,qq3; for(qq3=1;qq3<n;qq3++){ if(a[qq3]<a[mi3]) mi3=qq3; } var mp3=(n>1?mi3/(n-1):0), dip03=semis(a[mi3],a[0]); if(n>=6 && rng>=1.6*K && ((mp3<0.30 && dip03>-0.8*K) || dipv>-TONE_P.d3*K)) sv=Math.max(sv, slope-1.4*K);
+      if(n>=9 && (dipv>-0.5*K || (slope-drift)>=1.5*Kf || (uReg && semis(tail,uMax)>=-2.2*K))){ var dv3=(slope-drift)+TONE_P.dq3*Kf; if(dv3>0){ out.dir+=dv3; if(!out.dirAt) out.dirAt=i+1; } }
+      var mi3=0,qq3; for(qq3=1;qq3<n;qq3++){ if(a[qq3]<a[mi3]) mi3=qq3; } var mp3=(n>1?mi3/(n-1):0), dip03=semis(a[mi3],a[0]); if(n>=11 && rng>=1.6*K && ((mp3<0.30 && dip03>-0.8*K) || dipv>-TONE_P.d3*K)) sv=Math.max(sv, slope-1.4*K);
       /* 三聲是低調：粵語低升 25 會升到全詞最高處 */
-      if(n>=6 && uReg && slope>=1.0*K){ rgv=semis(hi,uMax)+TONE_P.r3*K; if(rgv>rg) rg=rgv; if(rgv>sv) sv=rgv; }
+      if(n>=11 && uReg && slope>=1.0*K){ rgv=semis(hi,uMax)+TONE_P.r3*K; if(rgv>rg) rg=rgv; if(rgv>sv) sv=rgv; }
+      if(TR.R[i] && n>=9 && dipv>-0.6*K && (slope-drift)>=0.6*Kf){ var dvR=(slope-drift)+TONE_P.dqR*Kf; if(dvR>0){ out.dir+=dvR; if(!out.dirAt) out.dirAt=i+1; } }
     }else if(tone===1){
       var mi1=0,qq1; for(qq1=1;qq1<n;qq1++){ if(a[qq1]<a[mi1]) mi1=qq1; }
       var mp1=(n>1?mi1/(n-1):0);
-      if(n>=6){
+      if(n>=11){
         if(rng>=3.2*K) sv=Math.max(sv, (slope-drift)-3.0*K);
         if(rng>=3.6*K) sv=Math.max(sv, -(slope-drift)-3.4*K);
         if(rng>=2.6*K && mp1>=0.2 && mp1<=0.85) sv=Math.max(sv, -dipv-2.1*K);
       }
       /* 一聲是高平調；粵語低平調拿來充一聲會整個偏低 */
-      if(n>=6 && uReg){ rgv=-semis(medOf(a),uMax)-TONE_P.r1*K+drift*i; if(rgv>rg) rg=rgv; if(rgv>sv) sv=rgv; }
+      if(n>=11 && uReg){ rgv=-semis(medOf(a),uMax)-TONE_P.r1*K+drift*i; if(rgv>rg) rg=rgv; if(rgv>sv) sv=rgv; }
+    }
+    var wOth=0, wo;
+    for(wo=0;wo<wHis.length;wo++){ if(wo!==i && wHis[wo]>wOth) wOth=wHis[wo]; }
+    if(wOth && n>=9){   /* 音區證據：要跟「別的字」比，只量到一個字就不做 */
+      var wr=0, wdl=(i>0?1.2*Kf:0), wHi=pctOf(a,0.92);
+      if(TR.L[i] && tone===4) wr=-semis(wHi,wOth)-2.6*Kf-wdl;
+      else if(TR.L[i] && tone===2) wr=-semis(tail,wOth)-3.0*Kf-wdl;
+      else if(TR.R[i] && tone===3 && hiRef && i<want.length-1) wr=semis(wHi,wOth)+2.2*Kf;
+      else if(TR.Lo[i] && tone===1) wr=-semis(wHi,wOth)-2.5*Kf-wdl;
+      if(TR.L[i] && tone===4){   /* 普通話四聲之後只會更低；粵語 33+55、22+55 反而往上跳 */
+        var wNx=0, wj;
+        for(wj=i+1;wj<wHis.length;wj++) if(wHis[wj]>wNx) wNx=wHis[wj];
+        if(wNx && wHi){ var wru=semis(wNx,wHi)-2.0*Kf; if(wru>wr) wr=wru; }
+      }
+      if(wr>0){ out.dir+=wr; if(!out.dirAt) out.dirAt=i+1; }
+    }
+    if(TR.ctr[i] && n>=9){   /* 只量到一個字時，必須看到明確的普通話調型才算數 */
+      var pm=(TR.L[i]?2.2:0.9)*Kf, pd=slope-drift, pOk=false;
+      if(tone===2) pOk=(pd>=pm);
+      else if(tone===4) pOk=(pd<=-pm);
+      else if(tone===3) pOk=(dipv<=-0.6*K || pd<=-(TR.L[i]?2.0:0.8)*Kf);
+      if(pOk) out.posCk=(out.posCk||0)+1;
     }
     if(tone!==1 && rng>out.maxRange) out.maxRange=rng;
-    if(flat){ out.flatN++; if(!firstFlat) firstFlat=i+1; }
+    if(flat){ out.flatN++; if(TR.L[i]) out.flatT++; if(!firstFlat) firstFlat=i+1; }
     var gv=uReg?(tone===2?semis(tail,uMax):(tone===4?semis(head,uMax):(tone===3?semis(hi,uMax):semis(medOf(a),uMax)))):0;
     dbg.push(tone+":s"+(slope>=0?"+":"")+slope.toFixed(1)+" r"+rng.toFixed(1)+(uReg?" g"+gv.toFixed(1):""));
     if(sv<0) sv=0;
@@ -1332,22 +1538,24 @@ function toneCheck(){
   out.k=K;
   out.sevR=out.sev/(K||1); out.sumR=out.svSum/(K||1); out.regR=rg/(K||1); out.dirR=out.dir/(Kf||1);
   out.dbg=dbg.join("|")+" v"+out.sevR.toFixed(1)+"/"+out.sumR.toFixed(1)+" g"+out.regR.toFixed(1)+" d"+out.dirR.toFixed(1)+(drift?" t"+drift.toFixed(1):"")+(K!==1?" k"+K.toFixed(2):"");
-  if(!out.checked){ out.why="no-data"; return out; }
+  if(!out.checked){ out.verdict="unclear"; out.why="no-data"; return out; }
   out.hard=(out.dirR>=TONE_P.dir1 || out.sevR>=TONE_P.hard || out.sumR>=TONE_P.hard+0.8);
-  var Tx=(S.wordTries>=2), DT=(Tx?TONE_P.dir2:TONE_P.dir1),
+  var Tx=(S.wordTries>=2 && out.cn>=2), DT=(Tx?TONE_P.dir2:TONE_P.dir1),
       MGx=TONE_P.mg*(Tx?1.8:1), SUMx=TONE_P.sum*(Tx?1.8:1);
   /* 方向證據：該升不升、該降不降、三聲不低。粵語必犯，普通話幾乎不會犯 */
   if(out.dirR>=DT){
     out.verdict="flat"; out.why="dir"; out.at=out.dirAt||firstFlat||1;
     return out;
   }
-  if(out.flatN>=2){   /* 兩個字都念成平調 */
+  if((out.flatT>=1 && out.checked<out.total) || out.flatN>=2){   /* 兩個字都念成平調 */
     out.verdict="flat"; out.why="flat"; out.at=firstFlat||1;
     return out;
   }
   if(out.sevR>=MGx || out.sumR>=SUMx){
     out.verdict="wrong"; out.why="tone"; out.at=out.at||1;
+    return out;
   }
+  if(out.checked<out.total && !(out.posCk>=1)){ out.verdict="unclear"; out.why="miss"; }
   return out;
 }
 
