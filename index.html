@@ -343,7 +343,7 @@ footer{flex:0 0 auto;text-align:center;font-size:clamp(9.5px,1.8vh,11.5px);color
       <span>普通話詞語大闖關</span>
     </div>
     <div class="hud" id="hud" hidden>
-      <span class="chip"><small>第</small><b id="hudLevel">1</b><small>/10 關</small></span>
+      <span class="chip"><small>第</small><b id="hudLevel">1</b><small>/5 關</small></span>
       <span class="chip">⏱ <b id="hudTime" style="font-variant-numeric:tabular-nums">00:00</b></span>
     </div>
     <button class="mbtn" id="btnMusic" type="button" aria-label="背景音樂開關" title="背景音樂">🎵</button>
@@ -419,7 +419,7 @@ footer{flex:0 0 auto;text-align:center;font-size:clamp(9.5px,1.8vh,11.5px);color
           <span><b>1</b>允許麥克風</span>
           <span><b>2</b>看詞朗讀</span>
           <span><b>3</b>讀不準顯示拼音</span>
-          <span><b>4</b>破十關計時</span>
+          <span><b>4</b>破五關計時</span>
         </div>
         <div class="noRec">本系統沒有錄音功能。</div>
         <div class="envNote" id="envNote"></div>
@@ -538,7 +538,7 @@ var scene=$("scene"), world=$("world"), hills=$("hills"), hero=$("hero"), dots=$
     screenCal=$("screenCal"), calStatus=$("calStatus"), btnCalSkip=$("btnCalSkip"),
     review=$("review"), reviewList=$("reviewList"), envNote=$("envNote"), fx2=$("fx2"), doneArt=$("doneArt"), doneTitle=$("doneTitle"), doneInner=$("doneInner");
 
-var ROUND=10;
+var ROUND=5;
 var S={ words:[], els:[], idx:0, tries:0, wordTries:0, firstTry:0, misses:[], skips:0, softPass:0,
          t0:0, timer:null, state:"idle", heroX:0, camX:0, step:300, gap:150, x0:60, playing:false };
 
@@ -1001,9 +1001,40 @@ function judge(text, cf){
   var w=curWord(), py=(w?w.p:"");
   var sc=Math.max(score(text), score(finalTx), score(interimTx));
   var tn=toneCheck();
+
+  /* 讀音嘗試滿3次鼓勵放行 */
   if(S.wordTries>=3){
     return {pass:true, why:null, reason:"soft", lenient:true, tn:tn};
   }
+
+  /* 規則：只要「聽到：XX」中的字詞與目標文字一致（含繁簡、去語氣詞或重疊），即可放行 */
+  var normTxt=norm(text);
+  var wordMatch=(sc>=1) || (w && (normTxt===norm(w.t) || normTxt===norm(w.s)));
+  if(wordMatch){
+    return {pass:true, why:null, reason:"ok", tn:tn};
+  }
+
+  /* 第1關和第2關（S.idx < 2）：只要不是粵語都可放行，接受不標準的普通話 */
+  var isEarly = (S.idx < 2);
+  if(isEarly){
+    /* 若檢測出強烈粵語調型，提示用普通話重讀 */
+    if(cantoStrong(tn)){
+      return {pass:false, reason:"canto", tn:tn,
+        why:"請用普通話照「"+py+"」再讀一次"};
+    }
+    /* 次選命中或讀出其中一字（sc>=0.5），視為不標準普通話予以放行 */
+    if(altHit || sc>=0.5){
+      return {pass:true, why:null, reason:"ok", tn:tn, lenient:true};
+    }
+    /* 第二次嘗試只要無粵語特徵且有發音，亦寬容放行 */
+    if(S.wordTries>=2 && tn && !cantoStrong(tn)){
+      return {pass:true, why:null, reason:"soft", lenient:true, tn:tn};
+    }
+    return {pass:false, reason:"word", tn:tn,
+      why:(altHit ? "有點接近，但還不夠準！照「"+py+"」再讀一次" : null)};
+  }
+
+  /* 第3關及之後：標準判定 */
   var T2=(S.wordTries>=2), wmin=(T2?0.4:0.5);
   if(sc<1 && !(sc>=wmin && mandarinEvidence(tn))){
     return {pass:false, reason:"word", tn:tn,
@@ -1023,6 +1054,7 @@ function judge(text, cf){
   }
   return {pass:true, why:null, reason:"ok", tn:tn};
 }
+
 function noAsr(){
   setStatus("此瀏覽器不支援 AI 語音識別，請改用 Chrome 或 Safari","bad");
   btnSkip.hidden=false;
